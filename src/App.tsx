@@ -1,21 +1,48 @@
 import { useState } from 'react'
 import './App.css'
 import logoImage from '../logo/TLT-Logo.png'
+import axios from 'axios';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [results, setResults] = useState<string[]>([])
-
-  const handleSearch = (e: React.FormEvent) => {
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
-    // This is where you would normally fetch data based on the search query
-    // For now, we'll just set the query as the only result
+    
     if (searchQuery.trim()) {
-      setResults([searchQuery]) // Replace previous results instead of stacking them
-      setSearchQuery('')
+      const coords = await geocodeAddress(searchQuery);
+      
+      if (coords) {
+        setCoordinates(coords);
+        setResults([
+          `${searchQuery} - Latitude: ${coords.lat.toFixed(6)}, Longitude: ${coords.lng.toFixed(6)}`
+        ]);
+      } else {
+        setResults([`Could not find coordinates for: ${searchQuery}`]);
+      }
+      
+      setSearchQuery('');
     }
   }
-
+  const geocodeAddress = async (address: string) => {
+    try {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
+      );
+      
+      if (response.data.results.length > 0) {
+        const { lat, lng } = response.data.results[0].geometry.location;
+        return { lat, lng };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error geocoding address:", error);
+      return null;
+    }
+  };
   return (
     <div className="container">
       <div className="logo-container">
