@@ -1,37 +1,46 @@
-import { useState } from 'react'
-import './App.css'
-import logoImage from '../logo/TLT-Logo.png'
-import axios from 'axios';
+import { useState } from "react";
+import "./App.css";
+import logoImage from "../logo/TLT-Logo.png";
+import axios from "axios";
+import Weather from "./components/weather";
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [results, setResults] = useState<string[]>([])
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [results, setResults] = useState<string[]>([]);
+  const [coordinates, setCoordinates] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
   const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (searchQuery.trim()) {
       const coords = await geocodeAddress(searchQuery);
-      
+
       if (coords) {
         setCoordinates(coords);
         setResults([
-          `${searchQuery} - Latitude: ${coords.lat.toFixed(6)}, Longitude: ${coords.lng.toFixed(6)}`
+          `${searchQuery} - Latitude: ${coords.lat.toFixed(
+            6
+          )}, Longitude: ${coords.lng.toFixed(6)}`,
         ]);
       } else {
         setResults([`Could not find coordinates for: ${searchQuery}`]);
       }
-      
-      setSearchQuery('');
+
+      setSearchQuery("");
     }
-  }
+  };
   const geocodeAddress = async (address: string) => {
     try {
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+          address
+        )}&key=${apiKey}`
       );
-      
+
       if (response.data.results.length > 0) {
         const { lat, lng } = response.data.results[0].geometry.location;
         return { lat, lng };
@@ -48,6 +57,7 @@ function App() {
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
       </div>
+      <Weather />
       <div className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-bar-container">
@@ -64,7 +74,7 @@ function App() {
           </div>
         </form>
       </div>
-      
+
       <div className="results-container">
         <h2>Search Results</h2>
         {results.length > 0 ? (
@@ -80,7 +90,7 @@ function App() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
