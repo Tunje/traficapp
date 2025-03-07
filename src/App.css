@@ -41,7 +41,8 @@
   color: #888;
 }
 
-/* Dashboard layout styles using Tailwind's @apply */
+/*----- Dashboard layout styles using Tailwind's @apply -----*/
+
 .dashboard-container {
   @apply flex justify-between mt-12 max-w-[1200px];
 }

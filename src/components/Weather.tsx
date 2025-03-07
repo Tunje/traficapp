@@ -22,7 +22,7 @@ const Weather = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const API_KEY = "6fe1ad8098a23d7d131693c3b31d5e04";
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
   const getDayName = (dateStr: string) => {
     const days = [
