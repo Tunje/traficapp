@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./weather.css";
+import "./Weather.css";
 
 interface WeatherData {
   temp: number;
@@ -8,32 +8,98 @@ interface WeatherData {
   city: string;
 }
 
+interface ForecastDay {
+  day: string;
+  temp: number;
+  rainChance: number;
+  icon: string;
+  description: string;
+}
+
 const Weather = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const API_KEY = "6fe1ad8098a23d7d131693c3b31d5e04";
 
+  const getDayName = (dateStr: string) => {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const date = new Date(dateStr);
+    return days[date.getDay()];
+  };
+
   useEffect(() => {
     const fetchWeatherData = async (lat: number, lon: number) => {
       try {
-        const response = await fetch(
+        /*----- Fetching current weather -----*/
+
+        const currentResponse = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         );
 
-        if (!response.ok) {
+        if (!currentResponse.ok) {
           throw new Error("Failed to fetch weather data");
         }
 
-        const data = await response.json();
+        const currentData = await currentResponse.json();
 
         setWeatherData({
-          temp: data.main.temp,
-          description: data.weather[0].description,
-          icon: data.weather[0].icon,
-          city: data.name,
+          temp: currentData.main.temp,
+          description: currentData.weather[0].description,
+          icon: currentData.weather[0].icon,
+          city: currentData.name,
         });
+
+        /*----- Fetch 5-day forecast -----*/
+
+        const forecastResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+        );
+
+        if (!forecastResponse.ok) {
+          throw new Error("Failed to fetch weather data");
+        }
+
+        const forecastData = await forecastResponse.json();
+
+        /*----- Process forecast data to get one entry per day (noon time) -----*/
+
+        const dailyForecasts: ForecastDay[] = [];
+        const processedDays = new Set();
+
+        forecastData.list.forEach((item: any) => {
+          const date = item.dt_txt.split(" ")[0];
+          const time = item.dt_txt.split(" ")[1];
+
+          /*----- Only take one reading per day (around noon) -----*/
+
+          if (!processedDays.has(date) && time.includes("12:")) {
+            processedDays.add(date);
+
+            dailyForecasts.push({
+              day: getDayName(date),
+              temp: item.main.temp,
+              rainChance:
+                item.pop * 100 /*----- Convert from 0-1 to percentage -----*/,
+              icon: item.weather[0].icon,
+              description: item.weather[0].description,
+            });
+          }
+        });
+
+        /*----- Limit to 5 days -----*/
+
+        setForecastData(dailyForecasts.slice(0, 5));
         setLoading(false);
       } catch (err) {
         setError("Error fetching weather data");
@@ -91,6 +157,36 @@ const Weather = () => {
               </div>
               <div className="weather-desc">{weatherData.description}</div>
             </div>
+          </div>
+
+          {/* 5-day forecast grid */}
+          <div className="weather-forecast">
+            {/* Grid headers */}
+            <div className="forecast-grid">
+              <div className="forecast-header">Day</div>
+              <div className="forecast-header">Temp</div>
+              <div className="forecast-header">Rain</div>
+              <div className="forecast-header"></div> {/* For icons */}
+            </div>
+
+            {/* Grid rows */}
+            {forecastData &&
+              forecastData.map((day, index) => (
+                <div key={index} className="forecast-grid">
+                  <div className="forecast-day">{day.day}</div>
+                  <div className="forecast-temp">{Math.round(day.temp)}°C</div>
+                  <div className="forecast-rain">
+                    {Math.round(day.rainChance)}%
+                  </div>
+                  <div className="forecast-icon-cell">
+                    <img
+                      src={`https://openweathermap.org/img/wn/${day.icon}.png`}
+                      alt={day.description}
+                      className="forecast-icon"
+                    />
+                  </div>
+                </div>
+              ))}
           </div>
         </>
       )}

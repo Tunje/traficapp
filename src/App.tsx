@@ -57,7 +57,7 @@ function App() {
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
       </div>
-      <Weather />
+
       <div className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-bar-container">
@@ -73,6 +73,23 @@ function App() {
             </button>
           </div>
         </form>
+      </div>
+      {/* Dashboard layout with two columns */}
+      <div className="dashboard-container">
+        {/* Left side - Transport departures (placeholder) */}
+        <div className="dashboard-left">
+          <div className="transport-container">
+            <h2 className="transport-title">Transport Departures</h2>
+            <p className="transport-placeholder">
+              Transport information will appear here
+            </p>
+          </div>
+        </div>
+
+        {/* Right side - Weather */}
+        <div className="dashboard-right">
+          <Weather />
+        </div>
       </div>
 
       <div className="results-container">
