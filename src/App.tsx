@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import logoImage from "../logo/TLT-Logo.png";
-import axios from "axios";
-import Weather from "./components/weather";
+import Weather from "./components/Weather";
+import { GOOGLE_MAPS_API_KEY } from "./components/config";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,15 +34,23 @@ function App() {
   };
   const geocodeAddress = async (address: string) => {
     try {
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-      const response = await axios.get(
+      /* const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY; */
+      const apiKey = GOOGLE_MAPS_API_KEY;
+
+      const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
           address
         )}&key=${apiKey}`
       );
 
-      if (response.data.results.length > 0) {
-        const { lat, lng } = response.data.results[0].geometry.location;
+      if (!response.ok) {
+        throw new Error("Failer to geocode address");
+      }
+
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry.location;
         return { lat, lng };
       } else {
         return null;
@@ -52,6 +60,7 @@ function App() {
       return null;
     }
   };
+
   return (
     <div className="container">
       <div className="logo-container">
@@ -88,7 +97,7 @@ function App() {
 
         {/* Right side - Weather */}
         <div className="dashboard-right">
-          <Weather />
+          <Weather coordinates={coordinates} />
         </div>
       </div>
 

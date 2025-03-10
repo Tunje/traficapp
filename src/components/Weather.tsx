@@ -1,28 +1,16 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
+import { WeatherData, ForecastDay, WeatherProps } from "./types/weather";
+import { WEATHER_API_KEY } from "./config";
 
-interface WeatherData {
-  temp: number;
-  description: string;
-  icon: string;
-  city: string;
-}
-
-interface ForecastDay {
-  day: string;
-  temp: number;
-  rainChance: number;
-  icon: string;
-  description: string;
-}
-
-const Weather = () => {
+const Weather = ({ coordinates }: WeatherProps) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  const API_KEY = WEATHER_API_KEY;
+  /* const API_KEY = import.meta.env.VITE_WEATHER_API_KEY; */
 
   const getDayName = (dateStr: string) => {
     const days = [
@@ -108,27 +96,35 @@ const Weather = () => {
       }
     };
 
-    const getUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            fetchWeatherData(latitude, longitude);
-          },
-          (err) => {
-            setError("Unable to get location. Please allow location access.");
-            setLoading(false);
-            console.error("Geolocation error:", err);
-          }
-        );
-      } else {
-        setError("Geolocation is not supported by your browser");
-        setLoading(false);
-      }
-    };
+    /*----- If coordinates are provided, use them -----*/
 
-    getUserLocation();
-  }, []);
+    if (coordinates) {
+      fetchWeatherData(coordinates.lat, coordinates.lng);
+    } else {
+      /*----- Fallback to geolocation if no coordinates are provided -----*/
+
+      const getUserLocation = () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              fetchWeatherData(latitude, longitude);
+            },
+            (err) => {
+              setError("Unable to get location. Please allow location access.");
+              setLoading(false);
+              console.error("Geolocation error:", err);
+            }
+          );
+        } else {
+          setError("Geolocation is not supported by your browser");
+          setLoading(false);
+        }
+      };
+
+      getUserLocation();
+    }
+  }, [coordinates]);
 
   if (loading) {
     return (
