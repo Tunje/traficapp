@@ -1,48 +1,46 @@
 import { useState } from 'react'
 import './App.css'
 import logoImage from '../logo/TLT-Logo.png'
-import axios from 'axios';
+import { useLocation } from './contexts/LocationContext'
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [results, setResults] = useState<string[]>([])
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { getCoordinates } = useLocation();
+  
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (searchQuery.trim()) {
-      const coords = await geocodeAddress(searchQuery);
+      setIsLoading(true);
+      setError(null);
       
-      if (coords) {
-        setCoordinates(coords);
-        setResults([
-          `${searchQuery} - Latitude: ${coords.lat.toFixed(6)}, Longitude: ${coords.lng.toFixed(6)}`
-        ]);
-      } else {
-        setResults([`Could not find coordinates for: ${searchQuery}`]);
+      try {
+        const coords = await getCoordinates(searchQuery);
+        
+        if (coords) {
+          setCoordinates(coords);
+          setResults([
+            `${searchQuery} - Latitude: ${coords.lat.toFixed(6)}, Longitude: ${coords.lng.toFixed(6)}`
+          ]);
+          setSearchQuery('');
+        } else {
+          setResults([`Could not find coordinates for: ${searchQuery}`]);
+          setError('No results found');
+        }
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        setError(errorMessage);
+        setResults([`Error: ${errorMessage}`]);
+      } finally {
+        setIsLoading(false);
       }
-      
-      setSearchQuery('');
     }
   }
-  const geocodeAddress = async (address: string) => {
-    try {
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
-      );
-      
-      if (response.data.results.length > 0) {
-        const { lat, lng } = response.data.results[0].geometry.location;
-        return { lat, lng };
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error("Error geocoding address:", error);
-      return null;
-    }
-  };
+  
   return (
     <div className="container">
       <div className="logo-container">
@@ -58,8 +56,8 @@ function App() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit" className="search-button">
-              Search
+            <button type="submit" className="search-button" disabled={isLoading}>
+              {isLoading ? 'Searching...' : 'Search'}
             </button>
           </div>
         </form>
@@ -67,6 +65,7 @@ function App() {
       
       <div className="results-container">
         <h2>Search Results</h2>
+        {error && <p className="error-message">{error}</p>}
         {results.length > 0 ? (
           <ul className="results-list">
             {results.map((result, index) => (
@@ -77,6 +76,14 @@ function App() {
           </ul>
         ) : (
           <p className="no-results">No results to display</p>
+        )}
+        
+        {coordinates && (
+          <div className="coordinates-display">
+            <h3>Current Coordinates:</h3>
+            <p>Latitude: {coordinates.lat.toFixed(6)}</p>
+            <p>Longitude: {coordinates.lng.toFixed(6)}</p>
+          </div>
         )}
       </div>
     </div>
