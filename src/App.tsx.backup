@@ -1,10 +1,10 @@
 import { useState } from "react";
-import "../App.css";
-import logoImage from "../../logo/TLT-Logo.png";
-import Weather from "../components/Weather";
-import { useLocation } from "../hooks/useLocation";
+import "./App.css";
+import logoImage from "../logo/TLT-Logo.png";
+import Weather from "./components/Weather";
+import { useLocation } from "./hooks/useLocation";
 
-export const HomePage = () => {
+function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const [coordinates, setCoordinates] = useState<{
@@ -90,4 +90,6 @@ export const HomePage = () => {
       </div>
     </div>
   );
-};
+}
+
+export default App;
