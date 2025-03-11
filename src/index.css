@@ -2,7 +2,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -183,26 +182,26 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-  
+
   .search-input {
     background-color: #ffffff;
     color: #213547;
     border-color: #3b82f6;
   }
-  
+
   .results-container {
     background-color: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
-  
+
   .results-container h2 {
     color: #1f2937;
   }
-  
+
   .result-item {
     border-bottom: 1px solid #e5e7eb;
   }
-  
+
   .no-results {
     color: #6b7280;
   }

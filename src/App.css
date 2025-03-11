@@ -40,3 +40,33 @@
 .read-the-docs {
   color: #888;
 }
+
+/*----- Dashboard layout styles using Tailwind's @apply -----*/
+
+.dashboard-container {
+  @apply flex justify-between mt-12 max-w-[1200px];
+}
+
+.dashboard-left {
+  @apply w-[900px] pr-4 my-5 h-full;
+}
+
+.dashboard-right {
+  @apply w-[300px] pl-4 flex justify-end;
+}
+
+.transport-container {
+  @apply bg-white/90 rounded-lg p-4 shadow-md h-full;
+}
+
+.transport-title {
+  @apply text-lg font-bold mb-2;
+}
+
+.transport-placeholder {
+  @apply text-gray-600;
+}
+
+.results-container {
+  @apply mt-6;
+}
