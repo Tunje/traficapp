@@ -35,12 +35,12 @@ const App = () => {
   };
 
   return (
-    <div className="container">
+    <main className="container">
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
       </div>
 
-      <div className="search-container">
+      <section className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-bar-container">
             <input
@@ -55,17 +55,17 @@ const App = () => {
             </button>
           </div>
         </form>
-      </div>
+      </section>
       {/* Dashboard layout with two columns */}
       <div className="dashboard-container">
         {/* Left side - Transport departures (placeholder) */}
         <div className="dashboard-left">
-          <div className="transport-container">
+          <section className="transport-container">
             <h2 className="transport-title">Transport Departures</h2>
             <p className="transport-placeholder">
               Departure information will appear here
             </p>
-          </div>
+          </section>
         </div>
 
         {/* Right side - Weather */}
@@ -73,8 +73,7 @@ const App = () => {
           <Weather coordinates={coordinates} />
         </div>
       </div>
-
-      <div className="results-container">
+      <section className="results-container">
         <h2>Search Results</h2>
         {results.length > 0 ? (
           <ul className="results-list">
@@ -87,8 +86,8 @@ const App = () => {
         ) : (
           <p className="no-results">No results to display</p>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 
