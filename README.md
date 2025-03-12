@@ -1,13 +1,14 @@
 ## API Keys Setup
 
-This application requires API keys for OpenWeather and Google Maps services. To set up:
+This application requires API keys for OpenWeather, Trafikverket and Google Maps services. To set up:
 
-1. Copy [src/components/config.example.ts](cci:7://file:///d:/Skola/Backend/traficapp/src/components/config.example.ts:0:0-0:0) to `src/components/config.ts`
+1. Copy [src/components/config.example.ts](src/components/config.example.ts) to `src/components/config.ts`. Alternately, you can create a `.env.local` file in your root directory.
 2. Replace the placeholder values in `config.ts` with your actual API keys:
    - Get an OpenWeather API key from [OpenWeather](https://openweathermap.org/api)
    - Get a Google Maps API key from [Google Cloud Platform](https://console.cloud.google.com/)
+   - Get a Trafikverket API key from [Trafiklab] or [Trafikverket]()
 
-Note: The `config.ts` file is gitignored to prevent exposing your API keys.
+Note: The `config.ts` file as well as .env files are gitignored to prevent exposing your API keys.
 
 # React + TypeScript + Vite
 

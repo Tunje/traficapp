@@ -1,4 +1,4 @@
-import logoImage from '../../logo/TLT-Logo.png';
+import logoImage from "/public/TLT-Logo.png";
 
 export const Header = () => {
   return (

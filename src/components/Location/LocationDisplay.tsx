@@ -1,4 +1,4 @@
-import { Coordinates } from '../hooks/useLocation';
+import { Coordinates } from '../../hooks/useLocation';
 
 interface ResultsDisplayProps {
   results: string[];

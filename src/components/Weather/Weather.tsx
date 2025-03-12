@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
-import { WeatherData, ForecastDay, WeatherProps } from "./types/weather";
-import { WEATHER_API_KEY } from "./config.example";
-import { useLocation } from "../hooks/useLocation";
+import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
+import { WEATHER_API_KEY } from "../types/config.example";
+import { useLocation } from "../../hooks/useLocation";
 
 const Weather = ({ coordinates }: WeatherProps) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
