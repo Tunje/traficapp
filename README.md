@@ -6,7 +6,7 @@ This application requires API keys for OpenWeather, Trafikverket and Google Maps
 2. Replace the placeholder values in `config.ts` with your actual API keys:
    - Get an OpenWeather API key from [OpenWeather](https://openweathermap.org/api)
    - Get a Google Maps API key from [Google Cloud Platform](https://console.cloud.google.com/)
-   - Get a Trafikverket API key from [Trafiklab] or [Trafikverket]()
+   - Get a Trafikverket API key from [Trafiklab](https://www.trafiklab.se/api/trafiklab-apis/trafikverket/) or [Trafikverket](https://www.trafikverket.se/e-tjanster/trafikverkets-oppna-api-for-trafikinformation/)
 
 Note: The `config.ts` file as well as .env files are gitignored to prevent exposing your API keys.
 
