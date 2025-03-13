@@ -1,4 +1,4 @@
-import { Coordinates } from '../../hooks/useLocation';
+import { Coordinates } from "../../types/coordinates";
 
 interface ResultsDisplayProps {
   results: string[];
@@ -24,8 +24,8 @@ export const ResultsDisplay = ({ results, coordinates }: ResultsDisplayProps) =>
       {coordinates && (
         <div className="coordinates-display">
           <h3>Current Coordinates:</h3>
-          <p>Latitude: {coordinates.lat.toFixed(6)}</p>
-          <p>Longitude: {coordinates.lng.toFixed(6)}</p>
+          <p>Latitude: {coordinates.latitude.toFixed(6)}</p>
+          <p>Longitude: {coordinates.longitude.toFixed(6)}</p>
         </div>
       )}
     </div>

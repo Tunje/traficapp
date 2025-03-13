@@ -27,7 +27,7 @@ const App = () => {
       if (data.results.length > 0) {
         const { lat, lng } = data.results[0].geometry.location;
         setCoordinates({ latitude: lat, longitude: lng});
-        console.log("New coordinates from app", data.results[0]);
+        console.log("New coordinates from App", data.results[0]);
         return { latitude: lat, longitude: lng};
       } else {
         return null;
@@ -54,7 +54,6 @@ const App = () => {
       } else {
         setResults([`Could not find coordinates for: ${searchQuery}`]);
       }
-
       setSearchQuery("");
     }
   };
