@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
-import { WeatherData, ForecastDay, WeatherProps } from "./types/weather";
-import { WEATHER_API_KEY } from "./config.example";
-import { useLocation } from "../hooks/useLocation";
+import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
+import { WEATHER_API_KEY } from "../config.example";
+import { useLocation } from "../../hooks/useLocation";
 
 const Weather = ({ coordinates }: WeatherProps) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -139,7 +139,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
   }
 
   return (
-    <div className="weather-container">
+    <section className="weather-container">
       {weatherData && (
         <>
           <div className="weather-location">{weatherData.city}</div>
@@ -188,7 +188,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 
