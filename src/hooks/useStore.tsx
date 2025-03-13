@@ -1,8 +1,14 @@
 import { create } from 'zustand'
+import { combine } from 'zustand/middleware'
+import { Coordinates } from "../types/coordinates"
 
-const useStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-  updateBears: (newBears) => set({ bears: newBears }),
-}))
+export const useStore = create(
+    combine({ coordinates: null as Coordinates}, 
+        (set) => ({
+            setCoordinates: (currentCoords: Coordinates) => {
+                set({ coordinates: currentCoords });
+                console.log("New Coordinates via useStore:", currentCoords);
+            },
+        })
+    )
+);

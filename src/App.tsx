@@ -1,30 +1,55 @@
-import { useState } from "react";
 import "./App.css";
-import logoImage from "../public/TLT-Logo.png";
+import { useState } from "react";
+import { useStore } from "./hooks/useStore";
+import logoImage from "./assets/TLT-Logo.png";
 import Weather from "./components/Weather/Weather";
-import { useLocation } from "./hooks/useLocation";
+import { Coordinates } from "./types/coordinates";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
-  const [coordinates, setCoordinates] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-  const { getCoordinates } = useLocation();
+  const setCoordinates = useStore((state) => state.setCoordinates);
+  let coordinates = useStore((state) => state.coordinates);
+  
+  const getLocation = async (address: string): Promise<Coordinates> => {
+    try {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
+      );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry.location;
+        setCoordinates({ latitude: lat, longitude: lng});
+        console.log("New coordinates from app", data.results[0]);
+        return { latitude: lat, longitude: lng};
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error geocoding address:", error);
+      return null;
+    }
+  };
+  
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (searchQuery.trim()) {
-      const coords = await getCoordinates(searchQuery);
+      coordinates = await getLocation(searchQuery);
 
-      if (coords) {
-        setCoordinates(coords);
+      if (coordinates) {
         setResults([
-          `${searchQuery} - Latitude: ${coords.lat.toFixed(
+          `${searchQuery} - Latitude: ${coordinates.latitude.toFixed(
             6
-          )}, Longitude: ${coords.lng.toFixed(6)}`,
+          )}, Longitude: ${coordinates.longitude.toFixed(6)}`,
         ]);
       } else {
         setResults([`Could not find coordinates for: ${searchQuery}`]);
@@ -70,7 +95,7 @@ const App = () => {
 
         {/* Right side - Weather */}
         <div className="dashboard-right">
-          <Weather coordinates={coordinates} />
+          {/* <Weather coordinates={coordinates} /> */}
         </div>
       </div>
       <section className="results-container">
