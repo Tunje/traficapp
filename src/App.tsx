@@ -95,7 +95,7 @@ const App = () => {
 
         {/* Right side - Weather */}
         <div className="dashboard-right">
-          {/* <Weather coordinates={coordinates} /> */}
+          <Weather coordinates={coordinates} />
         </div>
       </div>
       <section className="results-container">
