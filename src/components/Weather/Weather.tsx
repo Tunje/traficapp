@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import "./Weather.css";
 import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
 import { WEATHER_API_KEY } from "../config.example";
-import { useLocation } from "../../hooks/useLocation";
+import { useStore } from "../../hooks/useStore";
 
 const Weather = ({ coordinates }: WeatherProps) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { getCoordinates } = useLocation();
+  let stateCoordinates = useStore((state) => state.coordinates);
 
   // const API_KEY = WEATHER_API_KEY;
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -101,30 +101,10 @@ const Weather = ({ coordinates }: WeatherProps) => {
     /*----- If coordinates are provided, use them -----*/
 
     if (coordinates) {
-      fetchWeatherData(coordinates.lat, coordinates.lng);
+      fetchWeatherData(stateCoordinates.latitude, stateCoordinates.longitude);
     } else {
-      /*----- Fallback to geolocation if no coordinates are provided -----*/
-
-      const getUserLocation = () => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const { latitude, longitude } = position.coords;
-              fetchWeatherData(latitude, longitude);
-            },
-            (err) => {
-              setError("Unable to get location. Please allow location access.");
-              setLoading(false);
-              console.error("Geolocation error:", err);
-            }
-          );
-        } else {
-          setError("Geolocation is not supported by your browser");
-          setLoading(false);
-        }
-      };
-
-      getUserLocation();
+      /*----- Fallback to loading state if no coordinates are provided -----*/
+      setLoading(true);
     }
   }, [coordinates]);
 
