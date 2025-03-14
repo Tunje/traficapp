@@ -1,11 +1,11 @@
-import { useState } from "react";
-import "./App.css";
-import logoImage from "../public/TLT-Logo.png";
-import Weather from "./components/Weather/Weather";
-import { useLocation } from "./hooks/useLocation";
-import TrafficInfo from "./components/TrafficInfo";
 
-const App = () => {
+import { useState } from "react";
+import "../App.css";
+import logoImage from "../../logo/TLT-Logo.png";
+import Weather from "../components/Weather";
+import { useLocation } from "../hooks/useLocation";
+
+export const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const [coordinates, setCoordinates] = useState<{
@@ -36,12 +36,12 @@ const App = () => {
   };
 
   return (
-    <main className="container">
+    <div className="container">
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
       </div>
 
-      <section className="search-container">
+      <div className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-bar-container">
             <input
@@ -56,18 +56,17 @@ const App = () => {
             </button>
           </div>
         </form>
-      </section>
+      </div>
       {/* Dashboard layout with two columns */}
       <div className="dashboard-container">
         {/* Left side - Transport departures (placeholder) */}
-        <div className="Transport Info"/>
         <div className="dashboard-left">
-          <section className="transport-container">
+          <div className="transport-container">
             <h2 className="transport-title">Transport Departures</h2>
             <p className="transport-placeholder">
-              Departure information will appear here
+              Transport information will appear here
             </p>
-          </section>
+          </div>
         </div>
 
         {/* Right side - Weather */}
@@ -75,7 +74,8 @@ const App = () => {
           <Weather coordinates={coordinates} />
         </div>
       </div>
-      <section className="results-container">
+
+      <div className="results-container">
         <h2>Search Results</h2>
         {results.length > 0 ? (
           <ul className="results-list">
@@ -88,9 +88,7 @@ const App = () => {
         ) : (
           <p className="no-results">No results to display</p>
         )}
-      </section>
-    </main>
+      </div>
+    </div>
   );
 };
-
-export default App;
