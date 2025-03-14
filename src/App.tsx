@@ -1,9 +1,10 @@
 import "./App.css";
+import { Coordinates } from "./types/coordinates";
 import { useState } from "react";
 import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
+import TrafficInfo from "./components/TrafficInfo/TrafficInfo";
 import Weather from "./components/Weather/Weather";
-import { Coordinates } from "./types/coordinates";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -80,6 +81,20 @@ const App = () => {
           </div>
         </form>
       </section>
+      <section className="results-container">
+        <h2>Search Results</h2>
+        {results.length > 0 ? (
+          <ul className="results-list">
+            {results.map((result, index) => (
+              <li key={index} className="result-item">
+                {result}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="no-results">No results to display</p>
+        )}
+      </section>
       {/* Dashboard layout with two columns */}
       <div className="dashboard-container">
         {/* Left side - Transport departures (placeholder) */}
@@ -97,19 +112,9 @@ const App = () => {
           <Weather coordinates={coordinates} />
         </div>
       </div>
-      <section className="results-container">
-        <h2>Search Results</h2>
-        {results.length > 0 ? (
-          <ul className="results-list">
-            {results.map((result, index) => (
-              <li key={index} className="result-item">
-                {result}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-results">No results to display</p>
-        )}
+      <section className="traffic-situation-container">
+        <h2>Traffic Situation</h2>
+        <TrafficInfo />
       </section>
     </main>
   );
