@@ -34,3 +34,7 @@
 .results-container {
   @apply mt-6;
 }
+
+.traffic-situation-container {
+  @apply bg-white/90 rounded-lg text-gray-700 w-full;
+}

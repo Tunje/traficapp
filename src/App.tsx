@@ -112,8 +112,9 @@ const App = () => {
           <Weather coordinates={coordinates} />
         </div>
       </div>
+        {/* Bttom - Traffic Situation Updates */}
       <section className="traffic-situation-container">
-        <h2>Traffic Situation</h2>
+        <h2>Traffic Updates</h2>
         <TrafficInfo />
       </section>
     </main>
