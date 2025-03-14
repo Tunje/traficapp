@@ -61,17 +61,19 @@ const App = () => {
 
   return (
     <main className="container">
+      {/* Grid layout with a search bar on top, two components on the next row, and one component spanning the bottom row */}
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
       </div>
 
-      <section className="search-container">
+      <section className="search">
+        <div className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-bar-container">
             <input
               type="text"
               className="search-input"
-              placeholder="Search..."
+              placeholder="Enter a location"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -80,8 +82,9 @@ const App = () => {
             </button>
           </div>
         </form>
-      </section>
-      <section className="results-container">
+        </div>
+
+      <div className="results-container">
         <h2>Search Results</h2>
         {results.length > 0 ? (
           <ul className="results-list">
@@ -94,9 +97,9 @@ const App = () => {
         ) : (
           <p className="no-results">No results to display</p>
         )}
+        </div>
       </section>
-      {/* Dashboard layout with two columns */}
-      <div className="dashboard-container">
+
         {/* Left side - Transport departures (placeholder) */}
         <div className="dashboard-left">
           <section className="transport-container">
@@ -111,12 +114,11 @@ const App = () => {
         <div className="dashboard-right">
           <Weather coordinates={coordinates} />
         </div>
-      </div>
-        {/* Bttom - Traffic Situation Updates */}
-      <section className="traffic-situation-container">
-        <h2>Traffic Updates</h2>
+        {/* Bottom - Traffic Situation Updates */}
+
+      <div className="dashboard-bottom">
         <TrafficInfo />
-      </section>
+      </div>
     </main>
   );
 };

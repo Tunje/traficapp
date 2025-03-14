@@ -5,36 +5,111 @@
   text-align: center;
 }
 
-/*----- Dashboard layout styles using Tailwind's @apply -----*/
+/*----- App-wide layout styles -----*/
 
-.dashboard-container {
-  @apply flex justify-between mt-12 max-w-[1200px];
+
+.container {
+  @apply grid 
+  grid-cols-5 grid-rows-4 gap-2;
+}
+
+.logo-container {
+  @apply col-start-1 col-end-4 row-start-1 row-end-1;
+  }
+
+.search {
+  @apply col-start-1 col-end-4 row-start-2 row-end-2;
+}
+
+/* Search bar and button styles */
+
+.search-bar-container {
+  @apply flex w-full;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 2px solid #3b82f6;
+  border-right: none;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  outline: none;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  color: white;
+  border: 2px solid #3b82f6;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Results container styles */
+.results-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: 70px; /* Match the search container positioning */
+}
+
+.results-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  color: #f9fafb;
+}
+
+.results-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.result-item {
+  padding: 12px;
+  border-bottom: 1px solid #374151;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.no-results {
+  color: #9ca3af;
+  text-align: center;
+  padding: 16px;
 }
 
 .dashboard-left {
-  @apply w-[900px] pr-4 my-5 h-full;
+  @apply col-start-1 col-end-3 row-start-3 row-end-3;
 }
 
-.dashboard-right {
-  @apply w-[300px] pl-4 flex justify-end;
-}
-
+/* Temporary placeholder. Will move into DepartureInfo component. */
 .transport-container {
   @apply bg-white/90 rounded-lg p-4 shadow-md h-full;
 }
 
-.transport-title {
-  @apply text-lg font-bold mb-2;
+.dashboard-right {
+  @apply col-start-3 col-end-4 row-start-3 row-end-3;
 }
 
-.transport-placeholder {
-  @apply text-gray-600;
-}
-
-.results-container {
-  @apply mt-6;
-}
-
-.traffic-situation-container {
-  @apply bg-white/90 rounded-lg text-gray-700 w-full;
+.dashboard-bottom {
+  @apply col-start-1 col-end-4 row-start-4 row-end-4
 }

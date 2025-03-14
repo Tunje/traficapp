@@ -89,8 +89,8 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
         }
 
   return (
-    <>
-        <div>Your current traffic info:</div>
+    <section className="traffic-update-container">
+        <h2>Traffic Updates</h2>
         {situation.map((incident, index) => (
             <div key={index} className="traffic-info-grid">
                 <div className="incident-published">Published {incident.Publication}</div>
@@ -106,7 +106,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                 ))}
             </div>
         ))}
-        </>
+        </section>
   )
 }
 
