@@ -14,7 +14,7 @@ h2 {
 }
 
 h3 {
-    @apply font-bold text-lg mb-2 text-gray-800;
+    @apply font-bold text-lg mb-2 text-gray-800 text-left;
 }
 
 a {
@@ -80,7 +80,7 @@ a:hover {
 }
 
 .no-results {
-  @apply text-gray-500;
+  @apply text-gray-600;
 }
 
 .result-item {

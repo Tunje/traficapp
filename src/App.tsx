@@ -86,7 +86,7 @@ const App = () => {
         </div>
 
         <div className="results-container">
-          <h2>Search Results</h2>
+          <h3>Search Results</h3>
           {results.length > 0 ? (
             <ul className="results-list">
               {results.map((result, index) => (

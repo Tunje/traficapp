@@ -84,14 +84,26 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
       
         if (loading) {
           return (
-            <div className="traffic-content loading">Loading traffic data...</div>
+            <div className="traffic-content">
+                <h3>Traffic Updates</h3>
+                Loading traffic data...
+            </div>
           );
         }
 
   return (
         <div className="traffic-content">
         <h3>Traffic Updates</h3>
-        {situation.map((incident, index) => (
+        <table>
+            <tr>
+            <th>Published</th>
+            <th>Modified</th>
+            <th>Severity</th>
+            <th>Problem</th>
+            </tr>
+            <tr>
+        {/* {situation.map((incident, index) => (
+
             <div key={index} className="traffic-content-grid">
                 <div className="incident-published">Published {incident.Publication}</div>
                 <div className="incident-modified">Modified {incident.Modified}</div>
@@ -105,7 +117,9 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                     </div>
                 ))}
             </div>
-        ))}
+        ))} */}
+            </tr>
+            </table>
         </div>
   )
 }

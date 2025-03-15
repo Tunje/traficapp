@@ -110,7 +110,12 @@ const Weather = ({ coordinates }: WeatherProps) => {
 
   if (loading) {
     return (
-      <div className="weather-container loading">Loading weather data...</div>
+      <div className="weather-container loading">
+          <div className="weather-location">
+            <h3>Weather</h3>
+          </div>
+          <div>Loading weather data...</div>
+      </div>
     );
   }
 
