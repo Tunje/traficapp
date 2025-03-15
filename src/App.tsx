@@ -84,20 +84,20 @@ const App = () => {
         </form>
         </div>
 
-      <div className="results-container">
-        <h2>Search Results</h2>
-        {results.length > 0 ? (
-          <ul className="results-list">
-            {results.map((result, index) => (
-              <li key={index} className="result-item">
-                {result}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-results">No results to display</p>
-        )}
-        </div>
+        <div className="results-container">
+          <h2>Search Results</h2>
+          {results.length > 0 ? (
+            <ul className="results-list">
+              {results.map((result, index) => (
+                <li key={index} className="result-item">
+                  {result}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-results">No results to display</p>
+          )}
+          </div>
       </section>
 
         {/* Left side - Transport departures (placeholder) */}

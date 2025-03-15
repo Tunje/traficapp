@@ -5,6 +5,20 @@
   text-align: center;
 }
 
+/*---- App-wide font styles ----*/
+
+h1 {
+  @apply text-4xl text-white mb-4;  
+}
+
+h2 {
+  @apply text-2xl text-white mb-4;
+}
+
+h3 {
+  @apply text-xl text-white mb-3;
+}
+
 /*----- App-wide layout styles -----*/
 
 
@@ -28,73 +42,33 @@
 }
 
 .search-input {
-  flex: 1;
-  padding: 10px 16px;
-  border: 2px solid #3b82f6;
-  border-right: none;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  outline: none;
-  background-color: #1a1a1a;
-  color: #fff;
+  @apply flex-grow bg-gray-900 text-white border-2 border-blue-500
+    rounded-tl-full rounded-bl-full py-2.5 px-4;
 }
 
 .search-button {
-  padding: 10px 20px;
-  background-color: #3b82f6;
-  color: white;
-  border: 2px solid #3b82f6;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  @apply bg-blue-500 text-white border-2 border-blue-500 
+    rounded-tr-full rounded-br-full py-2.5 px-5 cursor-pointer
+    transition 
+      delay-300;
 }
 
 .search-button:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  @apply bg-blue-600 border-blue-600;
 }
 
 /* Results container styles */
-.results-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #1a1a1a;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  top: 70px; /* Match the search container positioning */
-}
 
-.results-container h2 {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
-  color: #f9fafb;
+.results-container {
+  @apply w-full bg-gray-900 rounded-lg p-5 shadow;
 }
 
 .results-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.result-item {
-  padding: 12px;
-  border-bottom: 1px solid #374151;
-}
-
-.result-item:last-child {
-  border-bottom: none;
+  @apply list-none p-0 m-0;
 }
 
 .no-results {
-  color: #9ca3af;
-  text-align: center;
-  padding: 16px;
+  @apply text-gray-300;
 }
 
 .dashboard-left {
