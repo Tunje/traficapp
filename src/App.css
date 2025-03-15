@@ -1,38 +1,50 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 /*---- App-wide font styles ----*/
 
 h1 {
-  @apply text-4xl text-white mb-4;  
+  @apply text-3xl text-white;  
 }
 
 h2 {
-  @apply text-2xl text-white mb-4;
+  @apply font-bold text-xl mb-3 text-gray-800;
 }
 
 h3 {
-  @apply text-xl text-white mb-3;
+    @apply font-bold text-lg mb-2 text-gray-800;
+}
+
+a {
+  @apply text-blue-500
+  transition 
+    delay-300;
+}
+
+a:hover {
+  @apply text-blue-600;
 }
 
 /*----- App-wide layout styles -----*/
 
-
 .container {
   @apply grid 
-  grid-cols-5 grid-rows-4 gap-2;
+  gap-6 grid-cols-8 grid-rows-[auto_auto_1fr_auto];
 }
 
+/* to-do: align logo to text */
 .logo-container {
-  @apply col-start-1 col-end-4 row-start-1 row-end-1;
+  @apply col-start-1 col-end-3 row-start-1 row-end-1
+    flex 
+      gap-2 items-start;
   }
 
 .search {
-  @apply col-start-1 col-end-4 row-start-2 row-end-2;
+  @apply col-start-2 col-end-8 row-start-2 row-end-2
+    flex
+    gap-4 flex-col;
 }
 
 /* Search bar and button styles */
@@ -60,7 +72,7 @@ h3 {
 /* Results container styles */
 
 .results-container {
-  @apply w-full bg-gray-900 rounded-lg p-5 shadow;
+  @apply w-full bg-white/90 rounded-lg p-5 shadow;
 }
 
 .results-list {
@@ -68,22 +80,25 @@ h3 {
 }
 
 .no-results {
-  @apply text-gray-300;
+  @apply text-gray-500;
 }
 
-.dashboard-left {
-  @apply col-start-1 col-end-3 row-start-3 row-end-3;
+.result-item {
+  @apply text-gray-800;
 }
 
 /* Temporary placeholder. Will move into DepartureInfo component. */
-.transport-container {
-  @apply bg-white/90 rounded-lg p-4 shadow-md h-full;
+
+.transport-departures {
+  @apply 
+    col-start-2 col-end-6 row-start-3 row-end-3
+    bg-white/90 text-gray-900 rounded-lg p-4 shadow-md h-full;
 }
 
-.dashboard-right {
-  @apply col-start-3 col-end-4 row-start-3 row-end-3;
+.weather-updates {
+  @apply col-start-6 col-end-8 row-start-3 row-end-3;
 }
 
-.dashboard-bottom {
-  @apply col-start-1 col-end-4 row-start-4 row-end-4
+.traffic-updates {
+  @apply col-start-2 col-end-8 row-start-4 row-end-4 w-full;
 }

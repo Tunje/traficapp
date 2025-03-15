@@ -84,15 +84,15 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
       
         if (loading) {
           return (
-            <div className="weather-container loading">Loading traffic data...</div>
+            <div className="traffic-content loading">Loading traffic data...</div>
           );
         }
 
   return (
-    <section className="traffic-update-container">
-        <h2>Traffic Updates</h2>
+        <div className="traffic-content">
+        <h3>Traffic Updates</h3>
         {situation.map((incident, index) => (
-            <div key={index} className="traffic-info-grid">
+            <div key={index} className="traffic-content-grid">
                 <div className="incident-published">Published {incident.Publication}</div>
                 <div className="incident-modified">Modified {incident.Modified}</div>
                 {incident.Deviation.map((deviation, devIndex) => (
@@ -106,7 +106,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                 ))}
             </div>
         ))}
-        </section>
+        </div>
   )
 }
 

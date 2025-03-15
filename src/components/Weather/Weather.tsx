@@ -119,10 +119,12 @@ const Weather = ({ coordinates }: WeatherProps) => {
   }
 
   return (
-    <section className="weather-container">
+    <div className="weather-container">
       {weatherData && (
         <>
-          <div className="weather-location">{weatherData.city}</div>
+          <div className="weather-location ">
+            <h3>Weather for {weatherData.city}</h3>
+          </div>
           <div className="weather-info">
             <img
               src={`https://openweathermap.org/img/wn/${weatherData.icon}@2x.png`}
@@ -168,7 +170,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
           </div>
         </>
       )}
-    </section>
+    </div>
   );
 };
 

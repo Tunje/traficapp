@@ -61,9 +61,10 @@ const App = () => {
 
   return (
     <main className="container">
-      {/* Grid layout with a search bar on top, two components on the next row, and one component spanning the bottom row */}
+      {/* Grid layout with a logo in the top left, search bar on top, two components on the next row, and one component spanning the bottom row, as per wireframe */}
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
+        <h1>TrafficJam</h1>
       </div>
 
       <section className="search">
@@ -101,24 +102,22 @@ const App = () => {
       </section>
 
         {/* Left side - Transport departures (placeholder) */}
-        <div className="dashboard-left">
-          <section className="transport-container">
-            <h2 className="transport-title">Transport Departures</h2>
+          <section className="transport-departures">
+            <h3>Transport Departures</h3>
             <p className="transport-placeholder">
               Departure information will appear here
             </p>
           </section>
-        </div>
 
         {/* Right side - Weather */}
-        <div className="dashboard-right">
+        <section className="weather-updates">
           <Weather coordinates={coordinates} />
-        </div>
-        {/* Bottom - Traffic Situation Updates */}
+        </section>
 
-      <div className="dashboard-bottom">
+        {/* Bottom - Traffic Situation Updates */}
+      <section className="traffic-updates">
         <TrafficInfo />
-      </div>
+        </section>
     </main>
   );
 };
