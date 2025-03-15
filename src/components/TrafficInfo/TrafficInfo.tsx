@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useStore } from "../../hooks/useStore";
 import "./TrafficInfo.css";
@@ -41,9 +42,14 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
 
                 const response = await result.json();
                 const returnedSituations = response.RESPONSE.RESULT[0].Situation || [];
+                const formattedDate = (timestamp: string): string => {
+                    let date = timestamp.slice(0,10);
+                    let time = timestamp.slice(11,16);
+                    return (`${date} ${time}`)
+                }
                 let incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }) => ({
-                    Publication: PublicationTime,
-                    Modified: ModifiedTime,
+                    Publication: formattedDate(PublicationTime),
+                    Modified: formattedDate(ModifiedTime),
                     Deviation: Deviation.map(({ 
                         Id,
                         IconId,
@@ -95,30 +101,34 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
         <div className="traffic-content">
         <h3>Traffic Updates</h3>
         <table>
-            <tr>
-            <th>Published</th>
-            <th>Modified</th>
-            <th>Severity</th>
-            <th>Problem</th>
+            <thead>
+                <tr>
+                    <th>Published</th>
+                    <th>Modified</th>
+                    <th>Severity</th>
+                    <th>Problem</th>
+                </tr>
+            </thead>
+            <tbody>
+        {situation.map((incident, index) => (
+            <React.Fragment index={index}>
+            <tr className="traffic-content-grid">
+                <td className="incident-published">{incident.Publication}</td>
+                <td className="incident-modified">{incident.Modified}</td>
+                <td colSpan={2}>{/* placeholder */}</td>
             </tr>
-            <tr>
-        {/* {situation.map((incident, index) => (
-
-            <div key={index} className="traffic-content-grid">
-                <div className="incident-published">Published {incident.Publication}</div>
-                <div className="incident-modified">Modified {incident.Modified}</div>
                 {incident.Deviation.map((deviation, devIndex) => (
-                    <div key={devIndex} className="deviation-row">
-                        <div className="incident-icon">{deviation.Icon}</div>
-                        <div className="incident-icon">Severity {deviation.Severity}</div>
-                        <div className="incident-icon">Category {deviation.MessageCode}</div>
-                        <div className="incident-icon">Message {deviation.Message}</div>
-                        <div className="incident-icon">End Time {deviation.EndTime}</div>
-                    </div>
+                    <tr key={`${index}-${devIndex}`} className="deviation-row">
+                        <td colSpan={2}>{/* placeholder */}</td>
+                        <td className="incident-icon">
+                            {deviation.Icon} {deviation.Severity}
+                        </td>
+                        <td>{deviation.MessageCode}</td>
+                    </tr>
                 ))}
-            </div>
-        ))} */}
-            </tr>
+            </React.Fragment>
+        ))}
+        </tbody>
             </table>
         </div>
   )
