@@ -11,6 +11,7 @@ export interface IncidentDeviationData {
         MessageCode: string;
         RestrictedLanes?: number;
         RestrictionType?: string; 
+        SeverityCode: number,
         Severity: string;
         LocationDescription: string;
         EndTime: string;

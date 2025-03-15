@@ -42,37 +42,38 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
 
                 const response = await result.json();
                 const returnedSituations = response.RESPONSE.RESULT[0].Situation || [];
+
                 const formattedDate = (timestamp: string): string => {
                     let date = timestamp.slice(0,10);
                     let time = timestamp.slice(11,16);
-                    return (`${date} ${time}`)
-                }
-                let incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }) => ({
-                    Publication: formattedDate(PublicationTime),
-                    Modified: formattedDate(ModifiedTime),
-                    Deviation: Deviation.map(({ 
-                        Id,
-                        IconId,
-                        Message,
-                        MessageCode,
-                        NumberOfLanesRestricted,
-                        SeverityText,
-                        LocationDescriptor,
-                        TrafficRestrictionType,
-                        EndTime
-                     }) => ({
-                            DeviationId: Id,
-                            Icon: IconId,
-                            Message: Message,
-                            MessageCode: MessageCode,
-                            RestrictedLanes: NumberOfLanesRestricted,
-                            RestrictionType: TrafficRestrictionType, 
-                            Severity: SeverityText,
-                            LocationDescription: LocationDescriptor,
-                            EndTime: EndTime
-                     }))
-                }));
-            
+                    return (`${date} ${time}`)};
+                    //For all severity codes in all the Deviations, get the highest one, and return the severity text for that code. This goes into the Severity Ranking property in the top incident object
+
+                    let incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }) => ({
+                        Publication: formattedDate(PublicationTime),
+                        Modified: formattedDate(ModifiedTime),
+                        Deviation: Deviation.map(({ 
+                            Id,
+                            IconId,
+                            Message,
+                            MessageCode,
+                            NumberOfLanesRestricted,
+                            SeverityText,
+                            LocationDescriptor,
+                            TrafficRestrictionType,
+                            EndTime
+                        }) => ({
+                                DeviationId: Id,
+                                Icon: IconId,
+                                Message: Message,
+                                MessageCode: MessageCode,
+                                RestrictedLanes: NumberOfLanesRestricted,
+                                RestrictionType: TrafficRestrictionType, 
+                                Severity: SeverityText,
+                                LocationDescription: LocationDescriptor,
+                                EndTime: formattedDate(EndTime)
+                        }))
+                    }));
                 setSituation(prevIncidents => [...prevIncidents, ...incidents]);
                 setLoading(false);
                 console.log(incidents);
@@ -81,7 +82,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                 console.error(error);
             }
         };
-
+        console.log("situation", situation)
         if (stateCoordinates?.latitude && stateCoordinates?.longitude) {
             fetchInfo(stateCoordinates.longitude, stateCoordinates.latitude);
         } else {
@@ -100,36 +101,35 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
   return (
         <div className="traffic-content">
         <h3>Traffic Updates</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Published</th>
-                    <th>Modified</th>
-                    <th>Severity</th>
-                    <th>Problem</th>
-                </tr>
-            </thead>
-            <tbody>
         {situation.map((incident, index) => (
-            <React.Fragment index={index}>
-            <tr className="traffic-content-grid">
-                <td className="incident-published">{incident.Publication}</td>
-                <td className="incident-modified">{incident.Modified}</td>
-                <td colSpan={2}>{/* placeholder */}</td>
-            </tr>
-                {incident.Deviation.map((deviation, devIndex) => (
-                    <tr key={`${index}-${devIndex}`} className="deviation-row">
-                        <td colSpan={2}>{/* placeholder */}</td>
-                        <td className="incident-icon">
-                            {deviation.Icon} {deviation.Severity}
-                        </td>
-                        <td>{deviation.MessageCode}</td>
-                    </tr>
-                ))}
+            <React.Fragment key={index}>
+            <div className="traffic-content-grid">
+                <div className="incident-header">Published: {incident.Publication} | Last Updated: {incident.Modified}</div>
+                <table>
+                    <thead>
+                        <tr className="deviation-header">
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                        {incident.Deviation.map((deviation, devIndex) => (
+                            <tr key={`${index}-${devIndex}`} className="deviation-row">
+
+                                <td className="incident-problem">
+                                    <div className="icon-code">
+                                    <img src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`}/> 
+                                    {deviation.MessageCode}
+                                    </div>
+                                </td>
+                                <td>{deviation.LocationDescription}</td>
+                                <td>{deviation.Message}</td>
+                            </tr>
+                        ))}
+                        </table>
+            </div>                   
             </React.Fragment>
         ))}
-        </tbody>
-            </table>
         </div>
   )
 }
