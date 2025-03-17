@@ -103,33 +103,27 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
         <h3>Traffic Updates</h3>
         {situation.map((incident, index) => (
             <React.Fragment key={index}>
-            <div className="traffic-content-grid">
-                <div className="incident-header">Published: {incident.Publication} | Last Updated: {incident.Modified}</div>
-                <table>
-                    <thead>
-                        <tr className="deviation-header">
-                            <th>Type</th>
-                            <th>Location</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                        {incident.Deviation.map((deviation, devIndex) => (
-                            <tr key={`${index}-${devIndex}`} className="deviation-row">
+            <div className="traffic-content__grid">
 
-                                <td className="incident-problem">
-                                    <div className="icon-code">
-                                    <img src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`}/> 
-                                    {deviation.MessageCode}
-                                    </div>
-                                </td>
-                                <td>{deviation.LocationDescription}</td>
-                                <td>{deviation.Message}</td>
-                            </tr>
-                        ))}
-                        </table>
+                <div className="traffic-content__deviations">
+                    <div className="deviations__incident-header">
+                            {incident.Deviation.map((deviation, devIconIndex) => (
+                                <div key={`${index}-${devIconIndex}`} className="deviations__icon-code">
+                                    <img className="deviations__icon" src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`} alt={`                                    {deviation.MessageCode}`} />
+                                    <span className="deviations__messagecode">{deviation.MessageCode}
+                                    </span>
+                                </div>
+                            ))}
+                            <div className="severity">{incident.Deviation[0].Severity} </div>
+                            <div className="deviations__last-update">Last Updated: {incident.Modified}</div>
+                        </div>
+                </div>
             </div>                   
             </React.Fragment>
         ))}
+        <div className="traffic-content__map">
+            Map Here.
+        </div>
         </div>
   )
 }
