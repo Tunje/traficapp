@@ -29,8 +29,12 @@ a:hover {
 
 /*----- App-wide layout styles -----*/
 
+body {
+  @apply flex;
+}
+
 .container {
-  @apply grid 
+  @apply grid w-full m-0 
   gap-6 grid-cols-8 grid-rows-[auto_auto_1fr_auto];
 }
 
