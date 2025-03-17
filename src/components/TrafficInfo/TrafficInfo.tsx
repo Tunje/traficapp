@@ -59,6 +59,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                             NumberOfLanesRestricted,
                             SeverityCode,
                             SeverityText,
+                            PositionalDescription,
                             LocationDescriptor,
                             TrafficRestrictionType,
                             EndTime
@@ -69,8 +70,9 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                                 MessageCode: MessageCode,
                                 RestrictedLanes: NumberOfLanesRestricted,
                                 RestrictionType: TrafficRestrictionType,
-                                SeverityCode: SeverityCode, 
-                                Severity: SeverityText,
+                                PositionalDescription: PositionalDescription,
+                                SeverityCode: SeverityCode === undefined ? 1 : SeverityCode, 
+                                Severity: SeverityText === undefined ? "Ingen påverkan" : SeverityText,
                                 LocationDescription: LocationDescriptor,
                                 EndTime: formattedDate(EndTime)
                         }))
@@ -108,9 +110,11 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
             <React.Fragment key={index}>
 
                     <div className="deviations__incident-header">
-                            <div className={`severity-${incident.Deviation[0].SeverityCode}`}>{incident.Deviation[0].Severity}</div>
-                            <div className="deviations__last-update">Last Updated: {incident.Modified}</div>
-                            <div className="deviations__last-update">Ends: {incident.Deviation[0].EndTime}</div>
+                            <div className={`severity-${incident.Deviation[0].SeverityCode}`}>
+                                {incident.Deviation[0].Severity}
+                            </div>
+                            <div className="deviations__last-update">Senast uppdaterad: {incident.Modified}</div>
+                            <div className="deviations__last-update">Slutar: {incident.Deviation[0].EndTime}</div>
                         </div>
                             <div className="deviations__signs">
                             {incident.Deviation.map((deviation, devIconIndex) => (

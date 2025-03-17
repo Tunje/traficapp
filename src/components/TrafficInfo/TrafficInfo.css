@@ -47,7 +47,7 @@
 }
 
 .severity-3 {
-    @apply text-yellow-600;
+    @apply text-yellow-700;
 }
 
 .severity-4 {
@@ -55,5 +55,5 @@
 }
 
 .severity-5 {
-    @apply text-red-600;
+    @apply text-red-700;
 }
