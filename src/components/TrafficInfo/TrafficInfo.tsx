@@ -102,14 +102,15 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
   return (
         <div className="traffic-content">
         <h3>Traffic Updates</h3>
+        <div className="traffic-content__grid">
+        <div className="traffic-content__deviations">
         {situation.map((incident, index) => (
             <React.Fragment key={index}>
-            <div className="traffic-content__grid">
 
-                <div className="traffic-content__deviations">
                     <div className="deviations__incident-header">
                             <div className={`severity-${incident.Deviation[0].SeverityCode}`}>{incident.Deviation[0].Severity}</div>
                             <div className="deviations__last-update">Last Updated: {incident.Modified}</div>
+                            <div className="deviations__last-update">Ends: {incident.Deviation[0].EndTime}</div>
                         </div>
                             <div className="deviations__signs">
                             {incident.Deviation.map((deviation, devIconIndex) => (
@@ -121,15 +122,15 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                                 //If there are restricted lanes, show them inline here.
                             ))}
                         </div>
-                        <div className="deviation_location">
+                        <div className="deviation__description">
                             {incident.Deviation[0].LocationDescription}. {incident.Deviation[0].Message}
                         </div>
-                </div>
-            </div>                   
             </React.Fragment>
         ))}
+        </div>
         <div className="traffic-content__map">
             Map Here.
+        </div>                   
         </div>
         </div>
   )

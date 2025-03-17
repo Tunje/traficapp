@@ -1,5 +1,5 @@
 .traffic-content {
-    @apply bg-white/90 rounded-lg p-4 text-gray-700 w-full h-full;
+    @apply bg-white/90 rounded-lg p-4 text-gray-700 w-full;
 }
 
 .traffic-content__grid {
@@ -7,7 +7,7 @@
 }
 
 .traffic-content__deviations {
-    @apply w-2/3 mt-3;
+    @apply w-2/3 mt-3 h-96 overflow-scroll;
 }
 
 .traffic-content__map {
@@ -33,21 +33,25 @@
 }
 
 .deviations__messagecode {
-    @apply self-center;
+    @apply self-center font-bold;
 }
 
-/* to-do: add bold text by severity */
+.deviation__description {
+    @apply p-2;
+}
 
-.severity-1 {
+/* Severity indicators */
+
+.severity-1, .severity-2 {
     @apply text-black;
 }
 
-.severity-2 {
+.severity-3 {
     @apply text-yellow-600;
 }
 
-.severity-3 {
-    @apply text-orange-600;
+.severity-4 {
+    @apply text-orange-800;
 }
 
 .severity-5 {
