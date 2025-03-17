@@ -3,7 +3,7 @@
 }
 
 .traffic-content__grid {
-    @apply flex gap-4;
+    @apply flex gap-6;
 }
 
 .traffic-content__deviations {
@@ -15,13 +15,17 @@
 }
 
 .deviations__incident-header {
-    @apply bg-blue-500 text-white p-2 rounded-lg 
-    flex gap-6;
+    @apply bg-blue-300 text-gray-700 font-bold p-2 rounded-lg 
+    flex gap-4;
+}
+
+.deviations__signs {
+    @apply flex gap-4 p-2;
 }
 
 .deviations__icon-code {
-    @apply text-center w-24
-    flex gap-2 flex-col justify-start;
+    @apply text-center
+    flex gap-2;
 }
 
 .deviations__icon {
@@ -29,7 +33,23 @@
 }
 
 .deviations__messagecode {
-    @apply break-words;
+    @apply self-center;
 }
 
 /* to-do: add bold text by severity */
+
+.severity-1 {
+    @apply text-black;
+}
+
+.severity-2 {
+    @apply text-yellow-600;
+}
+
+.severity-3 {
+    @apply text-orange-600;
+}
+
+.severity-5 {
+    @apply text-red-600;
+}

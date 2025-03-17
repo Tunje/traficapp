@@ -19,7 +19,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                         <LOGIN authenticationkey="${TRAFIKVERKET_API_KEY}"/>
                         <QUERY objecttype="Situation" schemaversion="1" limit="10">
                             <FILTER>
-                                <NEAR name="Deviation.Geometry.WGS84" value="${longitude} ${latitude}"/>
+                                <NEAR name="Deviation.Geometry.WGS84" value="${encodeURIComponent(longitude)} ${encodeURIComponent(latitude)}"/>
                             </FILTER>
                         </QUERY>
                         </REQUEST>`;
@@ -44,11 +44,10 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                 const returnedSituations = response.RESPONSE.RESULT[0].Situation || [];
 
                 const formattedDate = (timestamp: string): string => {
+                    if (!timestamp) return "N/A";
                     let date = timestamp.slice(0,10);
                     let time = timestamp.slice(11,16);
                     return (`${date} ${time}`)};
-                    //For all severity codes in all the Deviations, get the highest one, and return the severity text for that code. This goes into the Severity Ranking property in the top incident object
-
                     let incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }) => ({
                         Publication: formattedDate(PublicationTime),
                         Modified: formattedDate(ModifiedTime),
@@ -58,6 +57,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                             Message,
                             MessageCode,
                             NumberOfLanesRestricted,
+                            SeverityCode,
                             SeverityText,
                             LocationDescriptor,
                             TrafficRestrictionType,
@@ -68,15 +68,16 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                                 Message: Message,
                                 MessageCode: MessageCode,
                                 RestrictedLanes: NumberOfLanesRestricted,
-                                RestrictionType: TrafficRestrictionType, 
+                                RestrictionType: TrafficRestrictionType,
+                                SeverityCode: SeverityCode, 
                                 Severity: SeverityText,
                                 LocationDescription: LocationDescriptor,
                                 EndTime: formattedDate(EndTime)
                         }))
                     }));
-                setSituation(prevIncidents => [...prevIncidents, ...incidents]);
+                setSituation(incidents);
                 setLoading(false);
-                console.log(incidents);
+                console.log("Deviations", incidents);
             } catch (error) {
                 setLoading(false);
                 console.error(error);
@@ -107,15 +108,21 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
 
                 <div className="traffic-content__deviations">
                     <div className="deviations__incident-header">
+                            <div className={`severity-${incident.Deviation[0].SeverityCode}`}>{incident.Deviation[0].Severity}</div>
+                            <div className="deviations__last-update">Last Updated: {incident.Modified}</div>
+                        </div>
+                            <div className="deviations__signs">
                             {incident.Deviation.map((deviation, devIconIndex) => (
                                 <div key={`${index}-${devIconIndex}`} className="deviations__icon-code">
                                     <img className="deviations__icon" src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`} alt={`                                    {deviation.MessageCode}`} />
                                     <span className="deviations__messagecode">{deviation.MessageCode}
                                     </span>
                                 </div>
+                                //If there are restricted lanes, show them inline here.
                             ))}
-                            <div className="severity">{incident.Deviation[0].Severity} </div>
-                            <div className="deviations__last-update">Last Updated: {incident.Modified}</div>
+                        </div>
+                        <div className="deviation_location">
+                            {incident.Deviation[0].LocationDescription}. {incident.Deviation[0].Message}
                         </div>
                 </div>
             </div>                   
