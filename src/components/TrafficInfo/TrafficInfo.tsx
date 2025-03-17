@@ -57,6 +57,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                             Message,
                             MessageCode,
                             NumberOfLanesRestricted,
+                            Geometry,
                             SeverityCode,
                             SeverityText,
                             PositionalDescription,
@@ -70,6 +71,7 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                                 MessageCode: MessageCode,
                                 RestrictedLanes: NumberOfLanesRestricted,
                                 RestrictionType: TrafficRestrictionType,
+                                Geometry: Geometry,
                                 PositionalDescription: PositionalDescription,
                                 SeverityCode: SeverityCode === undefined ? 1 : SeverityCode, 
                                 Severity: SeverityText === undefined ? "Ingen påverkan" : SeverityText,
@@ -117,18 +119,20 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
                             <div className="deviations__last-update">Slutar: {incident.Deviation[0].EndTime}</div>
                         </div>
                             <div className="deviations__signs">
-                            {incident.Deviation.map((deviation, devIconIndex) => (
+                            {incident.Deviation.filter((deviation, index, arraySelf) => index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode))
+                            .map((deviation, devIconIndex) => (
                                 <div key={`${index}-${devIconIndex}`} className="deviations__icon-code">
-                                    <img className="deviations__icon" src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`} alt={`                                    {deviation.MessageCode}`} />
+                                    <img className="deviations__icon" src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`} alt={`${deviation.MessageCode}`} />
                                     <span className="deviations__messagecode">{deviation.MessageCode}
                                     </span>
                                 </div>
-                                //If there are restricted lanes, show them inline here.
                             ))}
                         </div>
                         <div className="deviation__description">
                             {incident.Deviation[0].LocationDescription}. {incident.Deviation[0].Message}
                         </div>
+                        {incident.Deviation[0].RestrictionType == undefined ? "" : <div className="deviation__restricted-lanes">{incident.Deviation[0].RestrictionType}: {incident.Deviation[0].RestrictedLanes}</div> }
+
             </React.Fragment>
         ))}
         </div>

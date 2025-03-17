@@ -15,17 +15,17 @@
 }
 
 .deviations__incident-header {
-    @apply bg-blue-300 text-gray-700 font-bold p-2 rounded-lg 
+    @apply bg-blue-300 text-gray-700 font-bold p-2 mt-2 rounded-lg 
     flex gap-4;
 }
 
 .deviations__signs {
-    @apply flex gap-4 p-2;
+    @apply flex flex-wrap gap-4 p-2;
 }
 
 .deviations__icon-code {
     @apply text-center
-    flex gap-2;
+    flex gap-1;
 }
 
 .deviations__icon {
@@ -36,8 +36,12 @@
     @apply self-center font-bold;
 }
 
-.deviation__description {
-    @apply p-2;
+.deviation__description, .deviation__restricted-lanes {
+    @apply px-2;
+}
+
+.deviation__restricted-lanes {
+    @apply font-bold py-2;
 }
 
 /* Severity indicators */
