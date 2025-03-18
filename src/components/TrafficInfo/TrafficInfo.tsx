@@ -2,11 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useStore } from "../../hooks/useStore";
 import "./TrafficInfo.css";
-import { TrafficProps } from "../../types/coordinates";
 import { IncidentData } from "../../types/trafficinfo";
 import InfoMap from "../InfoMap/InfoMap";
 
-const TrafficInfo = ({ coordinates }: TrafficProps) => {
+const TrafficInfo = () => {
     const [situation, setSituation] = useState<IncidentData[]>([]);
     const [loading, setLoading] = useState(true);
     let stateCoordinates = useStore((state) => state.coordinates);
