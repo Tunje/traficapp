@@ -4,6 +4,7 @@ import { useStore } from "../../hooks/useStore";
 import "./TrafficInfo.css";
 import { TrafficProps } from "../../types/coordinates";
 import { IncidentData } from "../../types/trafficinfo";
+import InfoMap from "../InfoMap/InfoMap";
 
 const TrafficInfo = ({ coordinates }: TrafficProps) => {
     const [situation, setSituation] = useState<IncidentData[]>([]);
@@ -136,8 +137,9 @@ const TrafficInfo = ({ coordinates }: TrafficProps) => {
             </React.Fragment>
         ))}
         </div>
+
         <div className="traffic-content__map">
-            Map Here.
+        <InfoMap />
         </div>                   
         </div>
         </div>
