@@ -4,6 +4,7 @@ import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
 import Weather from "./components/Weather/Weather";
 import { useLocation } from "./hooks/useLocation";
+import DepartureInfo from "./components/DepartureInfo/DepartureInfo";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -88,7 +89,7 @@ const App = () => {
           <section className="transport-container">
             <h2 className="transport-title">Transport Departures</h2>
             <p className="transport-placeholder">
-              Departure information will appear here
+             <DepartureInfo/>
             </p>
           </section>
         </div>
