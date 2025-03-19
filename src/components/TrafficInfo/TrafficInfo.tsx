@@ -5,13 +5,15 @@ import "./TrafficInfo.css";
 import { IncidentData } from "../../types/trafficinfo";
 import InfoMap from "../InfoMap/InfoMap";
 
+const TRAFIKVERKET_API_KEY = import.meta.env.VITE_TRAFIKVERKET_API_KEY;
+const trafikverketUrl = `https://api.trafikinfo.trafikverket.se/v2/data.json`;
+
 const TrafficInfo = () => {
     const [situation, setSituation] = useState<IncidentData[]>([]);
     const [loading, setLoading] = useState(true);
-    let stateCoordinates = useStore((state) => state.coordinates);
+    const [mapSignage, setMapSignage] = useState<any[]>([]);
+    const stateCoordinates = useStore((state) => state.coordinates);
 
-    const TRAFIKVERKET_API_KEY = import.meta.env.VITE_TRAFIKVERKET_API_KEY;
-    const trafikverketUrl = `https://api.trafikinfo.trafikverket.se/v2/data.json`;
 
     useEffect(() => {
         const fetchInfo = async (longitude: number, latitude: number) => {
@@ -45,10 +47,10 @@ const TrafficInfo = () => {
 
                 const formattedDate = (timestamp: string): string => {
                     if (!timestamp) return "N/A";
-                    let date = timestamp.slice(0,10);
-                    let time = timestamp.slice(11,16);
+                    const date = timestamp.slice(0,10);
+                    const time = timestamp.slice(11,16);
                     return (`${date} ${time}`)};
-                    let incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }) => ({
+                    const incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }): IncidentData => ({
                         Publication: formattedDate(PublicationTime),
                         Modified: formattedDate(ModifiedTime),
                         Deviation: Deviation.map(({ 
@@ -60,7 +62,6 @@ const TrafficInfo = () => {
                             Geometry,
                             SeverityCode,
                             SeverityText,
-                            PositionalDescription,
                             LocationDescriptor,
                             TrafficRestrictionType,
                             EndTime
@@ -71,8 +72,7 @@ const TrafficInfo = () => {
                                 MessageCode: MessageCode,
                                 RestrictedLanes: NumberOfLanesRestricted,
                                 RestrictionType: TrafficRestrictionType,
-                                Geometry: Geometry,
-                                PositionalDescription: PositionalDescription,
+                                Geometry: Geometry?.WGS84 || null,
                                 SeverityCode: SeverityCode === undefined ? 1 : SeverityCode, 
                                 Severity: SeverityText === undefined ? "Ingen påverkan" : SeverityText,
                                 LocationDescription: LocationDescriptor,
@@ -81,8 +81,33 @@ const TrafficInfo = () => {
                     }));
                 setSituation(incidents);
                 setLoading(false);
-                console.log("Deviations", incidents);
-            } catch (error) {
+                    //format geometry for map marker coordinates
+                const cleanGeometry = (string: string) => {
+                    const matchTo = new RegExp(/([-+]?\d{2}\.\d{2})/g);
+                    const matchedFloat = string.match(matchTo);
+                    if (matchedFloat) {
+                        const mapCoords = matchedFloat.map(float => parseFloat(parseFloat(float).toFixed(2)));
+                        return mapCoords;
+                    } return []};
+
+                const signageArray = incidents.map(
+                    (incident) => incident.Deviation.filter(
+                        (deviation, index, arraySelf) => 
+                            index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode)).map(
+                        (deviation, devIconIndex) => ({
+                            key: `deviation-${devIconIndex}`,
+                            iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`,
+                            popupLabel: `${deviation.MessageCode}`,
+                            popupMessage: `${deviation.Message}`,
+                            mapCoordinates: cleanGeometry(`${deviation.Geometry}`)
+                        })));
+                        const flatArray = signageArray.flat().filter((signage) => signage.mapCoordinates.length > 0);
+                        setMapSignage(flatArray);
+                        // console.log("Deviations", incidents);
+                        // console.log("Signage Array", signageArray);
+                        // console.log("flat Signage Array", flatArray);
+                        console.log("Map Markers", mapSignage);
+                    } catch (error) {
                 setLoading(false);
                 console.error(error);
             }
@@ -93,7 +118,11 @@ const TrafficInfo = () => {
         } else {
             setLoading(true);
         }}, [stateCoordinates]);
-      
+        useEffect(() => {
+            console.log("Updated Map Markers:", mapSignage);
+        }, [mapSignage]);        
+
+   
         if (loading) {
           return (
             <div className="traffic-content">
@@ -138,7 +167,7 @@ const TrafficInfo = () => {
         </div>
 
         <div className="traffic-content__map">
-        <InfoMap />
+        <InfoMap signage={mapSignage} />
         </div>                   
         </div>
         </div>

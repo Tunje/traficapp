@@ -10,9 +10,22 @@ export interface IncidentDeviationData {
         Message: string;
         MessageCode: string;
         RestrictedLanes?: number;
-        RestrictionType?: string; 
-        SeverityCode: number,
+        RestrictionType?: string;
+        Geometry: string;
+        SeverityCode: number;
         Severity: string;
         LocationDescription: string;
         EndTime: string;
 }
+
+export interface MapSignageData {
+    key: string;
+    iconUrl: string;
+    iconSize: string[];
+    popupAnchor: string[];
+    popupLabel: string;
+    popupMessage: string; 
+    mapCoordinates: string;
+}
+
+// "POINT (14.1393807919911 58.4148419525517)"
