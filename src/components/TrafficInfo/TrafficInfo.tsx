@@ -19,7 +19,7 @@ const TrafficInfo = () => {
         const fetchInfo = async (longitude: number, latitude: number) => {
         const requestBody = `<REQUEST>
                         <LOGIN authenticationkey="${TRAFIKVERKET_API_KEY}"/>
-                        <QUERY objecttype="Situation" schemaversion="1" limit="10">
+                        <QUERY objecttype="Situation" schemaversion="1" limit="5">
                             <FILTER>
                                 <NEAR name="Deviation.Geometry.WGS84" value="${encodeURIComponent(longitude)} ${encodeURIComponent(latitude)}"/>
                             </FILTER>
