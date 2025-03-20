@@ -95,7 +95,7 @@ const TrafficInfo = () => {
                         (deviation, index, arraySelf) => 
                             index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode)).map(
                         (deviation, devIconIndex) => ({
-                            key: `deviation-${devIconIndex}`,
+                            key: ``,
                             iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`,
                             popupLabel: `${deviation.MessageCode}`,
                             popupMessage: `${deviation.Message}`,
