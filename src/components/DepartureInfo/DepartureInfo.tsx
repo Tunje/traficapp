@@ -1,5 +1,9 @@
 //Sudipta's departures component will go here.
-import React from "react";
+import React, { useState } from 'react';
+
+import { useEffect} from "react";
+
+const [DepartureData, setDepartureData] = useState(null);
 
 const DepartureInfo = () => {
   const data = [
@@ -8,6 +12,46 @@ const DepartureInfo = () => {
     { from: "San Francisco", to: "Seattle", platform: 2, type: "Flight", time: "1:15 PM" },
     { from: "Boston", to: "Miami", platform: 4, type: "Train", time: "3:45 PM" }
   ];
+
+  const API_KEY= "9ddd8ace-4853-44ee-955e-4a1c4bda39f3";
+  const API_URL="";
+  const lat= 56.0465;
+  const lon= 12.6945;
+  const input= "Hjo";
+
+  useEffect(() => {
+      const fetchDepartureData = async () => {
+        try {
+           
+          const currentResponse = await fetch(
+            `https://api.resrobot.se/v2.1/location.name?input=${input}&format=json&accessId=${API_KEY}`
+          );
+  
+          if (!currentResponse.ok) {
+            throw new Error("Failed to fetch Departure data");
+          }
+  
+          const currentData = await currentResponse.json();
+          console.log(currentData);
+  
+          //setDepartureData({
+           // stop: currentResponse.stopLocationOrCoordLocation[0].StopLocation.id,
+           // departure: response.Departure[0],
+           // arival: Response.Arrival,
+          //  });
+        } catch (err) {
+          
+          console.error("Weather fetch error:", err);
+        }
+      };
+  
+          
+           
+          });
+      
+
+
+
 
   return (
     <div className="p-4">
