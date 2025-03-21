@@ -6,8 +6,9 @@ import { useStore } from "../../hooks/useStore";
 import { useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./InfoMap.css";
+import {UpdateMapProps, InfoMapProps} from "../../types/infomap.ts"
 
-const UpdateMap = ({ center }) => {
+const UpdateMap: React.FC<UpdateMapProps> = ({ center }) => {
     const locationMap = useMap();
     
     useEffect(() => {
@@ -19,7 +20,7 @@ const UpdateMap = ({ center }) => {
 };
 
 
-const InfoMap = ({ signage }) => {
+const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
     console.log("Passed signage prop:", signage)
     const stateCoordinates = useStore((state) => state.coordinates);
     const centerMap = [stateCoordinates?.latitude, stateCoordinates?.longitude];
@@ -30,9 +31,9 @@ const InfoMap = ({ signage }) => {
             <UpdateMap center ={centerMap} />
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-            {signage.length > 0 && signage.map((marker) => {
+            {signage.length > 0 && signage.map((marker, index) => {
             return (
-                <Marker 
+                <Marker key={marker.key || `marker-${index}`}
                     position={[marker.mapCoordinates[1], marker.mapCoordinates[0]]} 
                     icon={new L.Icon({
                         iconUrl: `/public/sev${marker.severityCode}_warning.svg`, 
@@ -43,7 +44,7 @@ const InfoMap = ({ signage }) => {
                     <Popup>
                         <div className="popup-info">
                             <div className="popup-road-icons">
-                                {marker.icons.map((icon, iconIndex) => (
+                                {marker.icons.map((icon: { iconUrl: string; popupLabel: string }, iconIndex: number) => (
                                     <div key={iconIndex}className="deviations__icon-code">
                                         <img src={icon.iconUrl} alt={marker.popupLabel} />
                                     <div className="deviations__messagecode">

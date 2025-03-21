@@ -2,7 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useStore } from "../../hooks/useStore";
 import "./TrafficInfo.css";
-import { IncidentData } from "../../types/trafficinfo";
+import { IncidentData, DeviationApiData, IncidentDeviationData, SignageItem, SituationApiData } from "../../types/trafficinfo";
+import { Coordinates } from "../../types/coordinates";
 import InfoMap from "../InfoMap/InfoMap";
 
 const TRAFIKVERKET_API_KEY = import.meta.env.VITE_TRAFIKVERKET_API_KEY;
@@ -10,10 +11,9 @@ const trafikverketUrl = `https://api.trafikinfo.trafikverket.se/v2/data.json`;
 
 const TrafficInfo = () => {
     const [situation, setSituation] = useState<IncidentData[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [mapSignage, setMapSignage] = useState<any[]>([]);
-    const stateCoordinates = useStore((state) => state.coordinates);
-
+    const [loading, setLoading] = useState<boolean>(true);
+    const [mapSignage, setMapSignage] = useState<SignageItem[]>([]);
+    const stateCoordinates = useStore((state) => state.coordinates) as Coordinates;
 
     useEffect(() => {
         const fetchInfo = async (longitude: number, latitude: number) => {
@@ -50,39 +50,44 @@ const TrafficInfo = () => {
                     const date = timestamp.slice(0,10);
                     const time = timestamp.slice(11,16);
                     return (`${date} ${time}`)};
-                    const incidents = returnedSituations.map(({ PublicationTime, ModifiedTime, Deviation }): IncidentData => ({
-                        Publication: formattedDate(PublicationTime),
-                        Modified: formattedDate(ModifiedTime),
-                        Deviation: Deviation.map(({ 
-                            Id,
-                            IconId,
-                            Message,
-                            MessageCode,
-                            NumberOfLanesRestricted,
-                            Geometry,
-                            SeverityCode,
-                            SeverityText,
-                            LocationDescriptor,
-                            TrafficRestrictionType,
-                            EndTime
-                        }) => ({
-                                DeviationId: Id,
-                                Icon: IconId,
-                                Message: Message,
-                                MessageCode: MessageCode,
-                                RestrictedLanes: NumberOfLanesRestricted,
-                                RestrictionType: TrafficRestrictionType,
-                                Geometry: Geometry?.WGS84 || null,
-                                SeverityCode: SeverityCode === undefined ? 1 : SeverityCode, 
-                                Severity: SeverityText === undefined ? "Ingen påverkan" : SeverityText,
-                                LocationDescription: LocationDescriptor,
-                                EndTime: formattedDate(EndTime)
-                        }))
-                    }));
+                    const incidents: IncidentData[] = returnedSituations.map(
+                        ({ PublicationTime, ModifiedTime, Deviation }: SituationApiData): IncidentData => ({
+                          Publication: formattedDate(PublicationTime),
+                          Modified: formattedDate(ModifiedTime),
+                          Deviation: Deviation.map(
+                            ({
+                              Id,
+                              IconId,
+                              Message,
+                              MessageCode,
+                              NumberOfLanesRestricted,
+                              Geometry,
+                              SeverityCode,
+                              SeverityText,
+                              LocationDescriptor,
+                              TrafficRestrictionType,
+                              EndTime,
+                            }: DeviationApiData): IncidentDeviationData => ({
+                              DeviationId: Id,
+                              Icon: IconId,
+                              Message: Message,
+                              MessageCode: MessageCode,
+                              RestrictedLanes: NumberOfLanesRestricted,
+                              RestrictionType: TrafficRestrictionType,
+                              Geometry: Geometry?.WGS84 || null,
+                              SeverityCode: SeverityCode === undefined ? 1 : SeverityCode, 
+                              Severity: SeverityText === undefined ? "Ingen påverkan" : SeverityText,
+                              LocationDescription: LocationDescriptor,
+                              EndTime: formattedDate(EndTime),
+                            })
+                          ),
+                        })
+                      );
+                      
                 setSituation(incidents);
                 setLoading(false);
                     //format geometry for map marker coordinates
-                const cleanGeometry = (string: string) => {
+                const cleanGeometry = (string: string): [number, number] | null => {
                     const matchTo = new RegExp(/([-+]?\d{2}\.\d{2})/g);
                     const matchedFloat = string.match(matchTo);
                     if (matchedFloat) {
@@ -90,8 +95,9 @@ const TrafficInfo = () => {
                         return mapCoords;
                     } return []};
 
-                const signageArray = incidents.map((incident, mapIncidentIndex) => ({
+                const signageArray = incidents.map((incident: IncidentData, mapIncidentIndex: number) => ({
                     key: `infomap-${mapIncidentIndex}`,
+                    popupLabel: `${incident.Deviation[0].MessageCode}`,
                     popupMessage: `${incident.Deviation[0].Message}`,
                     severityCode: incident.Deviation[0].SeverityCode,
                     EndDate: incident.Deviation[0].EndTime,
