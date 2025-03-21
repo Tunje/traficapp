@@ -66,8 +66,3 @@
     @apply bg-red-500;
 }
 
-/* map popup styles */
-
-.popup-road-icons {
-    @apply flex gap-2 py-2;
-}
