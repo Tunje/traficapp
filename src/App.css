@@ -1,36 +1,108 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
-/*----- Dashboard layout styles using Tailwind's @apply -----*/
+/*---- App-wide font styles ----*/
 
-.dashboard-container {
-  @apply flex justify-between mt-12 max-w-[1200px];
+h1 {
+  @apply text-3xl text-white;  
 }
 
-.dashboard-left {
-  @apply w-[900px] pr-4 my-5 h-full;
+h2 {
+  @apply font-bold text-xl mb-3 text-gray-800;
 }
 
-.dashboard-right {
-  @apply w-[300px] pl-4 flex justify-end;
+h3 {
+    @apply font-bold text-lg mb-2 text-gray-800 text-left;
 }
 
-.transport-container {
-  @apply bg-white/90 rounded-lg p-4 shadow-md h-full;
+a {
+  @apply text-blue-500
+  transition 
+    delay-300;
 }
 
-.transport-title {
-  @apply text-lg font-bold mb-2;
+a:hover {
+  @apply text-blue-600;
 }
 
-.transport-placeholder {
+/*----- App-wide layout styles -----*/
+
+body {
+  @apply flex;
+}
+
+.container {
+  @apply grid w-full m-0 
+  gap-6 grid-cols-8 grid-rows-[auto_auto_1fr_auto];
+}
+
+/* to-do: align logo to text */
+.logo-container {
+  @apply col-start-1 col-end-3 row-start-1 row-end-1
+    flex 
+      gap-2 items-start;
+  }
+
+.search {
+  @apply col-start-2 col-end-8 row-start-2 row-end-2
+    flex
+    gap-4 flex-col;
+}
+
+/* Search bar and button styles */
+
+.search-bar-container {
+  @apply flex w-full;
+}
+
+.search-input {
+  @apply flex-grow bg-gray-900 text-white border-2 border-blue-500
+    rounded-tl-full rounded-bl-full py-2.5 px-4;
+}
+
+.search-button {
+  @apply bg-blue-500 text-white border-2 border-blue-500 
+    rounded-tr-full rounded-br-full py-2.5 px-5 cursor-pointer
+    transition 
+      delay-300;
+}
+
+.search-button:hover {
+  @apply bg-blue-600 border-blue-600;
+}
+
+/* Results container styles */
+
+.results-container {
+  @apply w-full bg-white/90 rounded-lg p-5 shadow;
+}
+
+.results-list {
+  @apply list-none p-0 m-0;
+}
+
+.no-results {
   @apply text-gray-600;
 }
 
-.results-container {
-  @apply mt-6;
+.result-item {
+  @apply text-gray-800;
+}
+
+/* Temporary placeholder. Will move into DepartureInfo component. */
+
+.transport-departures {
+  @apply 
+    col-start-2 col-end-6 row-start-3 row-end-3
+    bg-white/90 text-gray-900 rounded-lg p-4 shadow-md h-full;
+}
+
+.weather-updates {
+  @apply col-start-6 col-end-8 row-start-3 row-end-3;
+}
+
+.traffic-updates {
+  @apply col-start-2 col-end-8 row-start-4 row-end-4 w-full;
 }

@@ -1,9 +1,10 @@
 import "./App.css";
+import { Coordinates } from "./types/coordinates";
 import { useState } from "react";
 import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
+import TrafficInfo from "./components/TrafficInfo/TrafficInfo";
 import Weather from "./components/Weather/Weather";
-import { Coordinates } from "./types/coordinates";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,17 +61,20 @@ const App = () => {
 
   return (
     <main className="container">
+      {/* Grid layout with a logo in the top left, search bar on top, two components on the next row, and one component spanning the bottom row, as per wireframe */}
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
+        <h1>TrafficJam</h1>
       </div>
 
-      <section className="search-container">
+      <section className="search">
+        <div className="search-container">
         <form onSubmit={handleSearch}>
           <div className="search-bar-container">
             <input
               type="text"
               className="search-input"
-              placeholder="Search..."
+              placeholder="Enter a location"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -79,38 +83,41 @@ const App = () => {
             </button>
           </div>
         </form>
+        </div>
+
+        <div className="results-container">
+          <h3>Search Results</h3>
+          {results.length > 0 ? (
+            <ul className="results-list">
+              {results.map((result, index) => (
+                <li key={index} className="result-item">
+                  {result}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-results">No results to display</p>
+          )}
+          </div>
       </section>
-      {/* Dashboard layout with two columns */}
-      <div className="dashboard-container">
+
         {/* Left side - Transport departures (placeholder) */}
-        <div className="dashboard-left">
-          <section className="transport-container">
-            <h2 className="transport-title">Transport Departures</h2>
+          <section className="transport-departures">
+            <h3>Transport Departures</h3>
             <p className="transport-placeholder">
               Departure information will appear here
             </p>
           </section>
-        </div>
 
         {/* Right side - Weather */}
-        <div className="dashboard-right">
+        <section className="weather-updates">
           <Weather coordinates={coordinates} />
-        </div>
-      </div>
-      <section className="results-container">
-        <h2>Search Results</h2>
-        {results.length > 0 ? (
-          <ul className="results-list">
-            {results.map((result, index) => (
-              <li key={index} className="result-item">
-                {result}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-results">No results to display</p>
-        )}
-      </section>
+        </section>
+
+        {/* Bottom - Traffic Situation Updates */}
+      <section className="traffic-updates">
+        <TrafficInfo />
+        </section>
     </main>
   );
 };

@@ -3,3 +3,11 @@ export type Coordinates = {
     longitude: number
 } | null;
 
+
+export interface TrafficProps {
+    coordinates?: {
+      lat: number;
+      lng: number;
+    } | null;
+  }
+  

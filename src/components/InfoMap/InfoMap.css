@@ -1,0 +1,9 @@
+#map {
+    @apply h-full;
+}
+
+/* map popup styles */
+
+.popup-road-icons {
+    @apply flex flex-wrap gap-2 py-2;
+}
