@@ -1,13 +1,11 @@
-import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
+import React from 'react';
 import { useEffect } from 'react';
+import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
+import L from "leaflet";
 import { useStore } from "../../hooks/useStore";
 import { useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./InfoMap.css";
-import L from "leaflet";
-import React from 'react';
-import HeartIcon from "./heart.svg";
-
 
 const UpdateMap = ({ center }) => {
     const locationMap = useMap();
@@ -20,6 +18,7 @@ const UpdateMap = ({ center }) => {
     return null;
 };
 
+
 const InfoMap = ({ signage }) => {
     console.log("Passed signage prop:", signage)
     const stateCoordinates = useStore((state) => state.coordinates);
@@ -31,11 +30,12 @@ const InfoMap = ({ signage }) => {
             <UpdateMap center ={centerMap} />
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-            {signage.length > 0 && signage.map((marker) => (
+            {signage.length > 0 && signage.map((marker) => {
+            return (
                 <Marker 
                     position={[marker.mapCoordinates[1], marker.mapCoordinates[0]]} 
                     icon={new L.Icon({
-                        iconUrl: marker.iconUrl, 
+                        iconUrl: `/public/sev${marker.severityCode}_warning.svg`, 
                         iconSize: [36, 36], 
                         iconAnchor: [12, 41],
                         popupAnchor: [-3, -76]
@@ -48,7 +48,8 @@ const InfoMap = ({ signage }) => {
                         </div>
                         </Popup>
                 </Marker>
-            ))}
+                )}
+            )}
             <Marker position={centerMap}>
                 <Popup>You are here.</Popup>
             </Marker>

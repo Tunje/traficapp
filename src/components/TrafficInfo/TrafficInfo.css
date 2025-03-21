@@ -15,7 +15,7 @@
 }
 
 .deviations__incident-header {
-    @apply bg-blue-300 text-gray-700 font-bold p-2 mt-2 rounded-lg 
+    @apply text-gray-900 font-bold p-2 mt-2 rounded-lg 
     flex gap-4;
 }
 
@@ -46,18 +46,22 @@
 
 /* Severity indicators */
 
-.severity-1, .severity-2 {
-    @apply text-black;
+.severity-1 {
+    @apply bg-blue-300; 
+}
+
+.severity-2 {
+    @apply bg-green-300;
 }
 
 .severity-3 {
-    @apply text-yellow-700;
+    @apply bg-yellow-300;
 }
 
 .severity-4 {
-    @apply text-orange-800;
+    @apply bg-yellow-500;
 }
 
 .severity-5 {
-    @apply text-red-700;
+    @apply bg-red-500;
 }

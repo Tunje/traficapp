@@ -99,6 +99,7 @@ const TrafficInfo = () => {
                             iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`,
                             popupLabel: `${deviation.MessageCode}`,
                             popupMessage: `${deviation.Message}`,
+                            severityCode: deviation.SeverityCode,
                             mapCoordinates: cleanGeometry(`${deviation.Geometry}`)
                         })));
                         const flatArray = signageArray.flat().filter((signage) => signage.mapCoordinates.length > 0);
@@ -140,12 +141,12 @@ const TrafficInfo = () => {
         {situation.map((incident, index) => (
             <React.Fragment key={index}>
 
-                    <div className="deviations__incident-header">
-                            <div className={`severity-${incident.Deviation[0].SeverityCode}`}>
+                    <div className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
+                            <div className={`severity`}>
                                 {incident.Deviation[0].Severity}
                             </div>
                             <div className="deviations__last-update">Senast uppdaterad: {incident.Modified}</div>
-                            <div className="deviations__last-update">Slutar: {incident.Deviation[0].EndTime}</div>
+                            <div className="deviations__end">Slutar: {incident.Deviation[0].EndTime}</div>
                         </div>
                             <div className="deviations__signs">
                             {incident.Deviation.filter((deviation, index, arraySelf) => index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode))
