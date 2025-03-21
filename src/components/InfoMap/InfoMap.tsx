@@ -61,7 +61,7 @@ const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
                 )}
             )}
             <Marker position={centerMap}>
-                <Popup>You are here.</Popup>
+                <Popup>Du är här.</Popup>
             </Marker>
         </MapContainer>
   )
