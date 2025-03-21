@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useStore } from "../../hooks/useStore";
 import "./TrafficInfo.css";
-import { IncidentData, DeviationApiData, IncidentDeviationData, SignageItem, SituationApiData } from "../../types/trafficinfo";
+import { IncidentData, DeviationApiData, IncidentDeviationData, RawSignageItem, SignageItem, SituationApiData } from "../../types/trafficinfo";
 import { Coordinates } from "../../types/coordinates";
 import InfoMap from "../InfoMap/InfoMap";
 
@@ -91,11 +91,14 @@ const TrafficInfo = () => {
                     const matchTo = new RegExp(/([-+]?\d{2}\.\d{2})/g);
                     const matchedFloat = string.match(matchTo);
                     if (matchedFloat) {
-                        const mapCoords = matchedFloat.map(float => parseFloat(parseFloat(float).toFixed(2)));
+                        const mapCoords: [number, number] = [
+                            parseFloat(matchedFloat[0]),
+                            parseFloat(matchedFloat[1])
+                        ];
                         return mapCoords;
-                    } return []};
+                    } return null};
 
-                const signageArray = incidents.map((incident: IncidentData, mapIncidentIndex: number) => ({
+                const signageArray: RawSignageItem[] = incidents.map((incident: IncidentData, mapIncidentIndex: number) => ({
                     key: `infomap-${mapIncidentIndex}`,
                     popupLabel: `${incident.Deviation[0].MessageCode}`,
                     popupMessage: `${incident.Deviation[0].Message}`,
@@ -111,7 +114,12 @@ const TrafficInfo = () => {
                             iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`})
                         )}));
 
-                        const flatArray = signageArray.flat().filter((signage) => signage.mapCoordinates.length > 0);
+                        const flatArray: SignageItem[] = signageArray.flat().filter(
+                            (signage)  => signage.mapCoordinates !== null) 
+                            .map((signage) => ({
+                                ...signage,
+                                mapCoordinates: signage.mapCoordinates as [number, number]
+                            }));
                         setMapSignage(flatArray);
                         console.log("Signage Array", signageArray)
                         console.log("Map Markers", mapSignage);

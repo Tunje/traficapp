@@ -19,11 +19,12 @@ const UpdateMap: React.FC<UpdateMapProps> = ({ center }) => {
     return null;
 };
 
-
 const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
     console.log("Passed signage prop:", signage)
     const stateCoordinates = useStore((state) => state.coordinates);
-    const centerMap = [stateCoordinates?.latitude, stateCoordinates?.longitude];
+    const centerMap: [number, number] = [
+        stateCoordinates?.latitude ?? 0, 
+        stateCoordinates?.longitude?? 0];
     
     return (
         <MapContainer id="map" center={centerMap} 

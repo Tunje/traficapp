@@ -60,3 +60,25 @@ export interface MapSignageData {
     popupMessage: string; 
     mapCoordinates: string;
 }
+
+export interface RawSignageItem {
+    key: string;
+    popupLabel: string;
+    popupMessage: string;
+    severityCode: number;
+    EndDate: string;
+    mapCoordinates: [number, number] | null; 
+    icons: { popupLabel: string; index: string; iconUrl: string; }[];
+  }
+  
+
+export interface SignageItem {
+    key: string;
+    popupLabel: string;
+    popupMessage: string;
+    severityCode: number;
+    EndDate: string;
+    mapCoordinates: [number, number];  
+    icons: { popupLabel: string; index: string; iconUrl: string; }[];
+  }
+  
