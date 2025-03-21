@@ -92,7 +92,6 @@ const TrafficInfo = () => {
 
                 const signageArray = incidents.map((incident, mapIncidentIndex) => ({
                     key: `infomap-${mapIncidentIndex}`,
-                    popupLabel: `${incident.Deviation[0].MessageCode}`,
                     popupMessage: `${incident.Deviation[0].Message}`,
                     severityCode: incident.Deviation[0].SeverityCode,
                     EndDate: incident.Deviation[0].EndTime,
@@ -101,6 +100,7 @@ const TrafficInfo = () => {
                         .filter((deviation, mapDevIndex, arraySelf) => mapDevIndex === arraySelf.findIndex(
                         d => d.MessageCode === deviation.MessageCode))
                         .map((deviation, devIconIndex) => ({
+                            popupLabel: `${deviation.MessageCode}`,
                             index: `mapIcon-${devIconIndex}`,
                             iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`})
                         )}));

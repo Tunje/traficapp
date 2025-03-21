@@ -44,13 +44,15 @@ const InfoMap = ({ signage }) => {
                         <div className="popup-info">
                             <div className="popup-road-icons">
                                 {marker.icons.map((icon, iconIndex) => (
-                                    <div key={iconIndex}className="popup-road-icons__icon">
-                                        <img src={icon.iconUrl} alt={marker.populLabel} />
+                                    <div key={iconIndex}className="deviations__icon-code">
+                                        <img src={icon.iconUrl} alt={marker.popupLabel} />
+                                    <div className="deviations__messagecode">
+                                        {icon.popupLabel}
+                                    </div>
                                     </div>
                                 ))}
                             </div>
-                        <strong>{marker.popupLabel}</strong>
-                        {marker.popupMessage == "undefined" ? `` : `: ${marker.popupMessage}`}
+                        {marker.popupMessage == "undefined" ? `` : `${marker.popupMessage}`}
                         </div>
                         </Popup>
                 </Marker>
