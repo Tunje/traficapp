@@ -90,23 +90,24 @@ const TrafficInfo = () => {
                         return mapCoords;
                     } return []};
 
-                const signageArray = incidents.map(
-                    (incident) => incident.Deviation.filter(
-                        (deviation, index, arraySelf) => 
-                            index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode)).map(
-                        (deviation, devIconIndex) => ({
-                            key: ``,
-                            iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`,
-                            popupLabel: `${deviation.MessageCode}`,
-                            popupMessage: `${deviation.Message}`,
-                            severityCode: deviation.SeverityCode,
-                            mapCoordinates: cleanGeometry(`${deviation.Geometry}`)
-                        })));
+                const signageArray = incidents.map((incident, mapIncidentIndex) => ({
+                    key: `infomap-${mapIncidentIndex}`,
+                    popupLabel: `${incident.Deviation[0].MessageCode}`,
+                    popupMessage: `${incident.Deviation[0].Message}`,
+                    severityCode: incident.Deviation[0].SeverityCode,
+                    EndDate: incident.Deviation[0].EndTime,
+                    mapCoordinates: cleanGeometry(`${incident.Deviation[0].Geometry}`),
+                    icons: incident.Deviation
+                        .filter((deviation, mapDevIndex, arraySelf) => mapDevIndex === arraySelf.findIndex(
+                        d => d.MessageCode === deviation.MessageCode))
+                        .map((deviation, devIconIndex) => ({
+                            index: `mapIcon-${devIconIndex}`,
+                            iconUrl: `https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`})
+                        )}));
+
                         const flatArray = signageArray.flat().filter((signage) => signage.mapCoordinates.length > 0);
                         setMapSignage(flatArray);
-                        // console.log("Deviations", incidents);
-                        // console.log("Signage Array", signageArray);
-                        // console.log("flat Signage Array", flatArray);
+                        console.log("Signage Array", signageArray)
                         console.log("Map Markers", mapSignage);
                     } catch (error) {
                 setLoading(false);

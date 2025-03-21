@@ -42,8 +42,14 @@ const InfoMap = ({ signage }) => {
                     })}>
                     <Popup>
                         <div className="popup-info">
-                            
-                        {marker.popupLabel}
+                            <div className="popup-road-icons">
+                                {marker.icons.map((icon, iconIndex) => (
+                                    <div key={iconIndex}className="popup-road-icons__icon">
+                                        <img src={icon.iconUrl} alt={marker.populLabel} />
+                                    </div>
+                                ))}
+                            </div>
+                        <strong>{marker.popupLabel}</strong>
                         {marker.popupMessage == "undefined" ? `` : `: ${marker.popupMessage}`}
                         </div>
                         </Popup>

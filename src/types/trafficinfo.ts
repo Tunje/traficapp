@@ -27,5 +27,3 @@ export interface MapSignageData {
     popupMessage: string; 
     mapCoordinates: string;
 }
-
-// "POINT (14.1393807919911 58.4148419525517)"
