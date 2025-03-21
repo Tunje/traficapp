@@ -139,8 +139,8 @@ const TrafficInfo = () => {
         if (loading) {
           return (
             <div className="traffic-content">
-                <h3>Traffic Updates</h3>
-                Loading traffic data...
+                <h3>Trafik hinder</h3>
+                Laddar trafik data...
             </div>
           );
         }
