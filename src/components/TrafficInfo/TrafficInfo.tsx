@@ -39,7 +39,7 @@ const TrafficInfo = () => {
                 );
 
                 if (!result.ok) {
-                    throw new Error("Traffic info request failed.");
+                    throw new Error("Trafik info förfrågan misslyckad.");
                 };
 
                 const response = await result.json();
@@ -121,8 +121,6 @@ const TrafficInfo = () => {
                                 mapCoordinates: signage.mapCoordinates as [number, number]
                             }));
                         setMapSignage(flatArray);
-                        console.log("Signage Array", signageArray)
-                        console.log("Map Markers", mapSignage);
                     } catch (error) {
                 setLoading(false);
                 console.error(error);
@@ -135,22 +133,21 @@ const TrafficInfo = () => {
             setLoading(true);
         }}, [stateCoordinates]);
         useEffect(() => {
-            console.log("Updated Map Markers:", mapSignage);
         }, [mapSignage]);        
 
    
         if (loading) {
           return (
             <div className="traffic-content">
-                <h3>Traffic Updates</h3>
-                Loading traffic data...
+                <h3>Trafik hinder</h3>
+                Laddar trafik data...
             </div>
           );
         }
 
   return (
         <div className="traffic-content">
-        <h3>Traffic Updates</h3>
+        <h3>Trafik hinder</h3>
         <div className="traffic-content__grid">
         <div className="traffic-content__deviations">
         {situation.map((incident, index) => (
@@ -160,7 +157,7 @@ const TrafficInfo = () => {
                             <div className={`severity`}>
                                 {incident.Deviation[0].Severity}
                             </div>
-                            <div className="deviations__last-update">Senast uppdaterad: {incident.Modified}</div>
+                            <div className="deviations__last-update">Senast uppdatering: {incident.Modified}</div>
                             <div className="deviations__end">Slutar: {incident.Deviation[0].EndTime}</div>
                         </div>
                             <div className="deviations__signs">

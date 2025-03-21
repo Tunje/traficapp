@@ -30,7 +30,7 @@ const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
         <MapContainer id="map" center={centerMap} 
         zoom={15} scrollWheelZoom={true}>
             <UpdateMap center ={centerMap} />
-            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> bidragsgivare'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
             {signage.length > 0 && signage.map((marker, index) => {
             return (
@@ -61,7 +61,7 @@ const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
                 )}
             )}
             <Marker position={centerMap}>
-                <Popup>You are here.</Popup>
+                <Popup>Du är här.</Popup>
             </Marker>
         </MapContainer>
   )

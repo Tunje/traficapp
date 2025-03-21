@@ -16,13 +16,13 @@ const Weather = ({ coordinates }: WeatherProps) => {
 
   const getDayName = (dateStr: string) => {
     const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
+      "Söndag",
+      "Måndag",
+      "Tisdag",
+      "Onsdag",
+      "Torsdag",
+      "Fredag",
+      "Lördag",
     ];
     const date = new Date(dateStr);
     return days[date.getDay()];
@@ -38,7 +38,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         );
 
         if (!currentResponse.ok) {
-          throw new Error("Failed to fetch weather data");
+          throw new Error("Fel vid hämtning av väderdata");
         }
 
         const currentData = await currentResponse.json();
@@ -57,7 +57,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         );
 
         if (!forecastResponse.ok) {
-          throw new Error("Failed to fetch weather data");
+          throw new Error("Fel vid hämtning av väderdata");
         }
 
         const forecastData = await forecastResponse.json();
@@ -92,9 +92,9 @@ const Weather = ({ coordinates }: WeatherProps) => {
         setForecastData(dailyForecasts.slice(0, 5));
         setLoading(false);
       } catch (err) {
-        setError("Error fetching weather data");
+        setError("Fel vid hämtning av väderdata");
         setLoading(false);
-        console.error("Weather fetch error:", err);
+        console.error("Väder hämtning fel:", err);
       }
     };
 
@@ -112,9 +112,9 @@ const Weather = ({ coordinates }: WeatherProps) => {
     return (
       <div className="weather-container loading">
           <div className="weather-location">
-            <h3>Weather</h3>
+            <h3>Väder</h3>
           </div>
-          <div>Loading weather data...</div>
+          <div>Laddar väder data...</div>
       </div>
     );
   }
@@ -148,9 +148,9 @@ const Weather = ({ coordinates }: WeatherProps) => {
           <div className="weather-forecast">
             {/* Grid headers */}
             <div className="forecast-grid">
-              <div className="forecast-header">Day</div>
+              <div className="forecast-header">Dag</div>
               <div className="forecast-header">Temp</div>
-              <div className="forecast-header">Rain</div>
+              <div className="forecast-header">Regn</div>
               <div className="forecast-header"></div> {/* For icons */}
             </div>
 

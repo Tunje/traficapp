@@ -34,7 +34,7 @@ const App = () => {
         return null;
       }
     } catch (error) {
-      console.error("Error geocoding address:", error);
+      console.error("Fel vid geokodning av adress:", error);
       return null;
     }
   };
@@ -48,12 +48,12 @@ const App = () => {
 
       if (coordinates) {
         setResults([
-          `${searchQuery} - Latitude: ${coordinates.latitude.toFixed(
+          `${searchQuery} - Latitud: ${coordinates.latitude.toFixed(
             6
-          )}, Longitude: ${coordinates.longitude.toFixed(6)}`,
+          )}, Longitud: ${coordinates.longitude.toFixed(6)}`,
         ]);
       } else {
-        setResults([`Could not find coordinates for: ${searchQuery}`]);
+        setResults([`Kunde inte hitta koordinater för: ${searchQuery}`]);
       }
       setSearchQuery("");
     }
@@ -74,19 +74,19 @@ const App = () => {
             <input
               type="text"
               className="search-input"
-              placeholder="Enter a location"
+              placeholder="Sök plats"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button type="submit" className="search-button">
-              Search
+              Sök
             </button>
           </div>
         </form>
         </div>
 
         <div className="results-container">
-          <h3>Search Results</h3>
+          <h3>Sök resultat</h3>
           {results.length > 0 ? (
             <ul className="results-list">
               {results.map((result, index) => (
@@ -96,7 +96,7 @@ const App = () => {
               ))}
             </ul>
           ) : (
-            <p className="no-results">No results to display</p>
+            <p className="no-results">Inga resultat</p>
           )}
           </div>
       </section>
