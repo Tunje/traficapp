@@ -4,15 +4,19 @@ import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
 import Weather from "./components/Weather/Weather";
 import { Coordinates } from "./types/coordinates";
+import { useLoadingState } from "./hooks/useLoadingState";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const setCoordinates = useStore((state) => state.setCoordinates);
   let coordinates = useStore((state) => state.coordinates);
+  const { loading, error, setLoading, setError } = useLoadingState();
   
   const getLocation = async (address: string): Promise<Coordinates> => {
     try {
+      setLoading(true);
+      setError(null);
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
@@ -28,16 +32,20 @@ const App = () => {
         const { lat, lng } = data.results[0].geometry.location;
         setCoordinates({ latitude: lat, longitude: lng});
         console.log("New coordinates from App", data.results[0]);
+        setLoading(false);
         return { latitude: lat, longitude: lng};
       } else {
+        setError("Could not find coordinates for: " + address);
+        setLoading(false);
         return null;
       }
     } catch (error) {
       console.error("Error geocoding address:", error);
+      setError("Error finding location");
+      setLoading(false);
       return null;
     }
   };
-  
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +107,11 @@ const App = () => {
       </div>
       <section className="results-container">
         <h2>Search Results</h2>
-        {results.length > 0 ? (
+        {loading ? (
+          <p className="loading">Loading...</p>
+        ) : error ? (
+          <p className="error">{error}</p>
+        ) : results.length > 0 ? (
           <ul className="results-list">
             {results.map((result, index) => (
               <li key={index} className="result-item">

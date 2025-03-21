@@ -3,12 +3,12 @@ import "./Weather.css";
 import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
 import { WEATHER_API_KEY } from "../config.example";
 import { useStore } from "../../hooks/useStore";
+import { useLoadingState } from "../../hooks/useLoadingState";
 
 const Weather = ({ coordinates }: WeatherProps) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { loading, error, setLoading, setError } = useLoadingState();
   let stateCoordinates = useStore((state) => state.coordinates);
 
   // const API_KEY = WEATHER_API_KEY;
@@ -31,6 +31,8 @@ const Weather = ({ coordinates }: WeatherProps) => {
   useEffect(() => {
     const fetchWeatherData = async (lat: number, lon: number) => {
       try {
+        setLoading(true);
+        setError(null);
         /*----- Fetching current weather -----*/
 
         const currentResponse = await fetch(
