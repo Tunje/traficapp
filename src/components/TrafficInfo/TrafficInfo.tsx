@@ -147,43 +147,44 @@ const TrafficInfo = () => {
 
   return (
         <div className="traffic-content">
-        <h3>Trafik hinder</h3>
-        <div className="traffic-content__grid">
-        <div className="traffic-content__deviations">
-        {situation.map((incident, index) => (
-            <React.Fragment key={index}>
+            <h3>Trafik hinder</h3>
+            <div className="traffic-content__grid">
+                <div className="traffic-content__map">
+                    <InfoMap signage={mapSignage} />
+                </div>                   
+            <div className="traffic-content__deviations">
+            {situation.map((incident, index) => (
+                <React.Fragment key={index}>
 
-                    <div className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
-                            <div className={`severity`}>
-                                {incident.Deviation[0].Severity}
-                            </div>
-                            <div className="deviations__last-update">Senast uppdatering: {incident.Modified}</div>
-                            <div className="deviations__end">Slutar: {incident.Deviation[0].EndTime}</div>
-                        </div>
-                            <div className="deviations__signs">
-                            {incident.Deviation.filter((deviation, index, arraySelf) => index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode))
-                            .map((deviation, devIconIndex) => (
-                                <div key={`${index}-${devIconIndex}`} className="deviations__icon-code">
-                                    <img className="deviations__icon" src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`} alt={`${deviation.MessageCode}`} />
-                                    <span className="deviations__messagecode">{deviation.MessageCode}
-                                    </span>
+                        <div className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
+                                <div className="severity">
+                                    {incident.Deviation[0].Severity}
                                 </div>
-                            ))}
-                        </div>
-                        <div className="deviation__description">
-                            {incident.Deviation[0].LocationDescription}. {incident.Deviation[0].Message}
-                        </div>
-                        {incident.Deviation[0].RestrictionType == undefined ? "" : <div className="deviation__restricted-lanes">{incident.Deviation[0].RestrictionType}: {incident.Deviation[0].RestrictedLanes}</div> }
+                            </div>
+                                <div className="deviations__signs">
+                                {incident.Deviation.filter((deviation, index, arraySelf) => index === arraySelf.findIndex(d => d.MessageCode === deviation.MessageCode))
+                                .map((deviation, devIconIndex) => (
+                                    <div key={`${index}-${devIconIndex}`} className="deviations__icon-code">
+                                        <img className="deviations__icon" src={`https://api.trafikinfo.trafikverket.se/v2/icons/data/road.infrastructure.icon/${deviation.Icon}`} alt={`${deviation.MessageCode}`} />
+                                        <span className="deviations__messagecode">{deviation.MessageCode}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="deviation__description">
+                                {incident.Deviation[0].LocationDescription}. {incident.Deviation[0].Message}
+                            </div>
+                            {incident.Deviation[0].RestrictionType == undefined ? "" : <div className="deviation__restricted-lanes">{incident.Deviation[0].RestrictionType}: {incident.Deviation[0].RestrictedLanes}</div> }
+                            <div className="deviations__times">
+                                <div className="deviations__last-update"><strong>Senast uppdatering:</strong> {incident.Modified}</div>
+                                <div className="deviations__end"><strong>Slutar:</strong> {incident.Deviation[0].EndTime}</div>
+                            </div>
 
-            </React.Fragment>
-        ))}
+                </React.Fragment>
+            ))}
+            </div>
         </div>
-
-        <div className="traffic-content__map">
-        <InfoMap signage={mapSignage} />
-        </div>                   
-        </div>
-        </div>
+    </div>
   )
 }
 
