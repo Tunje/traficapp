@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
 import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
-import { WEATHER_API_KEY } from "../config.example";
+import { WEATHER_API_KEY } from "../config.ts";
 import { useStore } from "../../hooks/useStore";
 
 const Weather = ({ coordinates }: WeatherProps) => {
@@ -12,7 +12,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
   let stateCoordinates = useStore((state) => state.coordinates);
 
   // const API_KEY = WEATHER_API_KEY;
-  const API_KEY = `33ac16eef5f8d2063a9653b77a1e9934`;
+  const API_KEY = WEATHER_API_KEY;
 
   const getDayName = (dateStr: string) => {
     const days = [

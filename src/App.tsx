@@ -5,6 +5,8 @@ import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
 import TrafficInfo from "./components/TrafficInfo/TrafficInfo";
 import Weather from "./components/Weather/Weather";
+import DepartureInfo from "./components/DepartureInfo/DepartureInfo";
+import { GOOGLE_MAPS_API_KEY } from "./components/config";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,7 +16,7 @@ const App = () => {
   
   const getLocation = async (address: string): Promise<Coordinates> => {
     try {
-      const apiKey = `AIzaSyAf9fdAD5YfDnTnY8pVeRvnym5AZWbZdss`;
+      const apiKey = GOOGLE_MAPS_API_KEY
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
       );
@@ -104,9 +106,7 @@ const App = () => {
         {/* Left side - Transport departures (placeholder) */}
           <section className="transport-departures">
             <h3>Transport Departures</h3>
-            <p className="transport-placeholder">
-              Departure information will appear here
-            </p>
+          <DepartureInfo coordinates={coordinates} />
           </section>
 
         {/* Right side - Weather */}

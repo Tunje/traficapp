@@ -4,9 +4,9 @@ import { useStore } from "../../hooks/useStore";
 import "./TrafficInfo.css";
 import { IncidentData, DeviationApiData, IncidentDeviationData, RawSignageItem, SignageItem, SituationApiData } from "../../types/trafficinfo";
 import { Coordinates } from "../../types/coordinates";
+import { TRAFIKVERKET_API_KEY } from "../config";
 import InfoMap from "../InfoMap/InfoMap";
 
-const TRAFIKVERKET_API_KEY = `9ddd8ace-4853-44ee-955e-4a1c4bda39f3`;
 const trafikverketUrl = `https://api.trafikinfo.trafikverket.se/v2/data.json`;
 
 const TrafficInfo = () => {

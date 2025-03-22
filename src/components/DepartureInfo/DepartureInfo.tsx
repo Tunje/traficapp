@@ -2,13 +2,11 @@
 import React, { useState } from 'react';
 import { useEffect} from "react";
 import { useStore } from "../../hooks/useStore";
-import { Coordinates } from '../../types/coordinates';
-import { Transport } from '../../types/departureinfo';
+import { Transport, DepartureProps } from '../../types/departureinfo';
+import { RESROBOT_API_KEY } from "../config.ts";
 
 
-
-
-const DepartureInfo = ({ coordinates }) => {
+const DepartureInfo = ({ coordinates }: DepartureProps) => {
   const [DepartureData, setDepartureData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,25 +14,26 @@ const DepartureInfo = ({ coordinates }) => {
   const [transportData, setTransportData] = useState<Transport[]>([]); // Stores fetched transport data
   
 
-  const API_KEY = `9ddd8ace-4853-44ee-955e-4a1c4bda39f3`;
-  const API_URL = `https://api.resrobot.se/v2.1/location.name?`;
-
   
-useEffect(() =>{
-
-    
-const fetchNearestStation = async (lat: number, lon: number) => {
+  
+  useEffect(() =>{      
+    const fetchNearestStation = async () => {
+    const API_KEY = RESROBOT_API_KEY;
   try {
-      const apiKey = `9ddd8ace-4853-44ee-955e-4a1c4bda39f3`; // API key for authentication
       const response = await fetch(
-          `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${lat}&originCoordLong=${lon}&format=json&accessId=${apiKey}`
+          `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${stateCoordinates?.latitude}&originCoordLong=${stateCoordinates?.longitude}&format=json&accessId=${API_KEY}`
       );
+      if (!response.ok) {
+        throw new Error("Fel vid hämtning av data");
+      }
 
-      const stations = response.data.stopLocationOrCoordLocation || [];
+      const currentData = await response.json();
+      const stations = currentData.stopLocationOrCoordLocation || [];
       if (stations.length > 0) {
-          const nearestStation = stations[0].StopLocation;
-          fetchDepartureData(nearestStation.extId); // Fetch transport data for the nearest station
-          console.log(nearestStation.extId);
+          const nearestStation = stations[0].StopLocation.extId;
+          console.log("Nearest Station", nearestStation)
+        //   fetchDepartureData(nearestStation.extId); // Fetch transport data for the nearest station
+        //   console.log(nearestStation.extId);
       } else {
           setError("No station found in your area."); // Set error if no stations are found
       }
@@ -63,8 +62,7 @@ const fetchNearestStation = async (lat: number, lon: number) => {
        
         }*/
   if (coordinates) {
-   const result = fetchNearestStation(stateCoordinates.latitude, stateCoordinates.longitude);
-  console.log(result)
+   fetchNearestStation();
 } else {
     /*----- Fallback to loading state if no coordinates are provided -----*/
     setLoading(true);

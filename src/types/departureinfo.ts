@@ -6,3 +6,10 @@ export type Transport = {
   track?: string; // Track information (optional)
   stop: string; // Stop name
 };
+
+export interface DepartureProps {
+  coordinates?: {
+    lat: number;
+    lng: number;
+  } | null;
+}
