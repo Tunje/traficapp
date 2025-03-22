@@ -12,7 +12,7 @@ const App = () => {
   const [results, setResults] = useState<string[]>([]);
   const setCoordinates = useStore((state) => state.setCoordinates);
   let coordinates = useStore((state) => state.coordinates);
-  
+
   const getLocation = async (address: string): Promise<Coordinates> => {
     try {
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;

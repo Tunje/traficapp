@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 import L from "leaflet";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "../../hooks/useStore.tsx";
 import { useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./InfoMap.css";
