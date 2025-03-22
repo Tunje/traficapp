@@ -33,14 +33,14 @@ a:hover {
   @apply grid 
   gap-4 p-2
   grid-cols-1 grid-rows-[auto_auto_1fr_auto]
-  xl:grid-cols-8;
+  lg:grid-cols-8;
 }
 
 .logo-container {
   @apply  
   row-start-1 row-end-1
   col-start-1 col-end-1
-  xl:col-start-4 xl:col-end-5
+  lg:col-start-4 xl:col-end-5
     flex 
       gap-4 items-center p-4;
   }
@@ -49,7 +49,7 @@ a:hover {
   @apply 
   row-start-2 row-end-2
   col-start-1 col-end-1
-  xl:col-start-2 xl:col-end-8 
+  lg:col-start-2 lg:col-end-8 
     flex
     gap-4 flex-col;
 }
@@ -99,22 +99,22 @@ a:hover {
 .transport-departures {
   @apply 
   row-start-4 row-end-4
-  col-start-1 sm:col-end-1
-  xl:col-start-2 xl:col-end-6 
-    bg-white/90 text-gray-900 rounded-lg p-4 shadow-md h-full;
+  col-start-1 col-end-1
+  lg:col-start-2 lg:col-end-6 lg:row-start-3 lg:row-end-3 
+    bg-white/90 text-gray-900 rounded-lg p-4 h-full;
 }
 
 .weather-updates {
   @apply 
   row-start-3 row-end-3
   col-start-1 col-end-1
-  xl:col-start-6 xl:col-end-8; 
+  lg:col-start-6 lg:col-end-8; 
 }
 
 .traffic-updates {
   @apply
   row-start-5 row-end-5  
   col-start-1 col-end-1
-  xl:col-start-2 xl:col-end-8 
+  lg:col-start-2 lg:col-end-8 
   w-full;
 }
