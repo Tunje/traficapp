@@ -14,7 +14,7 @@ const App = () => {
   
   const getLocation = async (address: string): Promise<Coordinates> => {
     try {
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      const apiKey = `AIzaSyAf9fdAD5YfDnTnY8pVeRvnym5AZWbZdss`;
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
       );

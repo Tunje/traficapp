@@ -12,7 +12,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
   let stateCoordinates = useStore((state) => state.coordinates);
 
   // const API_KEY = WEATHER_API_KEY;
-  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  const API_KEY = `33ac16eef5f8d2063a9653b77a1e9934`;
 
   const getDayName = (dateStr: string) => {
     const days = [
