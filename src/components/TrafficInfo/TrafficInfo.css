@@ -4,7 +4,7 @@
 
 .traffic-content__grid {
     @apply flex flex-col gap-6
-    lg:flex-row-reverse;
+    xl:flex-row-reverse;
 }
 
 .traffic-content__deviations {
@@ -15,7 +15,7 @@
 .traffic-content__map {
     @apply bg-blue-300 w-full h-64
     lg:h-96
-    xl:w-1/3 xl:h-full;
+    xl:w-1/3;
 }
 
 /* Deviations */
