@@ -34,7 +34,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         /*----- Fetching current weather -----*/
 
         const currentResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+          `http://localhost:3000/api/weather?latitude=${lat}&longitude=${lon}`
         );
 
         if (!currentResponse.ok) {
@@ -53,7 +53,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         /*----- Fetch 5-day forecast -----*/
 
         const forecastResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+          `http://localhost:3000/api/forecast?latitude=${lat}&longitude=${lon}`
         );
 
         if (!forecastResponse.ok) {
@@ -61,6 +61,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         }
 
         const forecastData = await forecastResponse.json();
+        console.log("forecast data", forecastData)
 
         /*----- Process forecast data to get one entry per day (noon time) -----*/
 

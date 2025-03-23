@@ -20,7 +20,6 @@ const UpdateMap: React.FC<UpdateMapProps> = ({ center }) => {
 };
 
 const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
-    console.log("Passed signage prop:", signage)
     const stateCoordinates = useStore((state) => state.coordinates);
     const centerMap: [number, number] = [
         stateCoordinates?.latitude ?? 0, 
