@@ -28,4 +28,4 @@ dist-ssr
 *.lsp
 
 # API keys
-src/components/config.ts
+client/src/components/config.ts

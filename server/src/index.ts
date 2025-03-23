@@ -10,9 +10,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const clientPath = path.join(__dirname, "../../client/dist");
-app.use(express.static(clientPath))
-
 app.get("/api/location", async (req: express.Request, res: express.Response): Promise<void> => {
     const address = req.query.address as string | undefined;
 
@@ -47,11 +44,6 @@ app.get("/api/location", async (req: express.Request, res: express.Response): Pr
         res.status(500).json({ error: "Internal server error"});
     }
 });
-
-
-app.get("*", (req: express.Request, res: express.Response) => {
-    res.sendFile(path.join(clientPath, "index.html"));
-})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}.`);
