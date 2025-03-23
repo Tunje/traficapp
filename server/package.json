@@ -24,6 +24,7 @@
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.11",
