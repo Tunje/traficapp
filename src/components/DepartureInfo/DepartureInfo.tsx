@@ -73,7 +73,7 @@ const DepartureInfo = ({ coordinates }: DepartureProps) => {
       
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Transport Departure</h2>
+      <h2 className="transport-departure">Transport Departure</h2>
       
             {/* Display user's location if available */}
             {location && <p>Your Location: {location.lat}, {location.lon}</p>}
@@ -86,26 +86,26 @@ const DepartureInfo = ({ coordinates }: DepartureProps) => {
 
             {/* Render transport data in a table */}
             {transportData.length > 0 && (
-            <table className="w-full border-collapse border border-gray-300 " >
+            <table className="transport-table " >
                 <thead>
-                    <tr className="bg-gray-200 ">
-                        <th className="border border-gray-300 px-4 py-2">Transport</th>
-                        <th className="border border-gray-300 px-4 py-2">Mode</th>
-                        <th className="border border-gray-300 px-4 py-2">From</th>
-                        <th className="border border-gray-300 px-4 py-2">Departure Time</th>
-                        <th className="border border-gray-300 px-4 py-2">Destination</th>
-                        <th className="border border-gray-300 px-4 py-2">Track</th>
+                    <tr className="inside-table ">
+                        <th className="row-heading">Transport</th>
+                        <th className="row-heading">Mode</th>
+                        <th className="row-heading">From</th>
+                        <th className="row-heading">Departure Time</th>
+                        <th className="row-heading">Destination</th>
+                        <th className="row-heading">Track</th>
                     </tr>
                 </thead>
                 <tbody>
                     {transportData.map((transport, index) => (
-                    <tr key={index} className="text-center border border-gray-300">
-                        <td className="border border-gray-300 px-4 py-2">{transport.name}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.ProductAtStop.catCode}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.stop}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.time}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.direction}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.ProductAtStop.line || "N/A"}</td>
+                    <tr key={index} className="data-table">
+                        <td className="transport-name">{transport.name}</td>
+                        <td className="transport-productAtStop-catcode">{transport.ProductAtStop.catCode}</td>
+                        <td className="transport-stop">{transport.stop}</td>
+                        <td className="transport-time">{transport.time}</td>
+                        <td className="transport-direction">{transport.direction}</td>
+                        <td className="transport-ProductAtStop-line">{transport.ProductAtStop.line || "N/A"}</td>
                     </tr>
                 ))}
                 </tbody>

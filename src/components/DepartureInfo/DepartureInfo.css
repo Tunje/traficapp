@@ -1,0 +1,43 @@
+.transport-departure {
+    @apply text-xl font-bold mb-4;
+  }
+  
+  .transport-table {
+    @apply w-full border-collapse border border-gray-300;
+  }
+
+  .inside-table {
+    @apply bg-gray-200;
+  }
+
+  .row-heading {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  .data-table {
+    @apply text-center border border-gray-300 ;
+  }
+  .transport-name {
+    @apply border border-gray-300 px-4 py-2 ;
+  }
+  .transport-productAtStop-catcode {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  .transport-stop {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  
+  .transport-time {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  
+  .transport-direction {
+    @apply border border-gray-300 px-4 py-2;
+  }
+
+  .transport-ProductAtStop-line {
+    @apply border border-gray-300 px-4 py-2;
+  }
+ 
+ 
+ 
+ 
