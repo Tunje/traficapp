@@ -36,7 +36,7 @@ const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
                 <Marker key={marker.key || `marker-${index}`}
                     position={[marker.mapCoordinates[1], marker.mapCoordinates[0]]} 
                     icon={new L.Icon({
-                        iconUrl: `/public/sev${marker.severityCode}_warning.svg`, 
+                        iconUrl: `/sev${marker.severityCode}_warning.svg`, 
                         iconSize: [36, 36], 
                         iconAnchor: [12, 41],
                         popupAnchor: [-3, -76]

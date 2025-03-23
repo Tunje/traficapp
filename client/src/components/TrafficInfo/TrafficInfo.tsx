@@ -132,8 +132,8 @@ const TrafficInfo = () => {
                 </div>                   
             <div className="traffic-content__deviations">
             {situation.map((incident, index) => (
-                <>
-                        <div key={index} className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
+                <div key={index}>
+                        <div className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
                                 <div className="severity">
                                     {incident.Deviation[0].Severity}
                                 </div>
@@ -156,7 +156,7 @@ const TrafficInfo = () => {
                                 <div className="deviations__last-update"><strong>Senast uppdatering:</strong> {incident.Modified}</div>
                                 <div className="deviations__end"><strong>Slutar:</strong> {incident.Deviation[0].EndTime}</div>
                             </div>
-                </>
+                </div>
             ))}
             </div>
         </div>
