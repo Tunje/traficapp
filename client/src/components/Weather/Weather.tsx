@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
 import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
-import { WEATHER_API_KEY } from "../config.example";
 import { useStore } from "../../hooks/useStore";
 
 const Weather = ({ coordinates }: WeatherProps) => {
@@ -10,9 +9,6 @@ const Weather = ({ coordinates }: WeatherProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   let stateCoordinates = useStore((state) => state.coordinates);
-
-  // const API_KEY = WEATHER_API_KEY;
-  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
   const getDayName = (dateStr: string) => {
     const days = [
