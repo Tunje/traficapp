@@ -15,7 +15,7 @@ export interface ForecastDay {
 
 export interface WeatherProps {
   coordinates?: {
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
   } | null;
 }

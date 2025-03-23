@@ -25,12 +25,12 @@ const Weather = ({ coordinates }: WeatherProps) => {
   };
 
   useEffect(() => {
-    const fetchWeatherData = async (lat: number, lon: number) => {
+    const fetchWeatherData = async (latitude: number, longitude: number) => {
       try {
         /*----- Fetching current weather -----*/
 
         const currentResponse = await fetch(
-          `http://localhost:3000/api/weather?latitude=${lat}&longitude=${lon}`
+          `http://localhost:3000/api/weather?latitude=${latitude}&longitude=${longitude}`
         );
 
         if (!currentResponse.ok) {
@@ -49,7 +49,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         /*----- Fetch 5-day forecast -----*/
 
         const forecastResponse = await fetch(
-          `http://localhost:3000/api/forecast?latitude=${lat}&longitude=${lon}`
+          `http://localhost:3000/api/forecast?latitude=${latitude}&longitude=${longitude}`
         );
 
         if (!forecastResponse.ok) {
@@ -57,7 +57,6 @@ const Weather = ({ coordinates }: WeatherProps) => {
         }
 
         const forecastData = await forecastResponse.json();
-        console.log("forecast data", forecastData)
 
         /*----- Process forecast data to get one entry per day (noon time) -----*/
 

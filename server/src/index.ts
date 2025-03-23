@@ -70,7 +70,6 @@ app.get("/api/weather", async (req: express.Request, res: express.Response): Pro
   
           const currentData = await currentResponse.json();
           res.json(currentData);
-          console.log("current weather data", currentData);
     } catch (error) {
         
     }
@@ -96,15 +95,53 @@ app.get("/api/forecast", async (req: express.Request, res: express.Response): Pr
   
           const forecastData = await forecastResponse.json();
           res.json(forecastData);
-          console.log("current förecast data", forecastData);
     } catch (error) {
-        
+        console.error("Väder hämtning fel:", error);
     }
 })
 
 // departure calls
 
 // traffic info calls
+
+app.get("/api/traffic", async (req: express.Request, res: express.Response): Promise<void> => {
+    const latitude = req.query.latitude as string | undefined;
+    const longitude = req.query.longitude as string | undefined;
+    
+    if (!latitude || !longitude) {
+        res.status(400).json({ error: "Need valid coordinates with latitude and longitude."});
+        return;
+    }
+    try {
+        const trafikverketUrl = `https://api.trafikinfo.trafikverket.se/v2/data.json`;
+        const API_KEY = process.env.TRAFIKVERKET_API_KEY;
+        const requestBody = `<REQUEST>
+        <LOGIN authenticationkey="${API_KEY}"/>
+        <QUERY objecttype="Situation" schemaversion="1" limit="5">
+            <FILTER>
+                <NEAR name="Deviation.Geometry.WGS84" value="${encodeURIComponent(longitude)} ${encodeURIComponent(latitude)}"/>
+            </FILTER>
+        </QUERY>
+        </REQUEST>`;
+        const headers: Headers = new Headers();
+        headers.set("Content-Type", "text/xml");
+        headers.set("Accept", "application/json");
+        const infoResponse = await fetch(
+            `${trafikverketUrl}`,
+            {
+                method: "POST",
+                headers: headers,
+                body: requestBody
+            }
+        );
+
+          const trafficData = await infoResponse.json();
+          res.json(trafficData);
+          console.log("current traffic data", infoResponse);
+    } catch (error) {
+        console.error("Data hämtning fel:", error);
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}.`);
