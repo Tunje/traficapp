@@ -11,6 +11,26 @@ const DepartureInfo = ({ coordinates }: DepartureProps) => {
   const stateCoordinates = useStore((state) => state.coordinates);
   const [transportData, setTransportData] = useState<Transport[]>([]);
   
+  const fetchDepartureData = async (stationId: number ) => {
+    try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:3000/api/departureinfo?stationId=${stationId}`);
+        if (!response.ok) {
+            throw new Error("Fel vid hämtning av data");
+        }
+        console.log(response.status)
+        const departureData = await response.json();
+        if (departureData) {
+            console.log("Departure Data", departureData);
+        }
+
+        // setTransportData(response.data.Departure || []);
+    } catch (err) {
+        console.error("Error fetching transport data:", err);
+        setError("Failed to fetch transport data.");
+    } finally {
+        setLoading(false); 
+    }};
   
   useEffect(() => {   
     const fetchNearestStation = async () => {
@@ -26,40 +46,21 @@ const DepartureInfo = ({ coordinates }: DepartureProps) => {
             const station = await response.json();
             if (station) {
                 console.log("Station ID", station);
+                fetchDepartureData(station);    
             } else {
                 setError("No station found in your area."); 
             }
         } catch (err) {
             console.error("Error fetching nearest station:", err);
             setError("Failed to fetch station data."); 
-        } finally {
-            setLoading(false);
         }};
+        
         if (stateCoordinates?.latitude && stateCoordinates?.longitude) {
             fetchNearestStation();
         } else {
             setLoading(true);
-          }   
-            }, [coordinates, stateCoordinates]);
-/* const fetchDepartureData = async (stationId: number | string) => {
-  try {
-      setLoading(true); // Set loading state while fetching data
-      const duration = 30; // Time duration to fetch upcoming departures
-      const journey = 5; // Max number of journeys to fetch
-      const products = 412; // Type of transport services included
-      const response = await axios.get(
-          `https://api.resrobot.se/v2.1/departureBoard?id=${stationId}&format=json&accessId=${apiKey}&products=${products}&maxJourneys=${journey}&duration=${duration}`
-      );
-      setTransportData(response.data.Departure || []); // Store fetched transport data
-  } catch (err) {
-      console.error("Error fetching transport data:", err);
-      setError("Failed to fetch transport data."); // Handle errors
-  } finally {
-      setLoading(false); // Reset loading state once request completes
-  }
-       
-        }*/
-
+        };   
+    }, [coordinates, stateCoordinates]);
 
   return (
     <div className="p-4">

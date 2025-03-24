@@ -132,6 +132,38 @@ app.get("/api/departure-location", async (req: express.Request, res: express.Res
     }
 })
 
+app.get("/api/departureinfo", async (req: express.Request, res: express.Response): Promise<void> => {
+    const departureParams = {
+        station: req.query.stationId,
+        duration: 30,
+        journey: 5,
+        products: 412,
+    };
+    
+    if (!departureParams.station) {
+        res.status(400).json({ error: "Need a valid station ID."});
+        return;
+    }
+    try {
+        const API_KEY = process.env.RESROBOT_API_KEY;
+        const departuresResponse = await fetch(
+          `https://api.resrobot.se/v2.1/departureBoard?id=${departureParams.station}&format=json&accessId=${API_KEY}&products=${departureParams.products}&maxJourneys=${departureParams.journey}&duration=${departureParams.duration}`
+          );
+  
+          if (!departuresResponse.ok) {
+            throw new Error("Fel vid hämtning av data");
+          }
+  
+          const departureInfoData: any = await departuresResponse.json();
+          if (departureInfoData.length > 0) {
+            res.json(departureInfoData);
+            console.log(departureInfoData);
+    }} catch (error) {
+        console.error("Data hämtning fel:", error);
+        res.status(500).json({ error: "Internal server error" }); 
+    }
+})
+
 // traffic info calls
 
 app.get("/api/traffic", async (req: express.Request, res: express.Response): Promise<void> => {
