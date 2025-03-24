@@ -8,7 +8,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
   const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  let stateCoordinates = useStore((state) => state.coordinates);
+  const stateCoordinates = useStore((state) => state.coordinates);
 
   const getDayName = (dateStr: string) => {
     const days = [

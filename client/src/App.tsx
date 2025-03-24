@@ -15,7 +15,6 @@ const App = () => {
 
   const getLocation = async (address: string): Promise<Coordinates> => {
     try {
-      // const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       const response = await fetch(`http://localhost:3000/api/location?address=${address}`
       );
       
