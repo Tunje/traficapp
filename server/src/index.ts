@@ -102,6 +102,36 @@ app.get("/api/forecast", async (req: express.Request, res: express.Response): Pr
 
 // departure calls
 
+app.get("/api/departure-location", async (req: express.Request, res: express.Response): Promise<void> => {
+    const latitude = req.query.latitude as string | undefined;
+    const longitude = req.query.longitude as string | undefined;
+    
+    if (!latitude || !longitude) {
+        res.status(400).json({ error: "Need valid coordinates with latitude and longitude."});
+        return;
+    }
+    try {
+        const API_KEY = process.env.RESROBOT_API_KEY;
+        const departuresResponse = await fetch(
+            `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${latitude}&originCoordLong=${longitude}&format=json&accessId=${API_KEY}`
+          );
+  
+          if (!departuresResponse.ok) {
+            throw new Error("Fel vid hämtning av data");
+          }
+  
+          const departureData: any = await departuresResponse.json();
+          const stations = departureData.stopLocationOrCoordLocation || [];
+          if (stations.length > 0) {
+            const nearestStation = stations[0].StopLocation.extId;
+            res.json(nearestStation);
+            console.log("Nearest station", nearestStation)
+    }} catch (error) {
+        console.error("Data hämtning fel:", error);
+        res.status(500).json({ error: "Internal server error" }); 
+    }
+})
+
 // traffic info calls
 
 app.get("/api/traffic", async (req: express.Request, res: express.Response): Promise<void> => {
@@ -137,7 +167,6 @@ app.get("/api/traffic", async (req: express.Request, res: express.Response): Pro
 
           const trafficData = await infoResponse.json();
           res.json(trafficData);
-          console.log("current traffic data", infoResponse);
     } catch (error) {
         console.error("Data hämtning fel:", error);
     }
