@@ -8,6 +8,7 @@ import Weather from "./components/Weather/Weather";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState<string[]>([]);
   const setCoordinates = useStore((state) => state.setCoordinates);
   let coordinates = useStore((state) => state.coordinates);
@@ -29,12 +30,14 @@ const App = () => {
         const { lat, lng } = data.results[0].geometry.location;
         setCoordinates({ latitude: lat, longitude: lng});
         console.log("New coordinates from App", data.results[0]);
+        setLoading(false);
         return { latitude: lat, longitude: lng};
       } else {
         return null;
       }
     } catch (error) {
       console.error("Fel vid geokodning av adress:", error);
+      setLoading(false);
       return null;
     }
   };
@@ -44,6 +47,7 @@ const App = () => {
     e.preventDefault();
 
     if (searchQuery.trim()) {
+      setLoading(true);
       coordinates = await getLocation(searchQuery);
 
       if (coordinates) {
@@ -61,10 +65,12 @@ const App = () => {
 
   return (
     <main className="container">
-      {/* Grid layout with a logo in the top left, search bar on top, two components on the next row, and one component spanning the bottom row, as per wireframe */}
+      {/* Grid layout with a logo in the top center, search bar on top, two components on the next row, and one component spanning the bottom row, as per wireframe */}
       <div className="logo-container">
         <img src={logoImage} alt="Logo" className="logo" />
-        <h1>TrafficJam</h1>
+        <div className="logo-container__title">
+          <h1>TrafficJam</h1>
+        </div>
       </div>
 
       <section className="search">
@@ -84,7 +90,11 @@ const App = () => {
           </div>
         </form>
         </div>
-
+      </section>
+      
+      {!loading && coordinates && (
+        <>
+        <section className="search-results">
         <div className="results-container">
           <h3>Sök resultat</h3>
           {results.length > 0 ? (
@@ -100,7 +110,6 @@ const App = () => {
           )}
           </div>
       </section>
-
         {/* Left side - Transport departures (placeholder) */}
           <section className="transport-departures">
             <h3>Transport Departures</h3>
@@ -118,6 +127,8 @@ const App = () => {
       <section className="traffic-updates">
         <TrafficInfo />
         </section>
+        </>
+      )}
     </main>
   );
 };

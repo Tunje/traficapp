@@ -16,11 +16,11 @@
 }
 
 .weather-info {
-  @apply flex items-center;
+  @apply flex items-center justify-center;
 }
 
 .weather-icon {
-  @apply w-16 h-16;
+  @apply w-16 h-16 bg-blue-500 rounded-lg;
 }
 
 .weather-details {
@@ -61,7 +61,7 @@
 }
 
 .forecast-icon-cell {
-  @apply flex justify-center;
+  @apply flex justify-center bg-blue-500 rounded-lg;
 }
 
 .forecast-icon {
