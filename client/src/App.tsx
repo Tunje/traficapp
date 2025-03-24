@@ -5,6 +5,7 @@ import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
 import TrafficInfo from "./components/TrafficInfo/TrafficInfo";
 import Weather from "./components/Weather/Weather";
+import DepartureInfo from "./components/DepartureInfo/DepartureInfo";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -110,10 +111,7 @@ const App = () => {
       </section>
         {/* Left side - Transport departures (placeholder) */}
           <section className="transport-departures">
-            <h3>Transport Departures</h3>
-            <p className="transport-placeholder">
-              Departure information will appear here
-            </p>
+          <DepartureInfo />
           </section>
 
         {/* Right side - Weather */}
