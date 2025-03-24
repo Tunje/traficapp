@@ -128,7 +128,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
       {weatherData && (
         <>
           <div className="weather-location ">
-            <h3>Weather for {weatherData.city}</h3>
+            <h3>Vädret för {weatherData.city}</h3>
           </div>
           <div className="weather-info">
             <img

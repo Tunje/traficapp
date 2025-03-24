@@ -45,8 +45,8 @@
     @apply self-center font-bold;
 }
 
-.deviations__times {
-    @apply pt-2 pb-2;
+.deviations__times, .deviation__description {
+    @apply p-2 pb-2;
 }
 
 .deviation__restricted-lanes {
