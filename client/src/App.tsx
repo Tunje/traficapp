@@ -108,13 +108,14 @@ const App = () => {
           )}
           </div>
       </section>
-        {/* Left side - Transport departures (placeholder) */}
+
+        {/* Left side - Transport departures (placeholder)
           <section className="transport-departures">
             <h3>Transport Departures</h3>
             <p className="transport-placeholder">
               Departure information will appear here
             </p>
-          </section>
+          </section> */}
 
         {/* Right side - Weather */}
         <section className="weather-updates">
