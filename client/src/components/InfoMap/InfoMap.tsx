@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 import L from "leaflet";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "../../hooks/useStore.tsx";
 import { useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./InfoMap.css";
@@ -20,7 +20,6 @@ const UpdateMap: React.FC<UpdateMapProps> = ({ center }) => {
 };
 
 const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
-    console.log("Passed signage prop:", signage)
     const stateCoordinates = useStore((state) => state.coordinates);
     const centerMap: [number, number] = [
         stateCoordinates?.latitude ?? 0, 
@@ -37,7 +36,7 @@ const InfoMap: React.FC<InfoMapProps> = ({ signage }) => {
                 <Marker key={marker.key || `marker-${index}`}
                     position={[marker.mapCoordinates[1], marker.mapCoordinates[0]]} 
                     icon={new L.Icon({
-                        iconUrl: `/public/sev${marker.severityCode}_warning.svg`, 
+                        iconUrl: `/sev${marker.severityCode}_warning.svg`, 
                         iconSize: [36, 36], 
                         iconAnchor: [12, 41],
                         popupAnchor: [-3, -76]

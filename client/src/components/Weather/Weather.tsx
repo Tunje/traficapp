@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
 import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
-import { WEATHER_API_KEY } from "../config.example";
 import { useStore } from "../../hooks/useStore";
 
 const Weather = ({ coordinates }: WeatherProps) => {
@@ -9,10 +8,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
   const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  let stateCoordinates = useStore((state) => state.coordinates);
-
-  // const API_KEY = WEATHER_API_KEY;
-  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  const stateCoordinates = useStore((state) => state.coordinates);
 
   const getDayName = (dateStr: string) => {
     const days = [
@@ -29,12 +25,12 @@ const Weather = ({ coordinates }: WeatherProps) => {
   };
 
   useEffect(() => {
-    const fetchWeatherData = async (lat: number, lon: number) => {
+    const fetchWeatherData = async (latitude: number, longitude: number) => {
       try {
         /*----- Fetching current weather -----*/
 
         const currentResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+          `http://localhost:3000/api/weather?latitude=${latitude}&longitude=${longitude}`
         );
 
         if (!currentResponse.ok) {
@@ -53,7 +49,7 @@ const Weather = ({ coordinates }: WeatherProps) => {
         /*----- Fetch 5-day forecast -----*/
 
         const forecastResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+          `http://localhost:3000/api/forecast?latitude=${latitude}&longitude=${longitude}`
         );
 
         if (!forecastResponse.ok) {

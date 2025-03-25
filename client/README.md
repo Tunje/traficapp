@@ -1,14 +1,15 @@
 ## API Keys Setup
 
-This application requires API keys for OpenWeather, Trafikverket and Google Maps services. To set up:
+This application requires API keys for OpenWeather, Trafikverket, Resrobot and Google Maps services. To set up:
 
-1. Copy [src/components/config.example.ts](src/components/config.example.ts) to `src/components/config.ts`. Alternately, you can create a `.env.local` file in your root directory.
-2. Replace the placeholder values in `config.ts` with your actual API keys:
+1. Create a `.env` file in the server folder.
+2. Match your actual API keys to the corresponding variable names provided in env.example.md:
    - Get an OpenWeather API key from [OpenWeather](https://openweathermap.org/api)
    - Get a Google Maps API key from [Google Cloud Platform](https://console.cloud.google.com/)
    - Get a Trafikverket API key from [Trafiklab](https://www.trafiklab.se/api/trafiklab-apis/trafikverket/) or [Trafikverket](https://www.trafikverket.se/e-tjanster/trafikverkets-oppna-api-for-trafikinformation/)
+   -Get a Resrobot API key from [The Trafiklab Resrobot API](https://www.trafiklab.se/api/trafiklab-apis/resrobot-v21/)
 
-Note: The `config.ts` file as well as .env files are gitignored to prevent exposing your API keys.
+Note: The .env files are gitignored to prevent exposing your API keys.
 
 # React + TypeScript + Vite
 

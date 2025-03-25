@@ -12,12 +12,10 @@ const App = () => {
   const [results, setResults] = useState<string[]>([]);
   const setCoordinates = useStore((state) => state.setCoordinates);
   let coordinates = useStore((state) => state.coordinates);
-  
+
   const getLocation = async (address: string): Promise<Coordinates> => {
     try {
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
+      const response = await fetch(`http://localhost:3000/api/location?address=${address}`
       );
       
       if (!response.ok) {
@@ -26,12 +24,12 @@ const App = () => {
       
       const data = await response.json();
       
-      if (data.results.length > 0) {
-        const { lat, lng } = data.results[0].geometry.location;
-        setCoordinates({ latitude: lat, longitude: lng});
-        console.log("New coordinates from App", data.results[0]);
+      if (data.latitude && data.longitude) {
+        const coords = { latitude: data.latitude, longitude: data.longitude };
+        setCoordinates(coords);
+        console.log("New coordinates from App", coords);
         setLoading(false);
-        return { latitude: lat, longitude: lng};
+        return coords;
       } else {
         return null;
       }
@@ -110,13 +108,14 @@ const App = () => {
           )}
           </div>
       </section>
-        {/* Left side - Transport departures (placeholder) */}
+
+        {/* Left side - Transport departures (placeholder)
           <section className="transport-departures">
             <h3>Transport Departures</h3>
             <p className="transport-placeholder">
               Departure information will appear here
             </p>
-          </section>
+          </section> */}
 
         {/* Right side - Weather */}
         <section className="weather-updates">
