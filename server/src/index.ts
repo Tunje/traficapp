@@ -102,10 +102,9 @@ app.get("/api/forecast", async (req: express.Request, res: express.Response): Pr
 
 // departure calls
 
-app.get("/api/departure-location", async (req: express.Request, res: express.Response): Promise<void> => {
+app.get("/api/station-location", async (req: express.Request, res: express.Response): Promise<void> => {
     const latitude = req.query.latitude as string | undefined;
     const longitude = req.query.longitude as string | undefined;
-    
     if (!latitude || !longitude) {
         res.status(400).json({ error: "Need valid coordinates with latitude and longitude."});
         return;
@@ -125,41 +124,36 @@ app.get("/api/departure-location", async (req: express.Request, res: express.Res
           if (stations.length > 0) {
             const nearestStation = stations[0].StopLocation.extId;
             res.json(nearestStation);
-            console.log("Nearest station", nearestStation)
+            return;
     }} catch (error) {
-        console.error("Data hämtning fel:", error);
+        console.error("Error fetching:", error);
         res.status(500).json({ error: "Internal server error" }); 
     }
 })
 
-app.get("/api/departureinfo", async (req: express.Request, res: express.Response): Promise<void> => {
-    const departureParams = {
-        station: req.query.stationId,
-        duration: 30,
-        journey: 5,
-        products: 412,
-    };
-    
-    if (!departureParams.station) {
+app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
+    const stationId = req.query.stationId;
+    if (!stationId) {
         res.status(400).json({ error: "Need a valid station ID."});
         return;
     }
     try {
         const API_KEY = process.env.RESROBOT_API_KEY;
         const departuresResponse = await fetch(
-          `https://api.resrobot.se/v2.1/departureBoard?id=${departureParams.station}&format=json&accessId=${API_KEY}&products=${departureParams.products}&maxJourneys=${departureParams.journey}&duration=${departureParams.duration}`
+          `https://api.resrobot.se/v2.1/departureBoard?id=${stationId}&format=json&accessId=${API_KEY}`
           );
-  
           if (!departuresResponse.ok) {
-            throw new Error("Fel vid hämtning av data");
+            throw new Error("Error fetching data");
           }
   
           const departureInfoData: any = await departuresResponse.json();
-          if (departureInfoData.length > 0) {
+          console.log(departureInfoData);
+          if (departureInfoData) {
             res.json(departureInfoData);
-            console.log(departureInfoData);
-    }} catch (error) {
-        console.error("Data hämtning fel:", error);
+            return;
+    }
+} catch (error) {
+        console.error("Data fetching error:", error);
         res.status(500).json({ error: "Internal server error" }); 
     }
 })

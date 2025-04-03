@@ -4,41 +4,21 @@ import { useStore } from "../../hooks/useStore";
 import { Transport, DepartureProps } from '../../types/departureinfo';
 
 
-const DepartureInfo = ({ coordinates }: DepartureProps) => {
+const DepartureInfo = () => {
   const [DepartureData, setDepartureData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stationCode, setStationCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const stateCoordinates = useStore((state) => state.coordinates);
   const [transportData, setTransportData] = useState<Transport[]>([]);
   
-  const fetchDepartureData = async (stationId: number ) => {
-    try {
-        setLoading(true);
-        const response = await fetch(`http://localhost:3000/api/departureinfo?stationId=${stationId}`);
-        if (!response.ok) {
-            throw new Error("Fel vid hämtning av data");
-        }
-        console.log(response.status)
-        const departureData = await response.json();
-        if (departureData) {
-            console.log("Departure Data", departureData);
-        }
-
-        // setTransportData(response.data.Departure || []);
-    } catch (err) {
-        console.error("Error fetching transport data:", err);
-        setError("Failed to fetch transport data.");
-    } finally {
-        setLoading(false); 
-    }};
   
-  useEffect(() => {   
     const fetchNearestStation = async () => {
         setLoading(true);
         setError(null);
         try {
             const response = await fetch(
-                `http://localhost:3000/api/departure-location?latitude=${stateCoordinates.latitude}&longitude=${stateCoordinates.longitude}`
+                `http://localhost:3000/api/station-location?latitude=${stateCoordinates.latitude}&longitude=${stateCoordinates.longitude}`
             );
             if (!response.ok) {
                 throw new Error("Fel vid hämtning av data");
@@ -46,21 +26,63 @@ const DepartureInfo = ({ coordinates }: DepartureProps) => {
             const station = await response.json();
             if (station) {
                 console.log("Station ID", station);
-                fetchDepartureData(station);    
+                setStationCode(station.toString()); 
+                return station;
             } else {
                 setError("No station found in your area."); 
+                return null;
             }
         } catch (err) {
             console.error("Error fetching nearest station:", err);
             setError("Failed to fetch station data."); 
         }};
-        
-        if (stateCoordinates?.latitude && stateCoordinates?.longitude) {
-            fetchNearestStation();
-        } else {
-            setLoading(true);
-        };   
-    }, [coordinates, stateCoordinates]);
+
+    const fetchDepartureData = async () => {
+        let station = await fetchNearestStation();
+        try {
+            const response = await fetch(`http://localhost:3000/api/departure-info?stationId=${station}`);
+            if (!response.ok) {
+                throw new Error("Fel vid hämtning av data");
+            }
+            const departureData = await response.json();
+            console.log("Departure Data", departureData);
+    
+        } catch (err) {
+            console.error("Error fetching transport data:", err);
+            setError("Failed to fetch transport data.");
+        }};
+
+  useEffect(() => {
+    if (!stateCoordinates) return;
+
+        const fetchAllDepartureInfo = async () => {
+            try {
+                setLoading(true);
+                await fetchDepartureData();
+            } catch (error) {
+                console.error("Error", error)
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAllDepartureInfo();
+    }, [stateCoordinates]);
+
+    // useEffect(() => {
+    //     if (!stationCode) return;
+
+    //     const fetchDepartureDataEffect = async () => {
+    //         try {
+    //             setLoading(true);
+    //             await fetchDepartureData(stationCode);
+    //         } catch (error) {
+    //             console.error("Error", error)
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     }
+    // }, [stationCode]);
 
   return (
     <div className="p-4">
