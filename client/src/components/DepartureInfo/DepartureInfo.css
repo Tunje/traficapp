@@ -1,0 +1,12 @@
+.transport-header__cell {
+    @apply border border-gray-300 px-4 py-2;
+}
+
+.transport-listing {
+    @apply
+    text-center border border-gray-300;
+}
+
+.transport-listing__cell {
+    @apply border border-gray-300 px-4 py-2;
+}

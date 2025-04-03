@@ -117,14 +117,14 @@ body {
 
 .weather-updates {
   @apply 
-  row-start-4 row-end-4
+  row-start-5 row-end-5
   col-start-1 col-end-1
   lg:col-start-6 lg:col-end-8 lg:row-start-4 lg:row-end-4; 
 }
 
 .traffic-updates {
   @apply
-  row-start-5 row-end-5  
+  row-start-6 row-end-6  
   col-start-1 col-end-1
   lg:col-start-2 lg:col-end-8 lg:row-start-5 lg:row-end-5 
   w-full h-full;

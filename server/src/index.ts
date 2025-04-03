@@ -149,7 +149,7 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
           const departureInfoData: any = await departuresResponse.json();
           console.log(departureInfoData);
           if (departureInfoData) {
-            res.json(departureInfoData);
+            res.json(departureInfoData.Departure);
             return;
     }
 } catch (error) {

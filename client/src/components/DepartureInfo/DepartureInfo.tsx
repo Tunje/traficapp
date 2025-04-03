@@ -1,16 +1,15 @@
 import "./DepartureInfo.css";
 import React, { useState, useEffect } from 'react';
 import { useStore } from "../../hooks/useStore";
-import { Transport, DepartureProps } from '../../types/departureinfo';
+import { TransportItem, DepartureProps } from '../../types/departureinfo';
 
 
 const DepartureInfo = () => {
-  const [DepartureData, setDepartureData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [stationCode, setStationCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const stateCoordinates = useStore((state) => state.coordinates);
-  const [transportData, setTransportData] = useState<Transport[]>([]);
+  const [transportData, setTransportData] = useState([]);
   
   
     const fetchNearestStation = async () => {
@@ -25,8 +24,7 @@ const DepartureInfo = () => {
             }
             const station = await response.json();
             if (station) {
-                console.log("Station ID", station);
-                setStationCode(station.toString()); 
+                setStationCode(station); 
                 return station;
             } else {
                 setError("No station found in your area."); 
@@ -44,9 +42,18 @@ const DepartureInfo = () => {
             if (!response.ok) {
                 throw new Error("Fel vid hämtning av data");
             }
-            const departureData = await response.json();
-            console.log("Departure Data", departureData);
-    
+            const incomingDepartures = await response.json();
+            const departureItems = incomingDepartures.map(({ 
+                Product, name, direction, time, Notes, rtTrack }) => ({
+                TransportOperator: Product[0].operator,
+                TransportItem: name,
+                Direction: direction,
+                DepartureTime: time,
+                TrainNotes: (name.includes("Tåg") ? Notes : null),
+                TrainTrack: (name.includes("Tåg") ? rtTrack : null)
+            }));
+            setTransportData(departureItems);
+            console.log(transportData)
         } catch (err) {
             console.error("Error fetching transport data:", err);
             setError("Failed to fetch transport data.");
@@ -69,47 +76,31 @@ const DepartureInfo = () => {
         fetchAllDepartureInfo();
     }, [stateCoordinates]);
 
-    // useEffect(() => {
-    //     if (!stationCode) return;
-
-    //     const fetchDepartureDataEffect = async () => {
-    //         try {
-    //             setLoading(true);
-    //             await fetchDepartureData(stationCode);
-    //         } catch (error) {
-    //             console.error("Error", error)
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     }
-    // }, [stationCode]);
-
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Transport Departure</h2>
 
-            {/* Render transport data in a table */}
             {transportData.length > 0 && (
             <table className="w-full border-collapse border border-gray-300 " >
                 <thead>
-                    <tr className="bg-gray-200 ">
-                        <th className="border border-gray-300 px-4 py-2">Transport</th>
-                        <th className="border border-gray-300 px-4 py-2">Mode</th>
-                        <th className="border border-gray-300 px-4 py-2">From</th>
-                        <th className="border border-gray-300 px-4 py-2">Departure Time</th>
-                        <th className="border border-gray-300 px-4 py-2">Destination</th>
-                        <th className="border border-gray-300 px-4 py-2">Track</th>
+                    <tr className="transport-header">
+                        <th className="transport-header__cell">Operator</th>
+                        <th className="transport-header__cell">Transport Name</th>
+                        <th className="transport-header__cell">Destination</th>
+                        <th className="transport-header__cell">Departure Time</th>
+                        <th className="transport-header__cell">Track</th>
+                        <th className="transport-header__cell">Amenities</th>
                     </tr>
                 </thead>
                 <tbody>
                     {transportData.map((transport, index) => (
-                    <tr key={index} className="text-center border border-gray-300">
-                        <td className="border border-gray-300 px-4 py-2">{transport.name}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.ProductAtStop.catCode}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.stop}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.time}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.direction}</td>
-                        <td className="border border-gray-300 px-4 py-2">{transport.ProductAtStop.line || "N/A"}</td>
+                    <tr key={index} className="transport-listing">
+                        <td className="transport-listning__cell">{transport.TransportOperator}</td>
+                        <td className="transport-listning__cell">{transport.TransportItem}</td>
+                        <td className="transport-listning__cell">{transport.Direction}</td>
+                        <td className="transport-listning__cell">{transport.DepartureTime}</td>
+                        <td className="transport-listning__cell">{transport.TrainTrack}</td>
+                        {/* <td className="transport-listning__cell">{transport.TrainNotes}</td> */}
                     </tr>
                 ))}
                 </tbody>

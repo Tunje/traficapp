@@ -1,15 +1,7 @@
-export type Transport = {
-    ProductAtStop: any;  
-    name: string; // Transport name (e.g., train number or bus route)
+export type TransportItem = {
+    operator: string;  
+    name: string; // Name plus number, i.e, "Länstrafik - Buss 430"
     time: string; // Departure time
-    direction: string; // Direction of travel
-    track?: string; // Track information (optional)
-    stop: string; // Stop name
+    track?: string; // Track (if train)
+    notes?: []; // Amenities (if train)
   };
-  
-  export interface DepartureProps {
-    coordinates?: {
-      lat: number;
-      lng: number;
-    } | null;
-  }
