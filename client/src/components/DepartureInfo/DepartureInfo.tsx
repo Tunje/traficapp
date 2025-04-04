@@ -48,12 +48,17 @@ const DepartureInfo = () => {
                 TransportOperator: Product[0].operator,
                 TransportItem: name,
                 Direction: direction,
-                DepartureTime: time,
-                TrainNotes: (name.includes("Tåg") ? Notes : null),
-                TrainTrack: (name.includes("Tåg") ? rtTrack : null)
+                DepartureTime: time.slice(0,5),
+                TrainNotes: (name.includes("Tåg") ? 
+                    Notes.Note
+                    .map(({ value }) => (value)) 
+                    .filter(value => !["EU förordning", "Lag", "tillämpas"].some(word => value.includes(word)))
+                    : ""),
+                TrainTrack: (name.includes("Tåg") ? rtTrack : "")
             }));
             setTransportData(departureItems);
-            console.log(transportData)
+            console.log(incomingDepartures)
+            console.log(departureItems)
         } catch (err) {
             console.error("Error fetching transport data:", err);
             setError("Failed to fetch transport data.");
@@ -85,22 +90,41 @@ const DepartureInfo = () => {
                 <thead>
                     <tr className="transport-header">
                         <th className="transport-header__cell">Operator</th>
-                        <th className="transport-header__cell">Transport Name</th>
+                        <th className="transport-header__cell">Transport</th>
                         <th className="transport-header__cell">Destination</th>
-                        <th className="transport-header__cell">Departure Time</th>
+                        <th className="transport-header__cell">Departs</th>
                         <th className="transport-header__cell">Track</th>
-                        <th className="transport-header__cell">Amenities</th>
+                        <th className="transport-header__cell">Notes</th>
                     </tr>
                 </thead>
                 <tbody>
                     {transportData.map((transport, index) => (
                     <tr key={index} className="transport-listing">
-                        <td className="transport-listning__cell">{transport.TransportOperator}</td>
-                        <td className="transport-listning__cell">{transport.TransportItem}</td>
-                        <td className="transport-listning__cell">{transport.Direction}</td>
-                        <td className="transport-listning__cell">{transport.DepartureTime}</td>
-                        <td className="transport-listning__cell">{transport.TrainTrack}</td>
-                        {/* <td className="transport-listning__cell">{transport.TrainNotes}</td> */}
+                        <td className="transport-listning__cell">
+                            {transport.TransportOperator}
+                        </td>
+                        <td className="transport-listning__cell">
+                            {transport.TransportItem}
+                        </td>
+                        <td className="transport-listning__cell">
+                            {transport.Direction}
+                        </td>
+                        <td className="transport-listning__cell">
+                            {transport.DepartureTime}
+                        </td>
+                        <td className="transport-listning__cell">
+                            {transport.TrainTrack}
+                        </td>
+                        <td className="transport-listning__cell">
+                            {Array.isArray(transport.TrainNotes) ? (
+                                transport.TrainNotes
+                                .filter((note, index, arraySelf) => index === arraySelf.findIndex(n => n === note))
+                                .map((note, index) => (
+                                <div className="transport-listing__cell-train-note" key={index}>
+                                    {note}
+                                </div>))
+                            ) : ""}
+                        </td>
                     </tr>
                 ))}
                 </tbody>
