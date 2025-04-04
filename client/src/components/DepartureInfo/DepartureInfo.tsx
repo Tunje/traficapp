@@ -82,40 +82,36 @@ const DepartureInfo = () => {
     }, [stateCoordinates]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Transport Departure</h2>
+    <div className="departure-content">
+      <h3>Transport Departures</h3>
 
             {transportData.length > 0 && (
-            <table className="w-full border-collapse border border-gray-300 " >
-                <thead>
-                    <tr className="transport-header">
-                        <th className="transport-header__cell">Operator</th>
-                        <th className="transport-header__cell">Transport</th>
-                        <th className="transport-header__cell">Destination</th>
-                        <th className="transport-header__cell">Departs</th>
-                        <th className="transport-header__cell">Track</th>
-                        <th className="transport-header__cell">Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div className="transport-grid">
+                    <div className="transport-header">
+                        <div className="transport-header__heading">Operator</div>
+                        <div className="transport-header__heading">Transport</div>
+                        <div className="transport-header__heading">Destination</div>
+                        <div className="transport-header__heading">Departs</div>
+                    </div>
+                <div className="transport-grid-body">
                     {transportData.map((transport, index) => (
-                    <tr key={index} className="transport-listing">
-                        <td className="transport-listning__cell">
+                    <div key={index} className="transport-listing">
+                        <div className="transport-listing__cell">
                             {transport.TransportOperator}
-                        </td>
-                        <td className="transport-listning__cell">
+                        </div>
+                        <div className="transport-listing__cell">
                             {transport.TransportItem}
-                        </td>
-                        <td className="transport-listning__cell">
+                        </div>
+                        <div className="transport-listing__cell">
                             {transport.Direction}
-                        </td>
-                        <td className="transport-listning__cell">
+                        </div>
+                        <div className="transport-listing__cell">
                             {transport.DepartureTime}
-                        </td>
-                        <td className="transport-listning__cell">
+                        </div>
+                        {/* <td className="transport-listning__cell">
                             {transport.TrainTrack}
-                        </td>
-                        <td className="transport-listning__cell">
+                        </td> */}
+                        {/* <td className="transport-listning__cell">
                             {Array.isArray(transport.TrainNotes) ? (
                                 transport.TrainNotes
                                 .filter((note, index, arraySelf) => index === arraySelf.findIndex(n => n === note))
@@ -124,11 +120,11 @@ const DepartureInfo = () => {
                                     {note}
                                 </div>))
                             ) : ""}
-                        </td>
-                    </tr>
+                        </td> */}
+                    </div>
                 ))}
-                </tbody>
-            </table>
+                </div>
+            </div>
         )}
         </div>
    
