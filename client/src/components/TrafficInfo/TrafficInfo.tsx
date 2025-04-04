@@ -5,11 +5,11 @@ import { IncidentData, DeviationApiData, IncidentDeviationData, RawSignageItem, 
 import { Coordinates } from "../../types/coordinates";
 import InfoMap from "../InfoMap/InfoMap";
 
-const TrafficInfo = () => {
+const TrafficInfo: React.FC = () => {
     const [situation, setSituation] = useState<IncidentData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [mapSignage, setMapSignage] = useState<SignageItem[]>([]);
-    const stateCoordinates = useStore((state) => state.coordinates) as Coordinates;
+    const stateCoordinates = useStore<Coordinates>((state) => state.coordinates);
 
     useEffect(() => {
         const fetchInfo = async (longitude: number, latitude: number) => {

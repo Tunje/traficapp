@@ -29,5 +29,5 @@
 }
 
 .transport-listning__train-notes {
-    @apply w-full flex gap-2 justify-center font-bold;
+    @apply w-full flex gap-2 justify-center font-bold py-2 flex-wrap;
 }

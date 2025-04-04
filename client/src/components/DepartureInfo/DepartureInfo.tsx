@@ -1,18 +1,22 @@
 import "./DepartureInfo.css";
 import React, { useState, useEffect } from 'react';
 import { useStore } from "../../hooks/useStore";
-import { TransportItem, DepartureProps } from '../../types/departureinfo';
+import { Coordinates } from "../../types/coordinates";
+import { IncomingApiData, TransportItem } from '../../types/departureinfo';
 
 
-const DepartureInfo = () => {
-  const [loading, setLoading] = useState(true);
-  const [stationCode, setStationCode] = useState<string | null>(null);
+const DepartureInfo: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const stateCoordinates = useStore((state) => state.coordinates);
-  const [transportData, setTransportData] = useState([]);
+  const stateCoordinates = useStore<Coordinates>((state) => state.coordinates);
+  const [transportData, setTransportData] = useState<TransportItem[]>([]);
   
   
     const fetchNearestStation = async () => {
+        if(!stateCoordinates) {
+            setError("No Coordinates");
+            return null;
+        }
         setLoading(true);
         setError(null);
         try {
@@ -24,7 +28,6 @@ const DepartureInfo = () => {
             }
             const station = await response.json();
             if (station) {
-                setStationCode(station); 
                 return station;
             } else {
                 setError("No station found in your area."); 
@@ -44,17 +47,20 @@ const DepartureInfo = () => {
             }
             const incomingDepartures = await response.json();
             const departureItems = incomingDepartures.map(({ 
-                Product, name, direction, time, Notes, rtTrack }) => ({
+                Product, 
+                name, 
+                direction, 
+                time, 
+                Notes, 
+                rtTrack }: IncomingApiData): TransportItem => ({
                 TransportOperator: Product[0].operator,
                 TransportItem: name,
                 Direction: direction,
                 DepartureTime: time.slice(0,5),
-                TrainNotes: (name.includes("Tåg") ? 
-                    Notes.Note
+                TrainNotes: (Notes?.Note
                     .map(({ value }) => (value)) 
-                    .filter(value => !["EU förordning", "Lag", "tillämpas"].some(word => value.includes(word)))
-                    : ""),
-                TrainTrack: (name.includes("Tåg") ? rtTrack : "")
+                    .filter(value => !["EU förordning", "Lag", "tillämpas"].some(word => value.includes(word)))),
+                TrainTrack: rtTrack 
             }));
             setTransportData(departureItems);
             console.log(incomingDepartures)
@@ -80,6 +86,13 @@ const DepartureInfo = () => {
 
         fetchAllDepartureInfo();
     }, [stateCoordinates]);
+
+    if (loading) {
+    <div className="departure-content">
+        <h3>Transport Departures</h3>
+        {error ? error : "Läddar data..."}
+    </div>
+    }
 
   return (
     <div className="departure-content">
@@ -107,8 +120,9 @@ const DepartureInfo = () => {
                         </div>
                         <div className="transport-listing__cell">
                             {transport.DepartureTime}<br />
-                            <strong>{transport.TrainTrack !== "" ? 
-                            `Spår ${transport.TrainTrack}` : ""}</strong>
+                            <strong>
+                            {transport.TrainTrack !== undefined ?  
+                                `Spår ${transport.TrainTrack}` : ""}</strong>
                         </div>
                         <div className="transport-listning__train-notes">
                             {Array.isArray(transport.TrainNotes) ? (

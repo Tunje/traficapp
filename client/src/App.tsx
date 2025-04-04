@@ -7,7 +7,7 @@ import TrafficInfo from "./components/TrafficInfo/TrafficInfo";
 import Weather from "./components/Weather/Weather";
 import DepartureInfo from "./components/DepartureInfo/DepartureInfo";
 
-const App = () => {
+const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState<string[]>([]);

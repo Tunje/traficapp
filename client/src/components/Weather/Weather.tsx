@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import "./Weather.css";
 import { WeatherData, ForecastDay, WeatherProps } from "../../types/weather";
+import { Coordinates } from "../../types/coordinates";
 import { useStore } from "../../hooks/useStore";
 
 const Weather = ({ coordinates }: WeatherProps) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<ForecastDay[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const stateCoordinates = useStore((state) => state.coordinates);
+  const stateCoordinates = useStore<Coordinates>((state) => state.coordinates);
 
   const getDayName = (dateStr: string) => {
     const days = [
