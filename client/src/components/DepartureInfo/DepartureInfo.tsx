@@ -106,21 +106,22 @@ const DepartureInfo = () => {
                             {transport.Direction}
                         </div>
                         <div className="transport-listing__cell">
-                            {transport.DepartureTime}
+                            {transport.DepartureTime}<br />
+                            <strong>{transport.TrainTrack !== "" ? 
+                            `Spår ${transport.TrainTrack}` : ""}</strong>
                         </div>
-                        {/* <td className="transport-listning__cell">
-                            {transport.TrainTrack}
-                        </td> */}
-                        {/* <td className="transport-listning__cell">
+                        <div className="transport-listning__train-notes">
                             {Array.isArray(transport.TrainNotes) ? (
                                 transport.TrainNotes
                                 .filter((note, index, arraySelf) => index === arraySelf.findIndex(n => n === note))
-                                .map((note, index) => (
-                                <div className="transport-listing__cell-train-note" key={index}>
-                                    {note}
-                                </div>))
+                                .map((note, index, arraySelf) => (
+                                <ul className="transport-listing__cell-train-note" key={index}>
+                                    <li>{note}
+                                        {index < arraySelf.length -1 && ","}
+                                    </li>
+                                </ul>))
                             ) : ""}
-                        </td> */}
+                        </div>
                     </div>
                 ))}
                 </div>

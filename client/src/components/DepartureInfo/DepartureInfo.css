@@ -11,19 +11,23 @@
 }
 
 .transport-header__heading {
-    @apply border text-center border-gray-300 px-4 py-2 w-1/4 flex-shrink-0;
+    @apply border font-bold text-center border-gray-300 px-4 py-2 w-1/4 flex-shrink-0;
 }
 
 .transport-grid-body {
     @apply 
-    w-full h-72 overflow-scroll;
+    w-full h-72 overflow-y-scroll;
 }
 
 .transport-listing {
-    @apply flex w-full justify-around
+    @apply flex w-full justify-around flex-wrap
     border border-gray-300;
 }
 
 .transport-listing__cell {
     @apply border text-center px-2 py-2 w-1/4 flex-shrink-0;
+}
+
+.transport-listning__train-notes {
+    @apply w-full flex gap-2 justify-center font-bold;
 }
