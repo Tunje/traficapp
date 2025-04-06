@@ -28,7 +28,11 @@ a:hover {
 /*----- App-wide layout styles -----*/
 
 body {
-  @apply flex justify-center w-screen;
+  @apply flex justify-center w-screen bg-gray-800;
+}
+
+main {
+  @apply mb-8;
 }
 
 .container {
@@ -92,7 +96,7 @@ body {
 }
 
 .results-container {
-  @apply bg-white/90 rounded-lg p-5 shadow text-center;
+  @apply bg-gray-100 rounded-lg p-5 shadow text-center;
 }
 
 .results-list {
@@ -111,8 +115,7 @@ body {
   @apply 
   row-start-4 row-end-4
   col-start-1 col-end-1
-  lg:col-start-2 lg:col-end-6
-    bg-white/90 text-gray-900 rounded-lg p-4;
+  lg:col-start-2 lg:col-end-6;
 }
 
 .weather-updates {

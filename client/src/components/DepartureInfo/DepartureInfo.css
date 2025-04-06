@@ -1,3 +1,8 @@
+.transport-departures {
+    @apply 
+    bg-gray-100 text-gray-900 rounded-lg p-4
+}
+
 .departure-content {
     @apply max-h-96 w-full;
 }
@@ -7,11 +12,11 @@
 }
 
 .transport-header {
-    @apply flex w-full bg-blue-300;
+    @apply flex w-full text-white bg-blue-500 rounded-lg;
 }
 
 .transport-header__heading {
-    @apply border font-bold text-center border-gray-300 px-4 py-2 w-1/4 flex-shrink-0;
+    @apply font-bold text-center py-2 w-1/4 flex-shrink-0;
 }
 
 .transport-grid-body {
@@ -20,12 +25,15 @@
 }
 
 .transport-listing {
-    @apply flex w-full justify-around flex-wrap
-    border border-gray-300;
+    @apply border-b-2 border-blue-200 mx-2;
+}
+
+.transport-listing__info {
+    @apply flex w-full justify-around flex-wrap;
 }
 
 .transport-listing__cell {
-    @apply border text-center px-2 py-2 w-1/4 flex-shrink-0;
+    @apply text-center px-2 py-2 w-1/4 flex-shrink-0;
 }
 
 .transport-listning__train-notes {

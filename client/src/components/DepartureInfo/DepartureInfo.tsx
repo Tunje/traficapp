@@ -109,32 +109,34 @@ const DepartureInfo: React.FC = () => {
                 <div className="transport-grid-body">
                     {transportData.map((transport, index) => (
                     <div key={index} className="transport-listing">
-                        <div className="transport-listing__cell">
-                            {transport.TransportOperator}
-                        </div>
-                        <div className="transport-listing__cell">
-                            {transport.TransportItem}
-                        </div>
-                        <div className="transport-listing__cell">
-                            {transport.Direction}
-                        </div>
-                        <div className="transport-listing__cell">
-                            {transport.DepartureTime}<br />
-                            <strong>
-                            {transport.TrainTrack !== undefined ?  
-                                `Spår ${transport.TrainTrack}` : ""}</strong>
-                        </div>
-                        <div className="transport-listning__train-notes">
-                            {Array.isArray(transport.TrainNotes) ? (
-                                transport.TrainNotes
-                                .filter((note, index, arraySelf) => index === arraySelf.findIndex(n => n === note))
-                                .map((note, index, arraySelf) => (
-                                <ul className="transport-listing__cell-train-note" key={index}>
-                                    <li>{note}
-                                        {index < arraySelf.length -1 && ","}
-                                    </li>
-                                </ul>))
-                            ) : ""}
+                        <div className="transport-listing__info">
+                            <div className="transport-listing__cell">
+                                {transport.TransportOperator}
+                            </div>
+                            <div className="transport-listing__cell">
+                                {transport.TransportItem}
+                            </div>
+                            <div className="transport-listing__cell">
+                                {transport.Direction}
+                            </div>
+                            <div className="transport-listing__cell">
+                                {transport.DepartureTime}<br />
+                                <strong>
+                                {transport.TrainTrack !== undefined ?  
+                                    `Spår ${transport.TrainTrack}` : ""}</strong>
+                            </div>
+                            <div className="transport-listning__train-notes">
+                                {Array.isArray(transport.TrainNotes) ? (
+                                    transport.TrainNotes
+                                    .filter((note, index, arraySelf) => index === arraySelf.findIndex(n => n === note))
+                                    .map((note, index, arraySelf) => (
+                                    <ul className="transport-listing__cell-train-note" key={index}>
+                                        <li>{note}
+                                            {index < arraySelf.length -1 && ","}
+                                        </li>
+                                    </ul>))
+                                ) : ""}
+                            </div>
                         </div>
                     </div>
                 ))}
