@@ -96,15 +96,15 @@ const DepartureInfo: React.FC = () => {
 
   return (
     <div className="departure-content">
-      <h3>Transport Departures</h3>
+      <h3>Transport avgår</h3>
 
             {transportData.length > 0 && (
             <div className="transport-grid">
                     <div className="transport-header">
-                        <div className="transport-header__heading">Operator</div>
-                        <div className="transport-header__heading">Transport</div>
+                        <div className="transport-header__heading">Operatör</div>
+                        <div className="transport-header__heading">Transporttyp</div>
                         <div className="transport-header__heading">Destination</div>
-                        <div className="transport-header__heading">Departs</div>
+                        <div className="transport-header__heading">Avgår</div>
                     </div>
                 <div className="transport-grid-body">
                     {transportData.map((transport, index) => (

@@ -125,7 +125,7 @@ const TrafficInfo: React.FC = () => {
 
   return (
         <div className="traffic-content">
-            <h3>Trafik hinder</h3>
+            <h3>Trafikhinder</h3>
             <div className="traffic-content__grid">
                 <div className="traffic-content__map">
                     <InfoMap signage={mapSignage} />
