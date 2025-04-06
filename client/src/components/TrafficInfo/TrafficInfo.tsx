@@ -5,11 +5,11 @@ import { IncidentData, DeviationApiData, IncidentDeviationData, RawSignageItem, 
 import { Coordinates } from "../../types/coordinates";
 import InfoMap from "../InfoMap/InfoMap";
 
-const TrafficInfo = () => {
+const TrafficInfo: React.FC = () => {
     const [situation, setSituation] = useState<IncidentData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [mapSignage, setMapSignage] = useState<SignageItem[]>([]);
-    const stateCoordinates = useStore((state) => state.coordinates) as Coordinates;
+    const stateCoordinates = useStore<Coordinates>((state) => state.coordinates);
 
     useEffect(() => {
         const fetchInfo = async (longitude: number, latitude: number) => {
@@ -125,14 +125,14 @@ const TrafficInfo = () => {
 
   return (
         <div className="traffic-content">
-            <h3>Trafik hinder</h3>
+            <h3>Trafikhinder</h3>
             <div className="traffic-content__grid">
                 <div className="traffic-content__map">
                     <InfoMap signage={mapSignage} />
                 </div>                   
             <div className="traffic-content__deviations">
             {situation.map((incident, index) => (
-                <div key={index}>
+                <div className="deviations-item" key={index}>
                         <div className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
                                 <div className="severity">
                                     {incident.Deviation[0].Severity}

@@ -1,5 +1,5 @@
 .traffic-content {
-    @apply bg-white/90 rounded-lg p-4 text-gray-700 w-full;
+    @apply bg-gray-100 rounded-lg p-4 text-gray-700 w-full;
 }
 
 .traffic-content__grid {
@@ -19,6 +19,10 @@
 }
 
 /* Deviations */
+
+.deviations-item {
+   @apply border-b-2 border-blue-200 mx-2;
+}
 
 .deviations__incident-header {
     @apply text-gray-900 p-2 mt-2 rounded-lg text-center;

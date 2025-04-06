@@ -102,6 +102,61 @@ app.get("/api/forecast", async (req: express.Request, res: express.Response): Pr
 
 // departure calls
 
+app.get("/api/station-location", async (req: express.Request, res: express.Response): Promise<void> => {
+    const latitude = req.query.latitude as string | undefined;
+    const longitude = req.query.longitude as string | undefined;
+    if (!latitude || !longitude) {
+        res.status(400).json({ error: "Need valid coordinates with latitude and longitude."});
+        return;
+    }
+    try {
+        const API_KEY = process.env.RESROBOT_API_KEY;
+        const departuresResponse = await fetch(
+            `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${latitude}&originCoordLong=${longitude}&format=json&accessId=${API_KEY}`
+          );
+  
+          if (!departuresResponse.ok) {
+            throw new Error("Fel vid hämtning av data");
+          }
+  
+          const departureData: any = await departuresResponse.json();
+          const stations = departureData.stopLocationOrCoordLocation || [];
+          if (stations.length > 0) {
+            const nearestStation = stations[0].StopLocation.extId;
+            res.json(nearestStation);
+            return;
+    }} catch (error) {
+        console.error("Error fetching:", error);
+        res.status(500).json({ error: "Internal server error" }); 
+    }
+})
+
+app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
+    const stationId = req.query.stationId;
+    if (!stationId) {
+        res.status(400).json({ error: "Need a valid station ID."});
+        return;
+    }
+    try {
+        const API_KEY = process.env.RESROBOT_API_KEY;
+        const departuresResponse = await fetch(
+          `https://api.resrobot.se/v2.1/departureBoard?id=${stationId}&format=json&accessId=${API_KEY}`
+          );
+          if (!departuresResponse.ok) {
+            throw new Error("Error fetching data");
+          }
+  
+          const departureInfoData: any = await departuresResponse.json();
+          if (departureInfoData) {
+            res.json(departureInfoData.Departure);
+            return;
+    }
+} catch (error) {
+        console.error("Data fetching error:", error);
+        res.status(500).json({ error: "Internal server error" }); 
+    }
+})
+
 // traffic info calls
 
 app.get("/api/traffic", async (req: express.Request, res: express.Response): Promise<void> => {
@@ -137,7 +192,6 @@ app.get("/api/traffic", async (req: express.Request, res: express.Response): Pro
 
           const trafficData = await infoResponse.json();
           res.json(trafficData);
-          console.log("current traffic data", infoResponse);
     } catch (error) {
         console.error("Data hämtning fel:", error);
     }

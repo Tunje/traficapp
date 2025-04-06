@@ -5,8 +5,9 @@ import { useStore } from "./hooks/useStore";
 import logoImage from "./assets/TLT-Logo.png";
 import TrafficInfo from "./components/TrafficInfo/TrafficInfo";
 import Weather from "./components/Weather/Weather";
+import DepartureInfo from "./components/DepartureInfo/DepartureInfo";
 
-const App = () => {
+const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState<string[]>([]);
@@ -109,13 +110,10 @@ const App = () => {
           </div>
       </section>
 
-        {/* Left side - Transport departures (placeholder)
-          <section className="transport-departures">
-            <h3>Transport Departures</h3>
-            <p className="transport-placeholder">
-              Departure information will appear here
-            </p>
-          </section> */}
+        {/* Left side - Transport departures */}
+        <section className="transport-departures">
+          <DepartureInfo />
+        </section>
 
         {/* Right side - Weather */}
         <section className="weather-updates">

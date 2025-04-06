@@ -7,9 +7,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -21,40 +18,3 @@
   width: auto;
 }
 
-
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-
-  .search-input {
-    background-color: #ffffff;
-    color: #213547;
-    border-color: #3b82f6;
-  }
-
-  .results-container {
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  }
-
-  .results-container h2 {
-    color: #1f2937;
-  }
-
-  .result-item {
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .no-results {
-    color: #6b7280;
-  }
-}
