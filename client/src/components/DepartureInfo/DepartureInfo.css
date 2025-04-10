@@ -16,7 +16,7 @@
 }
 
 .transport-header__heading {
-    @apply font-bold text-center py-2 w-1/4 flex-shrink-0;
+    @apply font-bold text-xs sm:text-sm md:text-base text-center py-2 w-1/4 flex-shrink-0;
 }
 
 .transport-grid__origin-station {
@@ -32,6 +32,9 @@
     @apply border-b-2 border-blue-200 mt-2;
 }
 
+.transport-listing__cell {
+    @apply text-xs sm:text-sm md:text-base text-center px-2 py-2 w-1/4 flex-shrink-0;
+}
 .transport-listing__info {
     @apply flex w-full flex-wrap;
 }
