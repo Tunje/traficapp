@@ -28,7 +28,7 @@ a:hover {
 /*----- App-wide layout styles -----*/
 
 body {
-  @apply flex justify-center w-screen bg-gray-800;
+  @apply overflow-x-hidden flex justify-center w-screen bg-gray-800;
 }
 
 main {

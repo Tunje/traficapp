@@ -8,7 +8,7 @@
 }
 
 .traffic-content__deviations {
-    @apply mt-3 h-96 overflow-scroll
+    @apply mt-3 h-96 overflow-y-scroll overflow-x-hidden 
     xl:w-2/3;
 }
 
