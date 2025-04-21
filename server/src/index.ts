@@ -131,9 +131,7 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
 
             let departures: any = null;
             let triedIndexes: number[] = [];
-            let goodStationName: string = "";
             
-            console.log("STATIONS", stationsArray);
             //If the API call returns an object with no "Departure" object, try the next object's station ID in the stationsArray.
             
             for (let index = 0; index < stationsArray.length; index++) {
@@ -148,14 +146,16 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
                 }
                 const departuresData: any = await departuresResponse.json();
                 if (departuresData.Departure && departuresData.Departure.length > 0) {
+                    console.log("STATION NAME", station.stationName)
                     departures = departuresData.Departure;
-                    departures.StationName = station.stationName;
                     break;
                 }
                 triedIndexes.push(index);
+
+                //todo: add logic if there are actually no departures for any station nearby.
             }
                 if (departures) {
-                        console.log(departures);
+                    console.log(departures)
                     res.json(departures)
                 }
                 }

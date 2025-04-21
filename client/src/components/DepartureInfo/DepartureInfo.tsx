@@ -28,25 +28,26 @@ const DepartureInfo: React.FC = () => {
               }
               const departureData = await response.json();
               if (departureData) {
-                  const departureItems = departureData.map(({ 
-                      Product, 
-                      name, 
-                      direction, 
-                      time, 
-                      Notes, 
-                      rtTrack }: IncomingApiData): TransportItem => ({
-                      TransportOperator: Product[0].operator,
-                      TransportItem: name,
-                      Direction: direction,
-                      DepartureTime: time.slice(0,5),
-                      TrainNotes: (Notes?.Note
-                          .map(({ value }) => (value)) 
-                          .filter(value => !["EU förordning", "Lag", "tillämpas"].some(word => value.includes(word)))),
-                      TrainTrack: rtTrack 
-                  }));
-                  setTransportData(departureItems);
-                  console.log(departures)
-                  console.log(departureItems)
+                const departureItems = departureData.map(({
+                    Product, 
+                    name, 
+                    direction, 
+                    time,
+                    stop, 
+                    Notes, 
+                    rtTrack }: IncomingApiData): TransportItem => ({
+                    StationName: stop,
+                    TransportOperator: Product[0].operator,
+                    TransportItem: name,
+                    Direction: direction,
+                    DepartureTime: time.slice(0,5),
+                    TrainNotes: (Notes?.Note
+                        .map(({ value }) => (value)) 
+                        .filter(value => !["EU förordning", "Lag", "tillämpas"].some(word => value.includes(word)))),
+                    TrainTrack: rtTrack 
+                }));
+                setTransportData(departureItems);
+                console.log(departureItems)
               } else {
                   setError("No station found in your area."); 
                   return null;
@@ -75,6 +76,7 @@ const DepartureInfo: React.FC = () => {
 
             {transportData.length > 0 && (
             <div className="transport-grid">
+                <div className="transport-grid__origin-station">från {transportData[0].StationName}</div>
                     <div className="transport-header">
                         <div className="transport-header__heading">Operatör</div>
                         <div className="transport-header__heading">Transporttyp</div>
