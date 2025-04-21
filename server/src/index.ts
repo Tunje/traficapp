@@ -2,7 +2,7 @@ import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 import cors from "cors";
-import { GoogleMapsData } from "./types";
+import { cleanStopLocation, GoogleMapsData, rawStopLocation } from "./types";
 
 dotenv.config();
 const app = express();
@@ -111,21 +111,42 @@ app.get("/api/station-location", async (req: express.Request, res: express.Respo
     }
     try {
         const API_KEY = process.env.RESROBOT_API_KEY;
-        const departuresResponse = await fetch(
+        const stationsResponse = await fetch(
             `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${latitude}&originCoordLong=${longitude}&format=json&accessId=${API_KEY}`
           );
   
-          if (!departuresResponse.ok) {
+          if (!stationsResponse.ok) {
             throw new Error("Fel vid hämtning av data");
           }
   
-          const departureData: any = await departuresResponse.json();
-          const stations = departureData.stopLocationOrCoordLocation || [];
+          const stationData: any = await stationsResponse.json();
+          const stations = stationData.stopLocationOrCoordLocation || [];
           if (stations.length > 0) {
-            const nearestStation = stations[0].StopLocation.extId;
-            res.json(nearestStation);
-            return;
-    }} catch (error) {
+            //Grab array of all stationIDs
+            const stationsArray = stations.map(({ StopLocation }: rawStopLocation): cleanStopLocation => ({
+                stationId: StopLocation.extId,
+                stationName: StopLocation.name,
+            }));
+            const nearestStation = stations[1].StopLocation.extId;
+            console.log("STATIONS", stationsArray);
+            //If the API call returns an object with no "Departure" object, try the next object's extId in the stationsArray.
+            const departuresResponse = await fetch(
+                `https://api.resrobot.se/v2.1/departureBoard?id=${nearestStation}&format=json&accessId=${API_KEY}`
+            );
+            if (!departuresResponse.ok) {
+              throw new Error("Error fetching data");
+            }
+            
+            const departuresData: any = await departuresResponse.json();
+            if (departuresData) {
+                const departures = departuresData.Departure || [];
+                // console.log(departuresData);
+                res.json({departures});
+                return;
+            }
+        }
+    } 
+    catch (error) {
         console.error("Error fetching:", error);
         res.status(500).json({ error: "Internal server error" }); 
     }
@@ -146,9 +167,10 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
             throw new Error("Error fetching data");
           }
   
-          const departureInfoData: any = await departuresResponse.json();
-          if (departureInfoData) {
-            res.json(departureInfoData.Departure);
+          const departuresData: any = await departuresResponse.json();
+          if (departuresData) {
+            const departures = departuresData.Departure || [];
+            res.json(departures);
             return;
     }
 } catch (error) {
