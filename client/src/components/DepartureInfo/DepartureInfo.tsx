@@ -21,14 +21,14 @@ const DepartureInfo: React.FC = () => {
           setError(null);
           try {
               const response = await fetch(
-                  `http://localhost:3000/api/station-location?latitude=${stateCoordinates.latitude}&longitude=${stateCoordinates.longitude}`
+                  `http://localhost:3000/api/departure-info?latitude=${stateCoordinates.latitude}&longitude=${stateCoordinates.longitude}`
               );
               if (!response.ok) {
                   throw new Error("Fel vid hämtning av data");
               }
-              const departures = await response.json();
-              if (departures) {
-                  const departureItems = departures.map(({ 
+              const departureData = await response.json();
+              if (departureData) {
+                  const departureItems = departureData.map(({ 
                       Product, 
                       name, 
                       direction, 

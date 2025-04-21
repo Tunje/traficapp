@@ -102,9 +102,10 @@ app.get("/api/forecast", async (req: express.Request, res: express.Response): Pr
 
 // departure calls
 
-app.get("/api/station-location", async (req: express.Request, res: express.Response): Promise<void> => {
+app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
     const latitude = req.query.latitude as string | undefined;
     const longitude = req.query.longitude as string | undefined;
+
     if (!latitude || !longitude) {
         res.status(400).json({ error: "Need valid coordinates with latitude and longitude."});
         return;
@@ -127,30 +128,43 @@ app.get("/api/station-location", async (req: express.Request, res: express.Respo
                 stationId: StopLocation.extId,
                 stationName: StopLocation.name,
             }));
-            const nearestStation = stations[1].StopLocation.extId;
-            console.log("STATIONS", stationsArray);
-            //If the API call returns an object with no "Departure" object, try the next object's extId in the stationsArray.
-            const departuresResponse = await fetch(
-                `https://api.resrobot.se/v2.1/departureBoard?id=${nearestStation}&format=json&accessId=${API_KEY}`
-            );
-            if (!departuresResponse.ok) {
-              throw new Error("Error fetching data");
-            }
+
+            let departures: any = null;
+            let triedIndexes: number[] = [];
+            let goodStationName: string = "";
             
-            const departuresData: any = await departuresResponse.json();
-            if (departuresData) {
-                const departures = departuresData.Departure || [];
-                // console.log(departuresData);
-                res.json({departures});
-                return;
+            console.log("STATIONS", stationsArray);
+            //If the API call returns an object with no "Departure" object, try the next object's station ID in the stationsArray.
+            
+            for (let index = 0; index < stationsArray.length; index++) {
+                const station = stationsArray[index];
+                console.log(`Trying station ${station.stationName}`);
+                
+                const departuresResponse = await fetch(
+                    `https://api.resrobot.se/v2.1/departureBoard?id=${station.stationId}&format=json&accessId=${API_KEY}`
+                );
+                if (!departuresResponse.ok) {
+                    continue;
+                }
+                const departuresData: any = await departuresResponse.json();
+                if (departuresData.Departure && departuresData.Departure.length > 0) {
+                    departures = departuresData.Departure;
+                    departures.StationName = station.stationName;
+                    break;
+                }
+                triedIndexes.push(index);
             }
-        }
-    } 
-    catch (error) {
-        console.error("Error fetching:", error);
-        res.status(500).json({ error: "Internal server error" }); 
-    }
-})
+                if (departures) {
+                        console.log(departures);
+                    res.json(departures)
+                }
+                }
+            }
+            catch (error) {
+                console.error("Error fetching:", error);
+                res.status(500).json({ error: "Internal server error" }); 
+            }
+        });
 
 app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
     const stationId = req.query.stationId;
