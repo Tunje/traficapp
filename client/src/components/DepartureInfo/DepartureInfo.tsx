@@ -2,14 +2,14 @@ import "./DepartureInfo.css";
 import React, { useState, useEffect } from 'react';
 import { useStore } from "../../hooks/useStore";
 import { Coordinates } from "../../types/coordinates";
-import { IncomingApiData, TransportItem } from '../../types/departureinfo';
+import { IncomingApiData, TransportItem, NoDepartures } from '../../types/departureinfo';
 
 
 const DepartureInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const stateCoordinates = useStore<Coordinates>((state) => state.coordinates);
-  const [transportData, setTransportData] = useState<TransportItem[]>([]);
+  const [transportData, setTransportData] = useState<TransportItem[] | NoDepartures>([]);
   
   useEffect(() => {
       const fetchDepartureData = async () => {
@@ -27,7 +27,12 @@ const DepartureInfo: React.FC = () => {
                   throw new Error("Fel vid hämtning av data");
               }
               const departureData = await response.json();
-              if (departureData) {
+              if ("NoDepartures" in departureData) {
+                const noDeparturesMessage: NoDepartures = departureData;
+                setTransportData(noDeparturesMessage)
+                setLoading(false);
+              }
+              else if (departureData) {
                 const departureItems = departureData.map(({
                     Product, 
                     name, 
@@ -47,10 +52,9 @@ const DepartureInfo: React.FC = () => {
                     TrainTrack: rtTrack 
                 }));
                 setTransportData(departureItems);
-                console.log(departureItems)
+                setLoading(false);
               } else {
                   setError("No station found in your area."); 
-                  return null;
               }
           } catch (err) {
               console.error("Error fetching nearest station:", err);
@@ -63,20 +67,39 @@ const DepartureInfo: React.FC = () => {
           };
   }, [stateCoordinates]);
 
-    if (loading) {
-    <div className="departure-content">
-        <h3>Transport avgår</h3>
-        {error ? error : "Läddar data..."}
-    </div>
+    if (loading || error) {
+        return (
+        <div className="departure-content">
+            <h3>Transport avgår</h3>
+            <div className="loading">
+            {error ? `Error: ${error}` : "Läddar data..."}
+            </div>
+        </div>
+        );
+    };
+
+    const departuresCheck = (transportData: any): transportData is NoDepartures => {
+        return "NoDepartures" in transportData;
+    };
+
+    if (departuresCheck(transportData)) {
+        return (
+            <div className="departure-content">
+                <h3>Transport avgår</h3>
+                <div className="no-departures">
+                    {transportData.NoDepartures}
+                </div>
+        </div>
+        )
     }
 
   return (
     <div className="departure-content">
       <h3>Transport avgår</h3>
-
             {transportData.length > 0 && (
             <div className="transport-grid">
-                <div className="transport-grid__origin-station">från {transportData[0].StationName}</div>
+                <div className="transport-grid__origin-station">
+                från {transportData[0].StationName}</div>
                     <div className="transport-header">
                         <div className="transport-header__heading">Operatör</div>
                         <div className="transport-header__heading">Transporttyp</div>

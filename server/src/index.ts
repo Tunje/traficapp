@@ -116,55 +116,57 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
             `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${latitude}&originCoordLong=${longitude}&format=json&accessId=${API_KEY}`
           );
   
-          if (!stationsResponse.ok) {
+        if (!stationsResponse.ok) {
             throw new Error("Fel vid hämtning av data");
-          }
+        };
   
-          const stationData: any = await stationsResponse.json();
-          const stations = stationData.stopLocationOrCoordLocation || [];
-          if (stations.length > 0) {
+        const stationData: any = await stationsResponse.json();
+        const stations = stationData.stopLocationOrCoordLocation || [];
+        if (stations.length > 0) {
             //Grab array of all stationIDs
             const stationsArray = stations.map(({ StopLocation }: rawStopLocation): cleanStopLocation => ({
                 stationId: StopLocation.extId,
                 stationName: StopLocation.name,
             }));
 
-            let departures: any = null;
-            let triedIndexes: number[] = [];
+        let departures: any = null;
+        let triedIndexes: number[] = [];
             
-            //If the API call returns an object with no "Departure" object, try the next object's station ID in the stationsArray.
+        //If the API call returns an object with no "Departure" object, try the next object's station ID in the stationsArray.
             
-            for (let index = 0; index < stationsArray.length; index++) {
-                const station = stationsArray[index];
-                console.log(`Trying station ${station.stationName}`);
-                
-                const departuresResponse = await fetch(
-                    `https://api.resrobot.se/v2.1/departureBoard?id=${station.stationId}&format=json&accessId=${API_KEY}`
-                );
-                if (!departuresResponse.ok) {
-                    continue;
-                }
-                const departuresData: any = await departuresResponse.json();
-                if (departuresData.Departure && departuresData.Departure.length > 0) {
-                    console.log("STATION NAME", station.stationName)
-                    departures = departuresData.Departure;
-                    break;
-                }
-                triedIndexes.push(index);
-
-                //todo: add logic if there are actually no departures for any station nearby.
+        for (let index = 0; index < stationsArray.length; index++) {
+            const station = stationsArray[index];
+            console.log(`Trying station ${station.stationName}`);
+            
+            const departuresResponse = await fetch(
+                `https://api.resrobot.se/v2.1/departureBoard?id=${station.stationId}&format=json&accessId=${API_KEY}`
+            );
+            if (!departuresResponse.ok) {
+                continue;
             }
-                if (departures) {
-                    console.log(departures)
-                    res.json(departures)
-                }
-                }
+            const departuresData: any = await departuresResponse.json();
+            if (departuresData.Departure && departuresData.Departure.length > 0) {
+                console.log("STATION NAME", station.stationName)
+                departures = departuresData.Departure;
+                break;
             }
-            catch (error) {
-                console.error("Error fetching:", error);
-                res.status(500).json({ error: "Internal server error" }); 
-            }
-        });
+            triedIndexes.push(index);
+        }
+            
+        if (departures) {
+            console.log(departures)
+            res.json(departures)
+        } else {
+            console.log("Couldn't find nothin'")
+            res.json({NoDepartures: "Inga avgångar just nu."})
+        }
+        }
+    }
+    catch (error) {
+        console.error("Error fetching:", error);
+        res.status(500).json({ error: "Internal server error" }); 
+    }
+});
 
 app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
     const stationId = req.query.stationId;
