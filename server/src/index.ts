@@ -25,7 +25,7 @@ app.get("/api/location", async (req: express.Request, res: express.Response): Pr
         if (!apiKey) {
             throw new Error("Missing Google Maps API key.");
         }
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&region=sv&key=${apiKey}`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -154,7 +154,6 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
         }
             
         if (departures) {
-            console.log(departures)
             res.json(departures)
         } else {
             console.log("Couldn't find nothin'")
