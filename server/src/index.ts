@@ -2,7 +2,7 @@ import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 import cors from "cors";
-import { GoogleMapsData } from "./types";
+import { cleanStopLocation, GoogleMapsData, rawStopLocation } from "./types";
 
 dotenv.config();
 const app = express();
@@ -25,7 +25,7 @@ app.get("/api/location", async (req: express.Request, res: express.Response): Pr
         if (!apiKey) {
             throw new Error("Missing Google Maps API key.");
         }
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&region=sv&key=${apiKey}`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -102,34 +102,70 @@ app.get("/api/forecast", async (req: express.Request, res: express.Response): Pr
 
 // departure calls
 
-app.get("/api/station-location", async (req: express.Request, res: express.Response): Promise<void> => {
+app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
     const latitude = req.query.latitude as string | undefined;
     const longitude = req.query.longitude as string | undefined;
+
     if (!latitude || !longitude) {
         res.status(400).json({ error: "Need valid coordinates with latitude and longitude."});
         return;
     }
     try {
         const API_KEY = process.env.RESROBOT_API_KEY;
-        const departuresResponse = await fetch(
+        const stationsResponse = await fetch(
             `https://api.resrobot.se/v2.1/location.nearbystops?originCoordLat=${latitude}&originCoordLong=${longitude}&format=json&accessId=${API_KEY}`
           );
   
-          if (!departuresResponse.ok) {
+        if (!stationsResponse.ok) {
             throw new Error("Fel vid hämtning av data");
-          }
+        };
   
-          const departureData: any = await departuresResponse.json();
-          const stations = departureData.stopLocationOrCoordLocation || [];
-          if (stations.length > 0) {
-            const nearestStation = stations[0].StopLocation.extId;
-            res.json(nearestStation);
-            return;
-    }} catch (error) {
+        const stationData: any = await stationsResponse.json();
+        const stations = stationData.stopLocationOrCoordLocation || [];
+        if (stations.length > 0) {
+            //Grab array of all stationIDs
+            const stationsArray = stations.map(({ StopLocation }: rawStopLocation): cleanStopLocation => ({
+                stationId: StopLocation.extId,
+                stationName: StopLocation.name,
+            }));
+
+        let departures: any = null;
+        let triedIndexes: number[] = [];
+            
+        //If the API call returns an object with no "Departure" object, try the next object's station ID in the stationsArray.
+            
+        for (let index = 0; index < stationsArray.length; index++) {
+            const station = stationsArray[index];
+            console.log(`Trying station ${station.stationName}`);
+            
+            const departuresResponse = await fetch(
+                `https://api.resrobot.se/v2.1/departureBoard?id=${station.stationId}&format=json&accessId=${API_KEY}`
+            );
+            if (!departuresResponse.ok) {
+                continue;
+            }
+            const departuresData: any = await departuresResponse.json();
+            if (departuresData.Departure && departuresData.Departure.length > 0) {
+                console.log("STATION NAME", station.stationName)
+                departures = departuresData.Departure;
+                break;
+            }
+            triedIndexes.push(index);
+        }
+            
+        if (departures) {
+            res.json(departures)
+        } else {
+            console.log("Couldn't find nothin'")
+            res.json({NoDepartures: "Inga avgångar just nu."})
+        }
+        }
+    }
+    catch (error) {
         console.error("Error fetching:", error);
         res.status(500).json({ error: "Internal server error" }); 
     }
-})
+});
 
 app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
     const stationId = req.query.stationId;
@@ -146,9 +182,10 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
             throw new Error("Error fetching data");
           }
   
-          const departureInfoData: any = await departuresResponse.json();
-          if (departureInfoData) {
-            res.json(departureInfoData.Departure);
+          const departuresData: any = await departuresResponse.json();
+          if (departuresData) {
+            const departures = departuresData.Departure || [];
+            res.json(departures);
             return;
     }
 } catch (error) {

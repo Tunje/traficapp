@@ -7,6 +7,10 @@
     @apply max-h-96 w-full;
 }
 
+.no-departures, .loading {
+    @apply text-center;
+}
+
 .transport-grid {
     @apply flex justify-start w-full flex-col;
 }
@@ -19,13 +23,17 @@
     @apply font-bold text-center py-2 w-1/4 flex-shrink-0;
 }
 
+.transport-grid__origin-station {
+    @apply text-center pb-2;
+}
+
 .transport-grid-body {
     @apply 
     w-full h-72 overflow-y-scroll;
 }
 
 .transport-listing {
-    @apply border-b-2 border-blue-200 mx-2;
+    @apply border-b-2 border-blue-200 my-2;
 }
 
 .transport-listing__info {

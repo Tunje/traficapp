@@ -11,3 +11,24 @@ export interface GoogleMapsData
         } 
     }[]; 
 };
+
+export interface rawStopLocation {
+    StopLocation: {
+        productAtStop: string[],
+        timezoneOffset: number,
+        id: string,
+        extId: string,
+        name: string,
+        lon: number,
+        lat: number,
+        weight: number,
+        dist: number,
+        products: number,
+        minimumChangeDuration: string
+    }
+}
+
+export type cleanStopLocation = {
+    stationId: string,
+    stationName: string,
+}
