@@ -27,12 +27,29 @@ const DepartureInfo: React.FC = () => {
                   throw new Error("Fel vid hämtning av data");
               }
               const departureData = await response.json();
+              console.log(departureData);
               if ("NoDepartures" in departureData) {
                 const noDeparturesMessage: NoDepartures = departureData;
                 setTransportData(noDeparturesMessage)
                 setLoading(false);
               }
               else if (departureData) {
+                const categoryMap = {
+                    "train": [1, 2, 4],
+                    "bus": [3, 7],
+                    "subway": [5],
+                    "tram": [6],
+                    "ferry": [7],
+                    "taxi": [9]
+                };
+                const getCategory = (catCode: number) => {
+                    const numberedCat = Number(catCode);
+                    const category = Object.entries(categoryMap).find(([key, values]) => 
+                        values.includes(numberedCat))
+                    return category ? category[0] : null;
+                };
+
+                //go into object, find array with the same int as catCode, and return the key that contains that array.
                 const departureItems = departureData.map(({
                     Product, 
                     name, 
@@ -43,6 +60,7 @@ const DepartureInfo: React.FC = () => {
                     rtTrack }: IncomingApiData): TransportItem => ({
                     StationName: stop,
                     TransportOperator: Product[0].operator,
+                    Category: getCategory(Product[0].catCode),
                     TransportItem: name,
                     Direction: direction,
                     DepartureTime: time.slice(0,5),
@@ -51,6 +69,7 @@ const DepartureInfo: React.FC = () => {
                         .filter(value => !["EU förordning", "Lag", "tillämpas"].some(word => value.includes(word)))),
                     TrainTrack: rtTrack 
                 }));
+                console.log(departureItems)
                 setTransportData(departureItems);
                 setLoading(false);
               } else {
@@ -110,11 +129,12 @@ const DepartureInfo: React.FC = () => {
                     {transportData.map((transport, index) => (
                     <div key={index} className="transport-listing">
                         <div className="transport-listing__info">
-                            <div className="transport-listing__cell">
-                                {transport.TransportOperator}
+                            <div className="transport-listing__cell--type">
+                                <img className="transport-icon" src={`public/transport-icons/${transport.Category}.svg`} />
+                                {transport.TransportItem}
                             </div>
                             <div className="transport-listing__cell">
-                                {transport.TransportItem}
+                                {transport.TransportOperator}
                             </div>
                             <div className="transport-listing__cell">
                                 {transport.Direction}

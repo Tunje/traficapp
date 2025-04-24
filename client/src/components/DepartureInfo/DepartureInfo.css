@@ -44,6 +44,14 @@
     @apply text-center px-2 py-2 w-1/4 flex-shrink-0;
 }
 
+.transport-listing__cell--type {
+    @apply flex gap-2 items-start;
+}
+
+.transport-icon {
+    @apply max-h-8 max-w-8 mt-2;
+}
+
 .transport-listning__train-notes {
     @apply w-full flex gap-2 justify-center font-bold py-2 flex-wrap;
 }

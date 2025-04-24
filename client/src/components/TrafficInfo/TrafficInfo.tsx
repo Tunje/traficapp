@@ -104,7 +104,6 @@ const TrafficInfo: React.FC = () => {
                 console.error(error);
             }
         };
-        console.log("situation", situation)
         if (stateCoordinates?.latitude && stateCoordinates?.longitude) {
             fetchInfo(stateCoordinates.longitude, stateCoordinates.latitude);
         } else {
