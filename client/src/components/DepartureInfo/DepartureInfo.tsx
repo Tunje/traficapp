@@ -120,8 +120,8 @@ const DepartureInfo: React.FC = () => {
                 <div className="transport-grid__origin-station">
                 från {transportData[0].StationName}</div>
                     <div className="transport-header">
-                        <div className="transport-header__heading">Operatör</div>
                         <div className="transport-header__heading">Transporttyp</div>
+                        <div className="transport-header__heading">Operatör</div>
                         <div className="transport-header__heading">Destination</div>
                         <div className="transport-header__heading">Avgår</div>
                     </div>
@@ -129,7 +129,7 @@ const DepartureInfo: React.FC = () => {
                     {transportData.map((transport, index) => (
                     <div key={index} className="transport-listing">
                         <div className="transport-listing__info">
-                            <div className="transport-listing__cell--type">
+                            <div className="transport-listing__cell--time">
                                 <img className="transport-icon" src={`public/transport-icons/${transport.Category}.svg`} />
                                 {transport.TransportItem}
                             </div>
@@ -139,7 +139,7 @@ const DepartureInfo: React.FC = () => {
                             <div className="transport-listing__cell">
                                 {transport.Direction}
                             </div>
-                            <div className="transport-listing__cell">
+                            <div className="transport-listing__cell--time">
                                 {transport.DepartureTime}<br />
                                 <strong>
                                 {transport.TrainTrack !== undefined ?  
