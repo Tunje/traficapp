@@ -132,9 +132,11 @@ const TrafficInfo: React.FC = () => {
             <div className="traffic-content__deviations">
             {situation.map((incident, index) => (
                 <div className="deviations-item" key={index}>
-                        <div className={`deviations__incident-header severity-${incident.Deviation[0].SeverityCode}`}>
+                        <div className={`deviations__incident-header`}>
                                 <div className="severity">
+                                    <span className={`severity-bumper severity-${incident.Deviation[0].SeverityCode}`}>
                                     {incident.Deviation[0].Severity}
+                                    </span>
                                 </div>
                             </div>
                                 <div className="deviations__signs">
