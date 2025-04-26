@@ -66,7 +66,7 @@ const App: React.FC = () => {
     <main className="container">
       {/* Grid layout with a logo in the top center, search bar on top, two components on the next row, and one component spanning the bottom row, as per wireframe */}
       <div className="logo-container">
-        <img src={logoImage} alt="Logo" className="logo" />
+        <img src={logoImage} className="logo-img"alt="Logo" />
         <div className="logo-container__title">
           <h1>TrafficJam</h1>
         </div>

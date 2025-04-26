@@ -145,7 +145,7 @@ const DepartureInfo: React.FC = () => {
                                 {transport.TrainTrack !== undefined ?  
                                     `Spår ${transport.TrainTrack}` : ""}</strong>
                             </div>
-                            <div className="transport-listning__train-notes">
+                            <div className="transport-listing__train-notes">
                                 {Array.isArray(transport.TrainNotes) ? (
                                     transport.TrainNotes
                                     .filter((note, index, arraySelf) => index === arraySelf.findIndex(n => n === note))
