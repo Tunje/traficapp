@@ -61,7 +61,7 @@ app.get("/api/weather", async (req: express.Request, res: express.Response): Pro
     try {
         const API_KEY = process.env.WEATHER_API_KEY;
         const currentResponse = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}&lang=sv`
           );
   
           if (!currentResponse.ok) {
