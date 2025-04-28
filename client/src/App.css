@@ -28,7 +28,7 @@ a:hover {
 /*----- App-wide layout styles -----*/
 
 body {
-  @apply flex justify-center w-screen bg-gray-800;
+  @apply overflow-x-hidden flex justify-center w-screen bg-gray-800;
 }
 
 main {
@@ -48,7 +48,11 @@ main {
   col-start-1 col-end-1
   lg:col-start-2 lg:col-span-6
     flex 
-      gap-4 items-center justify-center px-4 py-4;
+      gap-4 items-center justify-center md:px-4 md:py-4;
+  }
+
+  .logo-img {
+    @apply max-h-10 max-w-10 md:max-h-16 md:max-w-16;
   }
 
 .search {
