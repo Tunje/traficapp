@@ -51,7 +51,7 @@ const App: React.FC = () => {
 
       if (coordinates) {
         setResults([
-          `${searchQuery} - Latitud: ${coordinates.latitude.toFixed(
+          `${searchQuery} Latitud: ${coordinates.latitude.toFixed(
             6
           )}, Longitud: ${coordinates.longitude.toFixed(6)}`,
         ]);

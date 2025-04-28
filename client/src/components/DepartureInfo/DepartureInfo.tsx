@@ -133,7 +133,7 @@ const DepartureInfo: React.FC = () => {
                                 <img className="transport-icon" src={`public/transport-icons/${transport.Category}.svg`} />
                                 {transport.TransportItem}
                             </div>
-                            <div className="transport-listing__cell operator">
+                            <div className="transport-listing__cell--operator">
                                 {transport.TransportOperator}
                             </div>
                             <div className="transport-listing__cell">

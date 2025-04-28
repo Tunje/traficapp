@@ -15,8 +15,13 @@
     @apply hidden md:block;
 }
 
+.transport-listing__cell--operator {
+    @apply hidden md:flex w-1/4
+    gap-2 p-2 justify-center items-center;
+}
+
 .transport-header {
-    @apply flex w-full justify-center text-white bg-blue-500 rounded-lg;
+    @apply flex w-full justify-between text-white bg-blue-500 rounded-lg;
 }
 
 .transport-header__heading {
@@ -36,16 +41,13 @@
     @apply text-xs sm:text-sm md:text-base border-b-2 border-blue-200 mt-2;
 }
 
-.transport-listing__cell {
-    @apply break-words text-center px-2 py-2 w-1/4 flex-shrink-0;
-}
 .transport-listing__info {
-    @apply flex w-full flex-wrap text-center;
+    @apply flex w-full justify-between flex-wrap text-center;
 }
 
 .transport-listing__cell {
     @apply w-1/4
-    flex gap-2 justify-center items-center;
+    flex gap-2 p-2 justify-center items-center;
 }
 
 .transport-listing__cell--vflex {
@@ -53,7 +55,7 @@
 }
 
 .transport-icon {
-    @apply max-h-8 max-w-8 mt-2;
+    @apply max-h-6 max-h-6 md:max-h-8 md:max-w-8 mt-2;
 }
 
 .transport-listing__train-notes {
