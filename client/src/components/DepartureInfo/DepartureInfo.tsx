@@ -120,7 +120,7 @@ const DepartureInfo: React.FC = () => {
                 <div className="transport-grid__origin-station">
                 från {transportData[0].StationName}</div>
                     <div className="transport-header">
-                        <div className="transport-header__heading">Transporttyp</div>
+                        <div className="transport-header__heading">Transport</div>
                         <div className="transport-header__heading">Operatör</div>
                         <div className="transport-header__heading">Destination</div>
                         <div className="transport-header__heading">Avgår</div>

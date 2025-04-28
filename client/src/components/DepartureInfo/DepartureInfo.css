@@ -12,7 +12,7 @@
 }
 
 .transport-header {
-    @apply flex w-full text-white bg-blue-500 rounded-lg;
+    @apply flex w-full justify-center text-white bg-blue-500 rounded-lg;
 }
 
 .transport-header__heading {
