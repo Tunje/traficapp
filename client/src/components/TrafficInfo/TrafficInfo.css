@@ -25,11 +25,15 @@
 }
 
 .deviations__incident-header {
-    @apply text-gray-900 p-2 mt-2 rounded-lg text-center;
+    @apply text-gray-900 p-2 bg-blue-500 mt-2 rounded-lg text-center;
 }
 
 .severity {
-    @apply font-bold;
+    @apply font-bold text-white;
+}
+
+.severity-bumper {
+    @apply px-4 py-2 rounded-lg;
 }
 
 .deviations__signs {
@@ -60,22 +64,22 @@
 /* Severity indicators */
 
 .severity-1 {
-    @apply bg-blue-300; 
+    @apply bg-blue-600; 
 }
 
 .severity-2 {
-    @apply bg-green-300;
+    @apply bg-green-600;
 }
 
 .severity-3 {
-    @apply bg-yellow-300;
+    @apply bg-yellow-600;
 }
 
 .severity-4 {
-    @apply bg-yellow-500;
+    @apply bg-yellow-600;
 }
 
 .severity-5 {
-    @apply bg-red-500;
+    @apply bg-red-600;
 }
 

@@ -1,6 +1,6 @@
 .transport-departures {
     @apply 
-    bg-gray-100 text-gray-900 rounded-lg p-4
+    bg-gray-100 text-gray-900 rounded-lg p-4 pb-8;
 }
 
 .departure-content {
@@ -11,12 +11,8 @@
     @apply text-center;
 }
 
-.transport-grid {
-    @apply flex justify-start w-full flex-col;
-}
-
 .transport-header {
-    @apply flex w-full text-white bg-blue-500 rounded-lg;
+    @apply flex justify-around w-full text-white bg-blue-500 rounded-lg;
 }
 
 .transport-header__heading {
@@ -33,15 +29,24 @@
 }
 
 .transport-listing {
-    @apply border-b-2 border-blue-200 my-2;
+    @apply border-b-2 border-blue-200 mt-2;
 }
 
 .transport-listing__info {
-    @apply flex w-full justify-around flex-wrap;
+    @apply flex w-full flex-wrap;
 }
 
-.transport-listing__cell {
-    @apply text-center px-2 py-2 w-1/4 flex-shrink-0;
+.transport-listing__cell, .transport-listing__cell--time {
+    @apply text-center w-1/4
+    flex gap-2 justify-center items-center;
+}
+
+.transport-listing__cell--time {
+    @apply flex flex-col gap-1 justify-center items-center;
+}
+
+.transport-icon {
+    @apply max-h-8 max-w-8 mt-2;
 }
 
 .transport-listning__train-notes {

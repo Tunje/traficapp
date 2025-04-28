@@ -167,33 +167,6 @@ app.get("/api/departure-info", async (req: express.Request, res: express.Respons
     }
 });
 
-app.get("/api/departure-info", async (req: express.Request, res: express.Response): Promise<void> => {
-    const stationId = req.query.stationId;
-    if (!stationId) {
-        res.status(400).json({ error: "Need a valid station ID."});
-        return;
-    }
-    try {
-        const API_KEY = process.env.RESROBOT_API_KEY;
-        const departuresResponse = await fetch(
-          `https://api.resrobot.se/v2.1/departureBoard?id=${stationId}&format=json&accessId=${API_KEY}`
-          );
-          if (!departuresResponse.ok) {
-            throw new Error("Error fetching data");
-          }
-  
-          const departuresData: any = await departuresResponse.json();
-          if (departuresData) {
-            const departures = departuresData.Departure || [];
-            res.json(departures);
-            return;
-    }
-} catch (error) {
-        console.error("Data fetching error:", error);
-        res.status(500).json({ error: "Internal server error" }); 
-    }
-})
-
 // traffic info calls
 
 app.get("/api/traffic", async (req: express.Request, res: express.Response): Promise<void> => {

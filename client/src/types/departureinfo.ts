@@ -4,7 +4,7 @@ export interface NoDepartures {
 
 export type IncomingApiData = {
   StationName: string;
-  Product: {operator: string}[];
+  Product: {operator: string, catCode: number}[];
   name: string;
   direction: string;
   time: string;
@@ -15,7 +15,8 @@ export type IncomingApiData = {
 
 export interface TransportItem {
     StationName: string;
-    TransportOperator: string;  
+    TransportOperator: string;
+    Category: string | null;  
     TransportItem: string; // Name plus number, i.e, "Länstrafik - Buss 430"
     Direction: string; // Destination
     DepartureTime: string;
